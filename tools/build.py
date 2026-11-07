@@ -131,11 +131,11 @@ def photo(slot, ms_caption, en_caption, ms_sub, en_sub, wide=False, alt='Khairul
             f'{t("b", ms_caption, en_caption)}{t("span", ms_sub, en_sub)}</div></div></div>')
 
 
-# Rotating "Tahukah anda?" card on the home page (user, 8 Nov 2026). Facts only: no return promises,
-# illustrations say so, KW$P rules apply. Keep each one short enough for ~4 lines on a phone.
+# Rotating "Tahukah anda?" card on the home page (user, 8 Nov 2026). Facts only: no return promises;
+# return illustrations use 8–10% a year with a disclaimer (user's rule), KW$P rules apply. Keep each one short enough for ~4 lines on a phone.
 FACTS = [
-    ('<b>Peraturan 72:</b> bahagikan 72 dengan kadar pulangan setahun untuk anggar berapa tahun wang berganda. Pada 6% setahun, lebih kurang 12 tahun.',
-     '<b>The Rule of 72:</b> divide 72 by a yearly rate of return to estimate how many years money takes to double. At 6% a year, about 12 years.'),
+    ('<b>Peraturan 72:</b> bahagikan 72 dengan kadar pulangan setahun untuk anggar berapa tahun wang berganda. Pada 8% setahun, lebih kurang 9 tahun; pada 10%, lebih kurang 7 tahun.<small>Contoh pengiraan sahaja, bukan unjuran pulangan. Pulangan sebenar berubah-ubah dan tidak dijamin.</small>',
+     '<b>The Rule of 72:</b> divide 72 by a yearly rate of return to estimate how many years money takes to double. At 8% a year, about 9 years; at 10%, about 7 years.<small>Example calculation only, not a projection of returns. Actual returns vary and are not guaranteed.</small>'),
     ('Dengan inflasi 3% setahun, kuasa beli RM100 hari ini tinggal kira-kira <b>RM55</b> selepas 20 tahun.',
      'With 3% yearly inflation, RM100 today buys only about <b>RM55</b> worth after 20 years.'),
     ('Unit trust pertama di Malaysia dilancarkan pada <b>1959</b> oleh Malayan Unit Trust Ltd.',
@@ -148,8 +148,8 @@ FACTS = [
      'PRS contributions qualify for tax relief of up to <b>RM3,000 a year</b>, subject to LHDN rules.'),
     ('“Faedah kompaun ialah keajaiban dunia kelapan” sering dikaitkan dengan Einstein, tapi <b>tiada bukti</b> beliau pernah menyebutnya.',
      '“Compound interest is the eighth wonder of the world” is often credited to Einstein, but there is <b>no evidence</b> he ever said it.'),
-    ('RM100 sebulan selama 30 tahun boleh jadi <b>lebih dua kali ganda</b> hasil 20 tahun. Masa memainkan peranan besar.<small>Ilustrasi andaian 6% setahun, bukan unjuran pulangan.</small>',
-     'RM100 a month for 30 years can grow to <b>more than twice</b> the result of 20 years. Time plays a big part.<small>Illustration at an assumed 6% a year, not a projection of returns.</small>'),
+    ('RM100 sebulan selama 30 tahun boleh jadi lebih kurang <b>RM149,000</b>, berbanding RM59,000 jika 20 tahun. Masa memainkan peranan besar.<small>Ilustrasi andaian 8% setahun dikompaun bulanan, bukan unjuran pulangan. Pulangan sebenar berubah-ubah dan tidak dijamin.</small>',
+     'RM100 a month for 30 years could grow to about <b>RM149,000</b>, against RM59,000 over 20 years. Time plays a big part.<small>Illustration at an assumed 8% a year compounded monthly, not a projection of returns. Actual returns vary and are not guaranteed.</small>'),
     ('Wang kertas pertama dunia digunakan di China pada zaman <b>Dinasti Song</b>, kira-kira abad ke-11.',
      'The world’s first paper money was used in China during the <b>Song dynasty</b>, around the 11th century.'),
     ('Perkataan <b>“ringgit”</b> bermaksud “bergerigi”, merujuk tepi bergerigi syiling perak Sepanyol yang pernah digunakan di Tanah Melayu.',
