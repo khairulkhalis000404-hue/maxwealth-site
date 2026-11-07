@@ -1,0 +1,9 @@
+{
+  "name": "MaxWealth Consultancy",
+  "short_name": "MaxWealth",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#FFFFFF",
+  "theme_color": "#124674",
+  "icons": [{ "src": "/assets/icon-512.png", "sizes": "512x512", "type": "image/png" }]
+}
