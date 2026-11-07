@@ -258,6 +258,39 @@ body.menu-lock { overflow: hidden; }
 }
 .ic-round svg { width: 22px; height: 22px; }
 
+/* ---------- "Tahukah anda?" rotating fact card (home hero) ---------- */
+.fun {
+  background: linear-gradient(160deg, var(--panel-1), var(--panel-2));
+  border: 1px solid var(--line); border-radius: 28px;
+  padding: clamp(26px, 4vw, 44px); display: flex; flex-direction: column; gap: 22px;
+}
+.fun-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.fun-head .eyebrow { margin: 0; }
+.fun-count { font-size: 13px; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
+/* all facts share one grid cell, so the card keeps the height of the longest one and never jumps */
+.fun-list { list-style: none; display: grid; }
+.fun-list li {
+  grid-area: 1 / 1; opacity: 0; visibility: hidden; transform: translateY(6px);
+  transition: opacity .45s ease, transform .45s ease, visibility 0s linear .45s;
+  font-family: "Fraunces", Georgia, serif; font-weight: 500; color: var(--heading);
+  font-size: clamp(1.3rem, 2.6vw, 1.65rem); line-height: 1.4;
+}
+.fun-list li.on { opacity: 1; visibility: visible; transform: none; transition: opacity .45s ease, transform .45s ease; }
+.fun-list li b { font-weight: 600; color: var(--emph); }
+.fun-list li small { display: block; margin-top: 12px; font-family: "Plus Jakarta Sans", system-ui, sans-serif; font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+.fun-foot { display: flex; align-items: center; gap: 10px; }
+.fun-bar { flex: 1; height: 3px; border-radius: 2px; background: var(--line-strong); overflow: hidden; margin-right: 8px; }
+.fun-bar i { display: block; height: 100%; width: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); transition: transform .1s linear; }
+.fun-btn {
+  width: 40px; height: 40px; border-radius: 999px; border: 1px solid var(--line-strong);
+  background: var(--surface); color: var(--heading); display: grid; place-items: center; cursor: pointer;
+}
+.fun-btn:hover { border-color: var(--brand-2); color: var(--link); }
+.fun-btn svg { width: 18px; height: 18px; }
+/* reduce motion: facts still change (the user wants them rotating), but by a plain fade with no slide */
+@media (prefers-reduced-motion: reduce) { .fun-list li, .fun-list li.on { transform: none; transition: opacity .3s ease, visibility 0s linear .3s; } .fun-list li.on { transition: opacity .3s ease; } }
+.fun.stopped .fun-bar { visibility: hidden; }
+
 /* ---------- Trust strip ---------- */
 .strip { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .strip ul { list-style: none; display: grid; gap: 0; }

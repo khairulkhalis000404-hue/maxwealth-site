@@ -65,6 +65,46 @@
     window.matchMedia('(min-width: 1000px)').addEventListener('change', function (m) { if (m.matches) setMenu(false); });
   }
 
+  // Home: "Tahukah anda?" card. Starts on a random fact and moves on every 8 s (a JS timer drives it and
+  // the yellow bar shows the progress); hover/focus/touch pauses it, and pressing an arrow stops the
+  // auto-rotation for good so the reader sets the pace.
+  var fun = document.querySelector('.fun');
+  if (fun) {
+    var facts = fun.querySelectorAll('.fun-list li');
+    var numEl = fun.querySelector('.fun-num');
+    var bar = fun.querySelector('.fun-bar i');
+    var STEP = 8000, TICK = 100;
+    var at = 0, elapsed = 0, paused = false, stopped = false;
+    var show = function (k) {
+      facts[at].classList.remove('on'); facts[at].setAttribute('aria-hidden', 'true');
+      at = (k + facts.length) % facts.length;
+      facts[at].classList.add('on'); facts[at].removeAttribute('aria-hidden');
+      numEl.textContent = (at < 9 ? '0' : '') + (at + 1);
+      elapsed = 0; bar.style.transform = 'scaleX(0)';
+    };
+    var timer = setInterval(function () {
+      if (paused || stopped) return;
+      elapsed += TICK;
+      if (elapsed >= STEP) show(at + 1);
+      else bar.style.transform = 'scaleX(' + (elapsed / STEP).toFixed(3) + ')';
+    }, TICK);
+    fun.querySelectorAll('.fun-btn').forEach(function (b) {
+      b.addEventListener('click', function () {
+        stopped = true; clearInterval(timer); fun.classList.add('stopped');
+        show(at + Number(b.dataset.step));
+      });
+    });
+    var pause = function () { paused = true; };
+    var resume = function () { paused = false; };
+    fun.addEventListener('mouseenter', pause);
+    fun.addEventListener('mouseleave', resume);
+    fun.addEventListener('focusin', pause);
+    fun.addEventListener('focusout', resume);
+    fun.addEventListener('touchstart', pause, { passive: true });
+    fun.addEventListener('touchend', resume);
+    show(Math.floor(Math.random() * facts.length));
+  }
+
   // Contact page: compose a WhatsApp message to Ika (Admin); nothing is stored or sent by this site
   var form = document.getElementById('waForm');
   if (form) {

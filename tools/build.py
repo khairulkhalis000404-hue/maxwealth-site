@@ -131,6 +131,70 @@ def photo(slot, ms_caption, en_caption, ms_sub, en_sub, wide=False, alt='Khairul
             f'{t("b", ms_caption, en_caption)}{t("span", ms_sub, en_sub)}</div></div></div>')
 
 
+# Rotating "Tahukah anda?" card on the home page (user, 8 Nov 2026). Facts only: no return promises,
+# illustrations say so, KW$P rules apply. Keep each one short enough for ~4 lines on a phone.
+FACTS = [
+    ('<b>Peraturan 72:</b> bahagikan 72 dengan kadar pulangan setahun untuk anggar berapa tahun wang berganda. Pada 6% setahun, lebih kurang 12 tahun.',
+     '<b>The Rule of 72:</b> divide 72 by a yearly rate of return to estimate how many years money takes to double. At 6% a year, about 12 years.'),
+    ('Dengan inflasi 3% setahun, kuasa beli RM100 hari ini tinggal kira-kira <b>RM55</b> selepas 20 tahun.',
+     'With 3% yearly inflation, RM100 today buys only about <b>RM55</b> worth after 20 years.'),
+    ('Unit trust pertama di Malaysia dilancarkan pada <b>1959</b> oleh Malayan Unit Trust Ltd.',
+     'Malaysia’s first unit trust was launched in <b>1959</b> by Malayan Unit Trust Ltd.'),
+    ('Dana pelaburan kolektif pertama dunia dipercayai ditubuhkan di Belanda pada <b>1774</b>.',
+     'The world’s first pooled investment fund is believed to have been set up in the Netherlands in <b>1774</b>.'),
+    ('Skim Persaraan Swasta (PRS) mula diperkenalkan di Malaysia pada <b>2012</b>.',
+     'The Private Retirement Scheme (PRS) was introduced in Malaysia in <b>2012</b>.'),
+    ('Caruman PRS layak pelepasan cukai sehingga <b>RM3,000 setahun</b>, tertakluk syarat LHDN.',
+     'PRS contributions qualify for tax relief of up to <b>RM3,000 a year</b>, subject to LHDN rules.'),
+    ('“Faedah kompaun ialah keajaiban dunia kelapan” sering dikaitkan dengan Einstein, tapi <b>tiada bukti</b> beliau pernah menyebutnya.',
+     '“Compound interest is the eighth wonder of the world” is often credited to Einstein, but there is <b>no evidence</b> he ever said it.'),
+    ('RM100 sebulan selama 30 tahun boleh jadi <b>lebih dua kali ganda</b> hasil 20 tahun. Masa memainkan peranan besar.<small>Ilustrasi andaian 6% setahun, bukan unjuran pulangan.</small>',
+     'RM100 a month for 30 years can grow to <b>more than twice</b> the result of 20 years. Time plays a big part.<small>Illustration at an assumed 6% a year, not a projection of returns.</small>'),
+    ('Wang kertas pertama dunia digunakan di China pada zaman <b>Dinasti Song</b>, kira-kira abad ke-11.',
+     'The world’s first paper money was used in China during the <b>Song dynasty</b>, around the 11th century.'),
+    ('Perkataan <b>“ringgit”</b> bermaksud “bergerigi”, merujuk tepi bergerigi syiling perak Sepanyol yang pernah digunakan di Tanah Melayu.',
+     'The word <b>“ringgit”</b> means “jagged”, after the serrated edges of Spanish silver coins once used in Malaya.'),
+    ('Bank Negara Malaysia mula mengeluarkan mata wang Malaysia sendiri pada <b>12 Jun 1967</b>.',
+     'Bank Negara Malaysia began issuing Malaysia’s own currency on <b>12 June 1967</b>.'),
+    ('Sejak <b>1 April 2008</b>, jumlah bil yang dibayar tunai di Malaysia dibundarkan ke 5 sen terdekat.',
+     'Since <b>1 April 2008</b>, bill totals paid in cash in Malaysia are rounded to the nearest 5 sen.'),
+    ('Caj kewangan kad kredit di Malaysia boleh mencecah <b>18% setahun</b> ke atas baki yang tidak dijelaskan.',
+     'Credit card finance charges in Malaysia can reach <b>18% a year</b> on unpaid balances.'),
+    ('Bursa saham moden tertua dunia bermula di <b>Amsterdam pada 1602</b>, dengan saham Syarikat Hindia Timur Belanda.',
+     'The world’s oldest modern stock exchange began in <b>Amsterdam in 1602</b>, trading shares of the Dutch East India Company.'),
+    ('Malayan Stock Exchange ditubuhkan pada <b>1960</b> dan menjadi asas kepada Bursa Malaysia hari ini.',
+     'The Malayan Stock Exchange was set up in <b>1960</b> and is a forerunner of today’s Bursa Malaysia.'),
+    ('Harga unit trust dikira <b>setiap hari bekerja</b> berdasarkan Nilai Aset Bersih (NAB) dana.',
+     'Unit trust prices are calculated <b>every business day</b> from the fund’s Net Asset Value (NAV).'),
+    ('Kad kredit moden pertama, <b>Diners Club</b>, diperkenalkan pada 1950 untuk membayar makan di restoran.',
+     'The first modern credit card, <b>Diners Club</b>, was launched in 1950 for paying at restaurants.'),
+    ('Mesin ATM pertama dunia dipasang di <b>London pada 1967</b>.',
+     'The world’s first ATM was installed in <b>London in 1967</b>.'),
+    ('<b>RM10 sehari = RM3,650 setahun.</b> Perbelanjaan kecil yang rutin cepat bertambah.',
+     '<b>RM10 a day = RM3,650 a year.</b> Small daily spending adds up fast.'),
+    ('Warren Buffett membeli saham pertamanya pada umur <b>11 tahun</b>.',
+     'Warren Buffett bought his first shares at age <b>11</b>.'),
+]
+
+
+def fun_card():
+    items = ''.join(
+        f'<li{" class=\"on\"" if i == 0 else " aria-hidden=\"true\""} data-en="{esc(en)}">{ms}</li>'
+        for i, (ms, en) in enumerate(FACTS))
+    return f'''<aside class="fun" aria-label="Fakta kewangan" data-en-aria-label="Money facts">
+  <div class="fun-head">
+    {t("p", "Tahukah anda?", "Did you know?", 'class="eyebrow"')}
+    <p class="fun-count"><span class="fun-num">01</span> / {len(FACTS):02d}</p>
+  </div>
+  <ul class="fun-list">{items}</ul>
+  <div class="fun-foot">
+    <span class="fun-bar" aria-hidden="true"><i></i></span>
+    <button type="button" class="fun-btn" data-step="-1" aria-label="Fakta sebelum" data-en-aria-label="Previous fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+    <button type="button" class="fun-btn" data-step="1" aria-label="Fakta seterusnya" data-en-aria-label="Next fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+  </div>
+</aside>'''
+
+
 def more(ms, en):
     return f'<span class="more">{t("span", ms, en)}{I["arrow"]}</span>'
 
@@ -353,7 +417,7 @@ def build_home():
     </div>
     {to_ika()}
   </div>
-  {photo("home", "Perunding berdaftar FIMM", "FIMM-registered consultants", "Unit trust dan PRS, mewakili Manulife Investment Management (M) Berhad", "Unit trusts and PRS, representing Manulife Investment Management (M) Berhad")}
+  {fun_card()}
 </div></section>
 
 <div class="wrap strip"><ul>
