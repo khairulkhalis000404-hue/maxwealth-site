@@ -261,14 +261,11 @@ def header(path):
         <button type="button" data-lang="ms" aria-pressed="true">BM</button>
         <button type="button" data-lang="en" aria-pressed="false">EN</button>
       </div>
-      <a class="btn sm head-cta" {wa(*WA_GENERAL)}>{I["wa"]}<span>WhatsApp</span></a>
       <button type="button" class="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Menu">{I["bars"]}{I["x"]}</button>
     </div>
   </div>
   <div class="menu-panel" id="menu">
     <ul>{panel}</ul>
-    {wa_btn("WhatsApp Admin kami", "WhatsApp our Admin")}
-    {to_ika()}
   </div>
 </header>
 <main id="main">'''
@@ -412,10 +409,9 @@ def build_home():
     {t("h1", 'Unit trust dan PRS, <em class="hl">diterangkan dengan jelas.</em>', 'Unit trusts and PRS, <em class="hl">explained clearly.</em>')}
     {t("p", "Kami agensi yang mewakili Manulife Investment Management (M) Berhad. Kami bantu individu, keluarga dan syarikat faham pilihan pelaburan mereka, dan mula dengan langkah yang sesuai dengan matlamat serta profil risiko masing-masing.", "We are an agency representing Manulife Investment Management (M) Berhad. We help individuals, families and companies understand their investment options, and start with steps that fit their goals and risk profile.", 'class="lead"')}
     <div class="btns">
-      {wa_btn("WhatsApp Admin kami", "WhatsApp our Admin")}
-      <a class="btn ghost" href="/servis/">{t("span", "Lihat servis", "See services")}</a>
+      <a class="btn" href="/servis/">{t("span", "Lihat servis", "See services")}</a>
+      <a class="btn ghost" href="/tentang/">{t("span", "Kenali kami", "About us")}</a>
     </div>
-    {to_ika()}
   </div>
   {fun_card()}
 </div></section>

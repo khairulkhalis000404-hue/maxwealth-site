@@ -65,6 +65,19 @@
     window.matchMedia('(min-width: 1000px)').addEventListener('change', function (m) { if (m.matches) setMenu(false); });
   }
 
+  // Header hides after scrolling down a fair way (past ~320px) and reappears on scroll up, at the top,
+  // or when keyboard focus moves into it. Small jitters (<8px) are ignored; never hides with the menu open.
+  if (header) {
+    var lastY = window.scrollY;
+    window.addEventListener('scroll', function () {
+      var y = window.scrollY;
+      if (header.classList.contains('menu-open') || y < 320) { header.classList.remove('hide'); lastY = y; return; }
+      if (y > lastY + 8) { header.classList.add('hide'); lastY = y; }
+      else if (y < lastY - 8) { header.classList.remove('hide'); lastY = y; }
+    }, { passive: true });
+    header.addEventListener('focusin', function () { header.classList.remove('hide'); });
+  }
+
   // Home: "Tahukah anda?" card. Starts on a random fact and moves on every 8 s (a JS timer drives it and
   // the yellow bar shows the progress); hover/focus/touch pauses it, and pressing an arrow stops the
   // auto-rotation for good so the reader sets the pace.
