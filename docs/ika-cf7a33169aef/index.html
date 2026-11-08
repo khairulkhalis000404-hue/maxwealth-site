@@ -13,10 +13,15 @@
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;overflow-wrap:anywhere}
 header{background:var(--head);color:#fff;padding:14px 16px 13px;padding-top:calc(14px + env(safe-area-inset-top))}
-header div{max-width:640px;margin:0 auto}
+.hd{max-width:640px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.brand{flex:1;min-width:0}
 header strong{font-size:19px;display:block;line-height:1.25}
 header strong::after{content:"";display:inline-block;width:7px;height:7px;background:var(--yellow);border-radius:50%;margin-left:5px;vertical-align:2px}
-header span{font-size:13px;color:#C9D6E8}
+.tag{display:block;font-size:13px;line-height:1.35;color:#C9D6E8}
+.lang{display:none;flex:none;border:1px solid rgba(255,255,255,.35);border-radius:9px;padding:2px}
+.js .lang{display:flex}
+.lang button{min-width:40px;min-height:36px;border:0;border-radius:7px;background:transparent;color:#fff;font-size:13.5px;font-weight:700;padding:0 8px}
+.lang button[aria-pressed=true]{background:var(--yellow);color:#0A2342}
 main{max-width:640px;margin:0 auto;padding:14px 12px 28px}
 .js main{padding-bottom:calc(92px + env(safe-area-inset-bottom))}
 .js .panel{display:none}.js .panel.on{display:block}
@@ -49,7 +54,6 @@ input,select,textarea{display:block;width:100%;font:inherit;font-size:16px;color
 textarea{min-height:82px;resize:vertical}
 label{display:block;font-size:14px;font-weight:650;margin:0 0 11px}
 #search{margin:0 0 12px;background:var(--card)}
-.row{display:flex;gap:8px}.row>*{flex:1;min-width:0}
 .ghost{display:none;width:100%;min-height:44px;margin-top:8px;border:1px solid var(--line);border-radius:9px;background:transparent;color:var(--ink);font-weight:650;text-align:center;text-decoration:none;padding:10px 12px}
 .js .ghost{display:block}
 .qrhead{display:flex;align-items:center;gap:8px;margin-bottom:9px;flex-wrap:wrap}
@@ -63,20 +67,30 @@ code{font:700 15px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--on)}
 .empty{display:none}
 .nav{display:none;position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:5px 4px calc(5px + env(safe-area-inset-bottom));justify-content:center}
 .js .nav{display:flex}
-.nav button{flex:1;max-width:128px;min-width:0;min-height:50px;border:0;background:transparent;color:var(--mut);font-size:13px;font-weight:650;border-radius:9px;padding:4px 1px;position:relative}
+.nav button{flex:1;max-width:128px;min-width:0;min-height:50px;border:0;background:transparent;color:var(--mut);font-size:13px;font-weight:650;border-radius:9px;padding:4px 1px;position:relative;overflow-wrap:normal}
 .nav button[aria-selected=true]{color:var(--on)}
 .nav button[aria-selected=true]::before{content:"";position:absolute;top:0;left:30%;right:30%;height:3px;border-radius:2px;background:var(--yellow)}
 #toast{position:fixed;left:16px;right:16px;bottom:calc(76px + env(safe-area-inset-bottom));max-width:400px;margin:0 auto;background:#0A2342;color:#fff;border-radius:9px;padding:10px 13px;font-size:14px;text-align:center;opacity:0;pointer-events:none;transition:opacity .15s}
 #toast.show{opacity:1}
 </style></head><body>
-<header><div><strong>Admin Tools</strong><span>Dalaman MaxWealth Consultancy. Jangan kongsi dengan client.</span></div></header>
+<header><div class="hd"><div class="brand"><strong>Admin Tools</strong><span class="tag" data-en="MaxWealth Consultancy internal. Do not share with clients.">Dalaman MaxWealth Consultancy. Jangan kongsi dengan client.</span></div>
+<div class="lang" role="group" aria-label="Language"><button type="button" data-lang="ms" aria-pressed="true">BM</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div></div></header>
 <main>
 
 <div class="panel on" id="mula" role="tabpanel">
-<h2>Mula</h2>
-<p class="sub">Tukar [nama] sebelum hantar. Page ni tak simpan apa-apa maklumat client.</p>
-<section class="card"><h3>Client dah bagi kata kunci atau topik</h3><div class="msg">Hai [nama], terima kasih hubungi MaxWealth Consultancy. Saya Ika, Admin di sini. Saya akan bantu aturkan perbualan dengan perunding yang sesuai. Sebelum tu, boleh saya tanya beberapa soalan ringkas?</div><button type="button" class="copy">Salin</button></section>
-<section class="card"><h3>Client cuma tulis &quot;saya nak tahu lebih lanjut&quot;</h3><div class="msg">Hai, terima kasih hubungi MaxWealth Consultancy. Saya Ika, Admin di sini. Boleh saya tahu anda nak bantuan tentang apa?
+<h2 data-en="Start">Mula</h2>
+<p class="sub" data-en="Change [name] before sending. Switch to BM if the client writes in Malay. This page stores no client information.">Tukar [nama] sebelum hantar. Tukar ke EN bila client tulis dalam English. Page ni tak simpan apa-apa maklumat client.</p>
+<section class="card"><h3 data-en="Client already gave a keyword or topic">Client dah bagi kata kunci atau topik</h3><div class="msg" data-en="Hi [name], thank you for contacting MaxWealth Consultancy. I am Ika, the Admin here. I will help arrange a chat with the right consultant. May I ask a few quick questions first?">Hai [nama], terima kasih hubungi MaxWealth Consultancy. Saya Ika, Admin di sini. Saya akan bantu aturkan perbualan dengan perunding yang sesuai. Sebelum tu, boleh saya tanya beberapa soalan ringkas?</div><button type="button" class="copy" data-en="Copy">Salin</button></section>
+<section class="card"><h3 data-en="Client only wrote &amp;quot;I would like to know more&amp;quot;">Client cuma tulis &quot;saya nak tahu lebih lanjut&quot;</h3><div class="msg" data-en="Hi, thank you for contacting MaxWealth Consultancy. I am Ika, the Admin here. What would you like help with?
+1. Start investing (unit trusts)
+2. PRS and tax relief
+3. Takaful or insurance
+4. Debt and credit cards
+5. Wills, hibah or estate matters
+6. Review existing investments
+7. Investing for a company
+8. Classes, webinars or ebooks
+9. Consultant career">Hai, terima kasih hubungi MaxWealth Consultancy. Saya Ika, Admin di sini. Boleh saya tahu anda nak bantuan tentang apa?
 1. Mula melabur (unit trust)
 2. PRS dan pelepasan cukai
 3. Takaful atau insurans
@@ -85,220 +99,320 @@ code{font:700 15px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--on)}
 6. Semak pelaburan sedia ada
 7. Pelaburan untuk syarikat
 8. Kelas, webinar atau ebook
-9. Kerjaya perunding</div><button type="button" class="copy">Salin</button></section>
-<section class="card"><h3>Kalau client jawab nombor</h3><div class="maprow"><span class="num">1</span><span class="what">Mula melabur (unit trust)<code>/ut</code></span><button type="button" class="copy small" data-v="Boleh bantu jawab ringkas?
+9. Kerjaya perunding</div><button type="button" class="copy" data-en="Copy">Salin</button></section>
+<section class="card"><h3 data-en="If the client replies with a number">Kalau client jawab nombor</h3><div class="maprow"><span class="num">1</span><span class="what"><span data-en="Start investing (unit trusts)">Mula melabur (unit trust)</span><code>/ut</code></span><button type="button" class="copy small" data-v="Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Matlamat utama anda: persaraan, pendidikan anak, tambah aset, atau lain-lain?
 3. Pernah melabur dalam unit trust sebelum ni?
 4. Nak mula secara sekali masuk atau bulanan? Anggaran pun tak apa, kalau belum pasti boleh cakap belum pasti.
-5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?">Salin</button></div><div class="maprow"><span class="num">2</span><span class="what">PRS dan pelepasan cukai<code>/prs</code></span><button type="button" class="copy small" data-v="Boleh bantu jawab ringkas?
+5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?" data-v-en="Could you answer a few quick questions?
+1. Your name and state?
+2. Your main goal: retirement, children&#x27;s education, growing your assets, or something else?
+3. Have you invested in unit trusts before?
+4. Would you start with a lump sum or monthly? An estimate is fine, and it is fine to say you are not sure yet.
+5. When is a good time for a consultant to contact you, and would you prefer WhatsApp or a call?" data-en="Copy">Salin</button></div><div class="maprow"><span class="num">2</span><span class="what"><span data-en="PRS and tax relief">PRS dan pelepasan cukai</span><code>/prs</code></span><button type="button" class="copy small" data-v="Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Tujuan utama: pelepasan cukai, persaraan, atau dua-dua?
 3. Boleh saya tahu umur anda?
 4. Dah ada akaun PRS sekarang?
-5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?">Salin</button></div><div class="maprow"><span class="num">3</span><span class="what">Takaful atau insurans<code>/takaful</code></span><button type="button" class="copy small" data-v="Boleh bantu jawab ringkas?
+5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?" data-v-en="Could you answer a few quick questions?
+1. Your name and state?
+2. Your main purpose: tax relief, retirement, or both?
+3. May I know your age?
+4. Do you already have a PRS account?
+5. When is a good time for a consultant to contact you, and would you prefer WhatsApp or a call?" data-en="Copy">Salin</button></div><div class="maprow"><span class="num">3</span><span class="what"><span data-en="Takaful or insurance">Takaful atau insurans</span><code>/takaful</code></span><button type="button" class="copy small" data-v="Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Perlindungan ni untuk siapa: diri sendiri, pasangan, anak, atau keluarga?
 3. Boleh saya tahu umur orang yang nak dilindungi?
 4. Dah ada polisi takaful atau insurans sekarang?
-5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?">Salin</button></div><div class="maprow"><span class="num">4</span><span class="what">Hutang dan kad kredit<code>/hutang</code></span><button type="button" class="copy small" data-v="Boleh bantu jawab ringkas?
+5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?" data-v-en="Could you answer a few quick questions?
+1. Your name and state?
+2. Who is this protection for: yourself, your spouse, your children, or the family?
+3. May I know the age of the person to be covered?
+4. Do you already have a takaful or insurance policy?
+5. When is a good time for a consultant to contact you, and would you prefer WhatsApp or a call?" data-en="Copy">Salin</button></div><div class="maprow"><span class="num">4</span><span class="what"><span data-en="Debt and credit cards">Hutang dan kad kredit</span><code>/hutang</code></span><button type="button" class="copy small" data-v="Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Hutang jenis apa: kad kredit, pinjaman peribadi, kereta, atau lain-lain?
 3. Lebih kurang berapa jumlah semua sekali, dan berapa akaun?
 4. Ada bayaran yang dah tertunggak, atau dah terima surat tuntutan?
-5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?">Salin</button></div><div class="maprow"><span class="num">5</span><span class="what">Wasiat, hibah atau pusaka<code>/wasiat</code></span><button type="button" class="copy small" data-v="Boleh bantu jawab ringkas?
+5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?" data-v-en="Could you answer a few quick questions?
+1. Your name and state?
+2. What type of debt: credit card, personal loan, car, or something else?
+3. Roughly how much in total, and across how many accounts?
+4. Are any payments overdue, or have you received a demand letter?
+5. When is a good time for a consultant to contact you, and would you prefer WhatsApp or a call?" data-en="Copy">Salin</button></div><div class="maprow"><span class="num">5</span><span class="what"><span data-en="Wills, hibah or estate matters">Wasiat, hibah atau pusaka</span><code>/wasiat</code></span><button type="button" class="copy small" data-v="Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Ini untuk perancangan diri sendiri, atau urusan ahli keluarga yang dah meninggal dunia?
 3. Dah ada wasiat atau hibah sekarang?
 4. Jenis harta yang terlibat: rumah, tanah, ASB, takaful, atau lain-lain?
-5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?">Salin</button></div><div class="maprow"><span class="num">6</span><span class="what">Semak pelaburan sedia ada<code>/semakan</code></span><button type="button" class="copy small" data-v="Boleh bantu jawab ringkas?
+5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?" data-v-en="Could you answer a few quick questions?
+1. Your name and state?
+2. Is this for your own arrangements, or for a family member who has passed away?
+3. Do you already have a will or hibah?
+4. What assets are involved: house, land, ASB, takaful, or something else?
+5. When is a good time for a consultant to contact you, and would you prefer WhatsApp or a call?" data-en="Copy">Salin</button></div><div class="maprow"><span class="num">6</span><span class="what"><span data-en="Review existing investments">Semak pelaburan sedia ada</span><code>/semakan</code></span><button type="button" class="copy small" data-v="Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Pelaburan apa yang anda ada sekarang? Nama dana atau platform pun cukup.
 3. Apa yang anda nak tahu atau risau tentang portfolio ni?
 4. Sekarang ada perunding yang uruskan portfolio ni?
-5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?">Salin</button></div><div class="maprow"><span class="num">7</span><span class="what">Pelaburan untuk syarikat<code>/korporat</code></span><button type="button" class="copy small" data-v="Boleh bantu jawab ringkas?
+5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?" data-v-en="Could you answer a few quick questions?
+1. Your name and state?
+2. What investments do you have now? Fund names or the platform are enough.
+3. What would you like to know, or what concerns you, about this portfolio?
+4. Is a consultant managing this portfolio now?
+5. When is a good time for a consultant to contact you, and would you prefer WhatsApp or a call?" data-en="Copy">Salin</button></div><div class="maprow"><span class="num">7</span><span class="what"><span data-en="Investing for a company">Pelaburan untuk syarikat</span><code>/korporat</code></span><button type="button" class="copy small" data-v="Boleh bantu jawab ringkas?
 1. Nama syarikat, dan nama serta jawatan anda?
 2. Anggaran lebihan tunai yang nak dilaburkan? Julat pun tak apa.
 3. Berapa lama wang tu tak diperlukan oleh syarikat?
 4. Syarikat ada keperluan patuh Syariah?
-5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?">Salin</button></div><div class="maprow"><span class="num">8</span><span class="what">Kelas, webinar atau ebook<code>/kelas</code></span><button type="button" class="copy small" data-v="Boleh bantu jawab ringkas?
+5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?" data-v-en="Could you answer a few quick questions?
+1. Company name, and your name and position?
+2. Roughly how much surplus cash would be invested? A range is fine.
+3. How long will the company not need this money?
+4. Does the company need Shariah-compliant options?
+5. When is a good time for a consultant to contact you, and would you prefer WhatsApp or a call?" data-en="Copy">Salin</button></div><div class="maprow"><span class="num">8</span><span class="what"><span data-en="Classes, webinars or ebooks">Kelas, webinar atau ebook</span><code>/kelas</code></span><button type="button" class="copy small" data-v="Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Anda berminat dengan kelas, webinar atau ebook?
 3. Untuk diri sendiri, atau untuk syarikat dan organisasi?
-4. Kalau untuk organisasi: nama organisasi, anggaran peserta dan tarikh yang dirancang?">Salin</button></div><div class="maprow"><span class="num">9</span><span class="what">Kerjaya perunding<code>/kerjaya</code></span><button type="button" class="copy small" data-v="Boleh bantu jawab ringkas?
+4. Kalau untuk organisasi: nama organisasi, anggaran peserta dan tarikh yang dirancang?" data-v-en="Could you answer a few quick questions?
+1. Your name and state?
+2. Are you interested in a class, a webinar, or an ebook?
+3. Is it for yourself, or for a company or organisation?
+4. If for an organisation: its name, estimated participants and planned date?" data-en="Copy">Salin</button></div><div class="maprow"><span class="num">9</span><span class="what"><span data-en="Consultant career">Kerjaya perunding</span><code>/kerjaya</code></span><button type="button" class="copy small" data-v="Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Sekarang bekerja dalam bidang apa?
 3. Berminat secara sepenuh masa atau sambilan?
 4. Dah ada lesen atau pernah ambil peperiksaan FIMM?
-5. Boleh hadir sesi taklimat secara online atau bersemuka?">Salin</button></div><p class="note">Taip shortcut dalam chat, atau tekan Salin dan tampal.</p></section>
-<section class="card"><h3>Client tulis dalam English</h3><div class="msg">Hi [name], thank you for contacting MaxWealth Consultancy. I am Ika, the Admin here. I will help arrange a chat with the right consultant. May I ask a few quick questions first?</div><button type="button" class="copy">Salin</button></section>
-<section class="card"><h3>Luar waktu kerja</h3><div class="msg">Terima kasih hubungi MaxWealth Consultancy. Kami dah terima mesej anda dan akan balas pada waktu kerja berikutnya.</div><button type="button" class="copy">Salin</button></section>
-<section class="card"><h3>Kalau Ika tak pasti</h3><div class="msg">Saya semak dengan perunding kami dan maklumkan semula, ya.</div><button type="button" class="copy">Salin</button></section>
-<h4>Kalau client senyap</h4>
-<section class="card"><h3>Selepas 2 hari</h3><div class="msg">Hai [nama], saya nak pastikan mesej saya sampai. Kalau masih berminat, boleh jawab bila-bila masa yang sesuai ya.</div><button type="button" class="copy">Salin</button></section>
-<section class="card"><h3>Selepas 7 hari</h3><div class="msg">Hai [nama], saya tak ganggu lagi selepas ni. Kalau perlukan bantuan nanti, boleh WhatsApp saya terus. Terima kasih.</div><p class="note">Selepas ni berhenti, dan tukar status kepada Tak Jadi.</p><button type="button" class="copy">Salin</button></section>
-<h4>Tandakan Segera kalau</h4>
-<section class="card"><ul class="urgent"><li>Client nak keluarkan duit atau tutup akaun</li><li>Client marah atau buat aduan</li><li>Client sebut diugut atau nampak sangat tertekan</li><li>Client sebut scam, atau ada orang menyamar sebagai kami</li></ul></section>
+5. Boleh hadir sesi taklimat secara online atau bersemuka?" data-v-en="Could you answer a few quick questions?
+1. Your name and state?
+2. What field do you work in now?
+3. Are you interested full time or part time?
+4. Do you already have a licence, or have you taken the FIMM exam?
+5. Can you attend a briefing online or in person?" data-en="Copy">Salin</button></div><p class="note" data-en="Type the shortcut in the chat, or tap Copy and paste.">Taip shortcut dalam chat, atau tekan Salin dan tampal.</p></section>
+<section class="card"><h3 data-en="Outside working hours">Luar waktu kerja</h3><div class="msg" data-en="Thank you for contacting MaxWealth Consultancy. We have received your message and will reply during the next working hours.">Terima kasih hubungi MaxWealth Consultancy. Kami dah terima mesej anda dan akan balas pada waktu kerja berikutnya.</div><button type="button" class="copy" data-en="Copy">Salin</button></section>
+<section class="card"><h3 data-en="If Ika is unsure">Kalau Ika tak pasti</h3><div class="msg" data-en="I will check with our consultant and get back to you.">Saya semak dengan perunding kami dan maklumkan semula, ya.</div><button type="button" class="copy" data-en="Copy">Salin</button></section>
+<h4 data-en="If the client goes quiet">Kalau client senyap</h4>
+<section class="card"><h3 data-en="After 2 days">Selepas 2 hari</h3><div class="msg" data-en="Hi [name], just making sure my message reached you. If you are still interested, feel free to reply whenever suits you.">Hai [nama], saya nak pastikan mesej saya sampai. Kalau masih berminat, boleh jawab bila-bila masa yang sesuai ya.</div><button type="button" class="copy" data-en="Copy">Salin</button></section>
+<section class="card"><h3 data-en="After 7 days">Selepas 7 hari</h3><div class="msg" data-en="Hi [name], I will not disturb you after this. If you need help later, just WhatsApp me. Thank you.">Hai [nama], saya tak ganggu lagi selepas ni. Kalau perlukan bantuan nanti, boleh WhatsApp saya terus. Terima kasih.</div><p class="note" data-en="Stop after this, and change the status to Tak Jadi.">Selepas ni berhenti, dan tukar status kepada Tak Jadi.</p><button type="button" class="copy" data-en="Copy">Salin</button></section>
+<h4 data-en="Mark as Urgent if">Tandakan Segera kalau</h4>
+<section class="card"><ul class="urgent"><li data-en="Client wants to withdraw money or close an account">Client nak keluarkan duit atau tutup akaun</li><li data-en="Client is angry or making a complaint">Client marah atau buat aduan</li><li data-en="Client mentions threats or seems very distressed">Client sebut diugut atau nampak sangat tertekan</li><li data-en="Client mentions a scam, or someone impersonating us">Client sebut scam, atau ada orang menyamar sebagai kami</li></ul></section>
 </div>
 
 <div class="panel" id="topik" role="tabpanel">
-<h2>Topik</h2>
-<p class="sub">Tengok perkataan pertama mesej client, buka kotak yang sama, dan salin soalan.</p>
+<h2 data-en="Topics">Topik</h2>
+<p class="sub" data-en="Check the first word of the client&amp;#x27;s message, open the matching box, and copy the questions.">Tengok perkataan pertama mesej client, buka kotak yang sama, dan salin soalan.</p>
 <details class="card topic" name="topik">
-<summary><span class="chip">UNIT TRUST</span><span class="ttl">Pelaburan unit trust</span></summary>
-<div class="msg">Boleh bantu jawab ringkas?
+<summary><span class="chip" data-en="UNIT TRUST">UNIT TRUST</span><span class="ttl" data-en="Unit trust investing">Pelaburan unit trust</span></summary>
+<div class="msg" data-en="Could you answer a few quick questions?
+1. Your name and state?
+2. Your main goal: retirement, children&amp;#x27;s education, growing your assets, or something else?
+3. Have you invested in unit trusts before?
+4. Would you start with a lump sum or monthly? An estimate is fine, and it is fine to say you are not sure yet.
+5. When is a good time for a consultant to contact you, and would you prefer WhatsApp or a call?">Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Matlamat utama anda: persaraan, pendidikan anak, tambah aset, atau lain-lain?
 3. Pernah melabur dalam unit trust sebelum ni?
 4. Nak mula secara sekali masuk atau bulanan? Anggaran pun tak apa, kalau belum pasti boleh cakap belum pasti.
 5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?</div>
-<button type="button" class="copy">Salin soalan</button>
-<p class="note"><b>Perhatikan:</b> Minimum bulanan ialah RM100. Kalau client tanya dana mana, jangan jawab. Rujuk bahagian 5.</p>
+<button type="button" class="copy" data-en="Copy questions">Salin soalan</button>
+<p class="note" data-en="&lt;b&gt;Note:&lt;/b&gt; The minimum monthly investment is RM100. If the client asks which fund, do not answer. See the Questions tab."><b>Perhatikan:</b> Minimum bulanan ialah RM100. Kalau client tanya dana mana, jangan jawab. Rujuk bahagian 5.</p>
 </details><details class="card topic" name="topik">
-<summary><span class="chip">PRS</span><span class="ttl">PRS dan pelepasan cukai</span></summary>
-<div class="msg">Boleh bantu jawab ringkas?
+<summary><span class="chip" data-en="PRS">PRS</span><span class="ttl" data-en="PRS and tax relief">PRS dan pelepasan cukai</span></summary>
+<div class="msg" data-en="Could you answer a few quick questions?
+1. Your name and state?
+2. Your main purpose: tax relief, retirement, or both?
+3. May I know your age?
+4. Do you already have a PRS account?
+5. When is a good time for a consultant to contact you, and would you prefer WhatsApp or a call?">Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Tujuan utama: pelepasan cukai, persaraan, atau dua-dua?
 3. Boleh saya tahu umur anda?
 4. Dah ada akaun PRS sekarang?
 5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?</div>
-<button type="button" class="copy">Salin soalan</button>
-<p class="note"><b>Perhatikan:</b> Pengiraan cukai sebenar, biar perunding terangkan. Untuk cukai peribadi yang rumit, client perlu rujuk LHDN atau perunding cukai.</p>
+<button type="button" class="copy" data-en="Copy questions">Salin soalan</button>
+<p class="note" data-en="&lt;b&gt;Note:&lt;/b&gt; Leave actual tax calculations to the consultant. For complex personal tax matters, the client should consult LHDN or a tax agent."><b>Perhatikan:</b> Pengiraan cukai sebenar, biar perunding terangkan. Untuk cukai peribadi yang rumit, client perlu rujuk LHDN atau perunding cukai.</p>
 </details><details class="card topic" name="topik">
-<summary><span class="chip">KORPORAT</span><span class="ttl">Pelaburan untuk syarikat</span></summary>
-<div class="msg">Boleh bantu jawab ringkas?
+<summary><span class="chip" data-en="CORPORATE">KORPORAT</span><span class="ttl" data-en="Investing for a company">Pelaburan untuk syarikat</span></summary>
+<div class="msg" data-en="Could you answer a few quick questions?
+1. Company name, and your name and position?
+2. Roughly how much surplus cash would be invested? A range is fine.
+3. How long will the company not need this money?
+4. Does the company need Shariah-compliant options?
+5. When is a good time for a consultant to contact you, and would you prefer WhatsApp or a call?">Boleh bantu jawab ringkas?
 1. Nama syarikat, dan nama serta jawatan anda?
 2. Anggaran lebihan tunai yang nak dilaburkan? Julat pun tak apa.
 3. Berapa lama wang tu tak diperlukan oleh syarikat?
 4. Syarikat ada keperluan patuh Syariah?
 5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?</div>
-<button type="button" class="copy">Salin soalan</button>
-<p class="note"><b>Perhatikan:</b> Pastikan orang yang berbual ada kuasa buat keputusan untuk syarikat. Kalau tak pasti, tanya siapa pengarah yang perlu turut serta.</p>
+<button type="button" class="copy" data-en="Copy questions">Salin soalan</button>
+<p class="note" data-en="&lt;b&gt;Note:&lt;/b&gt; Make sure the person you are talking to can make decisions for the company. If unsure, ask which director should join."><b>Perhatikan:</b> Pastikan orang yang berbual ada kuasa buat keputusan untuk syarikat. Kalau tak pasti, tanya siapa pengarah yang perlu turut serta.</p>
 </details><details class="card topic" name="topik">
-<summary><span class="chip">SEMAKAN</span><span class="ttl">Semakan portfolio</span></summary>
-<div class="msg">Boleh bantu jawab ringkas?
+<summary><span class="chip" data-en="REVIEW">SEMAKAN</span><span class="ttl" data-en="Portfolio review">Semakan portfolio</span></summary>
+<div class="msg" data-en="Could you answer a few quick questions?
+1. Your name and state?
+2. What investments do you have now? Fund names or the platform are enough.
+3. What would you like to know, or what concerns you, about this portfolio?
+4. Is a consultant managing this portfolio now?
+5. When is a good time for a consultant to contact you, and would you prefer WhatsApp or a call?">Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Pelaburan apa yang anda ada sekarang? Nama dana atau platform pun cukup.
 3. Apa yang anda nak tahu atau risau tentang portfolio ni?
 4. Sekarang ada perunding yang uruskan portfolio ni?
 5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?</div>
-<button type="button" class="copy">Salin soalan</button>
-<p class="note"><b>Perhatikan:</b> Jangan komen dana atau perunding lain, walaupun client sendiri merungut. Kalau client nak hantar penyata, minta tutup nombor IC dan nombor akaun dulu.</p>
+<button type="button" class="copy" data-en="Copy questions">Salin soalan</button>
+<p class="note" data-en="&lt;b&gt;Note:&lt;/b&gt; Do not comment on other funds or consultants, even if the client complains. If the client wants to send a statement, ask them to cover the IC and account numbers first."><b>Perhatikan:</b> Jangan komen dana atau perunding lain, walaupun client sendiri merungut. Kalau client nak hantar penyata, minta tutup nombor IC dan nombor akaun dulu.</p>
 </details><details class="card topic" name="topik">
-<summary><span class="chip">TAKAFUL</span><span class="ttl">Takaful dan insurans</span></summary>
-<div class="msg">Boleh bantu jawab ringkas?
+<summary><span class="chip" data-en="TAKAFUL">TAKAFUL</span><span class="ttl" data-en="Takaful and insurance">Takaful dan insurans</span></summary>
+<div class="msg" data-en="Could you answer a few quick questions?
+1. Your name and state?
+2. Who is this protection for: yourself, your spouse, your children, or the family?
+3. May I know the age of the person to be covered?
+4. Do you already have a takaful or insurance policy?
+5. When is a good time for a consultant to contact you, and would you prefer WhatsApp or a call?">Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Perlindungan ni untuk siapa: diri sendiri, pasangan, anak, atau keluarga?
 3. Boleh saya tahu umur orang yang nak dilindungi?
 4. Dah ada polisi takaful atau insurans sekarang?
 5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?</div>
-<button type="button" class="copy">Salin soalan</button>
-<p class="note"><b>Perhatikan:</b> Yang ini diuruskan oleh ahli pasukan yang berlesen. Jangan sebut kadar sumbangan atau apa yang dilindungi. Khairul akan tetapkan siapa yang hubungi.</p>
+<button type="button" class="copy" data-en="Copy questions">Salin soalan</button>
+<p class="note" data-en="&lt;b&gt;Note:&lt;/b&gt; This is handled by a licensed team member. Do not mention contribution rates or what is covered. Khairul will decide who contacts the client."><b>Perhatikan:</b> Yang ini diuruskan oleh ahli pasukan yang berlesen. Jangan sebut kadar sumbangan atau apa yang dilindungi. Khairul akan tetapkan siapa yang hubungi.</p>
 </details><details class="card topic" name="topik">
-<summary><span class="chip">HUTANG</span><span class="ttl">Hutang dan kad kredit</span></summary>
-<div class="msg">Boleh bantu jawab ringkas?
+<summary><span class="chip" data-en="DEBT">HUTANG</span><span class="ttl" data-en="Debt and credit cards">Hutang dan kad kredit</span></summary>
+<div class="msg" data-en="Could you answer a few quick questions?
+1. Your name and state?
+2. What type of debt: credit card, personal loan, car, or something else?
+3. Roughly how much in total, and across how many accounts?
+4. Are any payments overdue, or have you received a demand letter?
+5. When is a good time for a consultant to contact you, and would you prefer WhatsApp or a call?">Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Hutang jenis apa: kad kredit, pinjaman peribadi, kereta, atau lain-lain?
 3. Lebih kurang berapa jumlah semua sekali, dan berapa akaun?
 4. Ada bayaran yang dah tertunggak, atau dah terima surat tuntutan?
 5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?</div>
-<button type="button" class="copy">Salin soalan</button>
-<p class="note"><b>Perhatikan:</b> Client mungkin malu, jadi bertenang dan jangan menilai. Kami bukan pemberi pinjaman. Jangan janji hutang boleh selesai. Jangan sesekali suruh client langsaikan pinjaman rumah awal. Kalau client sebut diugut atau nampak sangat tertekan, maklumkan Khairul serta-merta.</p>
+<button type="button" class="copy" data-en="Copy questions">Salin soalan</button>
+<p class="note" data-en="&lt;b&gt;Note:&lt;/b&gt; The client may feel embarrassed, so stay calm and do not judge. We are not a lender. Do not promise the debt can be solved. Never tell a client to pay off a house loan early. If the client mentions threats or seems very distressed, tell Khairul immediately."><b>Perhatikan:</b> Client mungkin malu, jadi bertenang dan jangan menilai. Kami bukan pemberi pinjaman. Jangan janji hutang boleh selesai. Jangan sesekali suruh client langsaikan pinjaman rumah awal. Kalau client sebut diugut atau nampak sangat tertekan, maklumkan Khairul serta-merta.</p>
 </details><details class="card topic" name="topik">
-<summary><span class="chip">WASIAT</span><span class="ttl">Wasiat, hibah dan pusaka</span></summary>
-<div class="msg">Boleh bantu jawab ringkas?
+<summary><span class="chip" data-en="WILLS">WASIAT</span><span class="ttl" data-en="Wills, hibah and estate matters">Wasiat, hibah dan pusaka</span></summary>
+<div class="msg" data-en="Could you answer a few quick questions?
+1. Your name and state?
+2. Is this for your own arrangements, or for a family member who has passed away?
+3. Do you already have a will or hibah?
+4. What assets are involved: house, land, ASB, takaful, or something else?
+5. When is a good time for a consultant to contact you, and would you prefer WhatsApp or a call?">Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Ini untuk perancangan diri sendiri, atau urusan ahli keluarga yang dah meninggal dunia?
 3. Dah ada wasiat atau hibah sekarang?
 4. Jenis harta yang terlibat: rumah, tanah, ASB, takaful, atau lain-lain?
 5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?</div>
-<button type="button" class="copy">Salin soalan</button>
-<p class="note"><b>Perhatikan:</b> Kalau melibatkan kematian, ucap takziah dulu sebelum bertanya. Jangan jawab soalan hukum atau undang-undang. Diuruskan melalui pihak yang berlesen atau berdaftar.</p>
+<button type="button" class="copy" data-en="Copy questions">Salin soalan</button>
+<p class="note" data-en="&lt;b&gt;Note:&lt;/b&gt; If a death is involved, offer condolences before asking anything. Do not answer religious or legal questions. Handled through licensed or registered parties."><b>Perhatikan:</b> Kalau melibatkan kematian, ucap takziah dulu sebelum bertanya. Jangan jawab soalan hukum atau undang-undang. Diuruskan melalui pihak yang berlesen atau berdaftar.</p>
 </details><details class="card topic" name="topik">
-<summary><span class="chip">PENDIDIKAN</span><span class="ttl">Kelas, webinar dan ebook</span></summary>
-<div class="msg">Boleh bantu jawab ringkas?
+<summary><span class="chip" data-en="EDUCATION">PENDIDIKAN</span><span class="ttl" data-en="Classes, webinars and ebooks">Kelas, webinar dan ebook</span></summary>
+<div class="msg" data-en="Could you answer a few quick questions?
+1. Your name and state?
+2. Are you interested in a class, a webinar, or an ebook?
+3. Is it for yourself, or for a company or organisation?
+4. If for an organisation: its name, estimated participants and planned date?">Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Anda berminat dengan kelas, webinar atau ebook?
 3. Untuk diri sendiri, atau untuk syarikat dan organisasi?
 4. Kalau untuk organisasi: nama organisasi, anggaran peserta dan tarikh yang dirancang?</div>
-<button type="button" class="copy">Salin soalan</button>
-<p class="note"><b>Perhatikan:</b> Ebook dan panduan boleh dibeli di khairulkhalis.com. Tarikh kelas dan webinar, semak dengan Khairul dulu sebelum beritahu.</p>
+<button type="button" class="copy" data-en="Copy questions">Salin soalan</button>
+<p class="note" data-en="&lt;b&gt;Note:&lt;/b&gt; Ebooks and guides are sold at khairulkhalis.com. Check class and webinar dates with Khairul before telling the client."><b>Perhatikan:</b> Ebook dan panduan boleh dibeli di khairulkhalis.com. Tarikh kelas dan webinar, semak dengan Khairul dulu sebelum beritahu.</p>
 </details><details class="card topic" name="topik">
-<summary><span class="chip">KERJAYA</span><span class="ttl">Kerjaya perunding</span></summary>
-<div class="msg">Boleh bantu jawab ringkas?
+<summary><span class="chip" data-en="CAREER">KERJAYA</span><span class="ttl" data-en="Consultant career">Kerjaya perunding</span></summary>
+<div class="msg" data-en="Could you answer a few quick questions?
+1. Your name and state?
+2. What field do you work in now?
+3. Are you interested full time or part time?
+4. Do you already have a licence, or have you taken the FIMM exam?
+5. Can you attend a briefing online or in person?">Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Sekarang bekerja dalam bidang apa?
 3. Berminat secara sepenuh masa atau sambilan?
 4. Dah ada lesen atau pernah ambil peperiksaan FIMM?
 5. Boleh hadir sesi taklimat secara online atau bersemuka?</div>
-<button type="button" class="copy">Salin soalan</button>
-<p class="note"><b>Perhatikan:</b> Sentiasa beritahu yang kerjaya ni berasaskan komisen, dan perlu lulus peperiksaan serta berdaftar dengan FIMM. Jangan sebut anggaran pendapatan atau kisah orang lain yang berjaya.</p>
+<button type="button" class="copy" data-en="Copy questions">Salin soalan</button>
+<p class="note" data-en="&lt;b&gt;Note:&lt;/b&gt; Always say this career is commission-based and requires passing an exam and registering with FIMM. Do not mention estimated income or other people&amp;#x27;s success stories."><b>Perhatikan:</b> Sentiasa beritahu yang kerjaya ni berasaskan komisen, dan perlu lulus peperiksaan serta berdaftar dengan FIMM. Jangan sebut anggaran pendapatan atau kisah orang lain yang berjaya.</p>
 </details><details class="card topic" name="topik">
-<summary><span class="chip">BUKA AKAUN</span><span class="ttl">Bantuan buka akaun</span></summary>
-<p class="note">Borang Hubungi, topik Bantuan buka akaun</p><div class="msg">Boleh bantu jawab ringkas?
+<summary><span class="chip" data-en="OPEN ACCOUNT">BUKA AKAUN</span><span class="ttl" data-en="Help opening an account">Bantuan buka akaun</span></summary>
+<p class="note" data-en="Contact form, topic Help opening an account">Borang Hubungi, topik Bantuan buka akaun</p><div class="msg" data-en="Could you answer a few quick questions?
+1. Your name and state?
+2. Do you want to open a unit trust, PRS, or joint account?
+3. Have you spoken to one of our consultants before? Who?
+4. Which step are you stuck on? You can send a screenshot, but cover personal details first.">Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Nak buka akaun unit trust, PRS, atau akaun bersama?
 3. Dah berbual dengan perunding kami sebelum ni? Dengan siapa?
 4. Tersangkut di langkah mana? Boleh hantar screenshot, tapi tutup maklumat peribadi dulu.</div>
-<button type="button" class="copy">Salin soalan</button>
-<p class="note"><b>Perhatikan:</b> Kalau belum berbual dengan perunding, aturkan perbualan dulu. Hantar panduan yang Khairul dah luluskan sahaja. Jangan minta kata laluan atau OTP.</p>
+<button type="button" class="copy" data-en="Copy questions">Salin soalan</button>
+<p class="note" data-en="&lt;b&gt;Note:&lt;/b&gt; If they have not spoken to a consultant, arrange that first. Only send guides Khairul has approved. Never ask for passwords or OTPs."><b>Perhatikan:</b> Kalau belum berbual dengan perunding, aturkan perbualan dulu. Hantar panduan yang Khairul dah luluskan sahaja. Jangan minta kata laluan atau OTP.</p>
 </details>
 </div>
 
 <div class="panel" id="soalan" role="tabpanel">
-<h2>Soalan susah</h2>
-<p class="sub">Salin jawapan bila client tanya soalan ni.</p>
-<input id="search" type="search" placeholder="Cari: return, caj, rebat..." aria-label="Cari soalan" autocomplete="off">
-<div class="qa" data-s="&quot;berapa return setahun?&quot; pulangan pelaburan berubah-ubah dan tidak dijamin, jadi saya tak boleh bagi angka. perunding kami boleh tunjuk prestasi lalu dana berbanding penanda arasnya, dan terangkan risikonya sekali. "><section class="card"><h3>&quot;Berapa return setahun?&quot;</h3><div class="msg">Pulangan pelaburan berubah-ubah dan tidak dijamin, jadi saya tak boleh bagi angka. Perunding kami boleh tunjuk prestasi lalu dana berbanding penanda arasnya, dan terangkan risikonya sekali.</div><button type="button" class="copy">Salin</button></section></div><div class="qa" data-s="&quot;kat website tulis 8% atau 10%, betul ke dapat?&quot; itu ilustrasi andaian untuk tunjuk konsep sahaja, bukan unjuran pulangan. pulangan sebenar boleh berbeza dan tidak dijamin. "><section class="card"><h3>&quot;Kat website tulis 8% atau 10%, betul ke dapat?&quot;</h3><div class="msg">Itu ilustrasi andaian untuk tunjuk konsep sahaja, bukan unjuran pulangan. Pulangan sebenar boleh berbeza dan tidak dijamin.</div><button type="button" class="copy">Salin</button></section></div><div class="qa" data-s="&quot;dana mana paling bagus?&quot; atau &quot;saya patut pilih yang mana?&quot; pilihan dana bergantung pada matlamat dan profil risiko anda, jadi saya tak boleh cadangkan terus dalam chat. perunding kami akan bantu buat penilaian dulu. boleh saya aturkan masa? "><section class="card"><h3>&quot;Dana mana paling bagus?&quot; atau &quot;Saya patut pilih yang mana?&quot;</h3><div class="msg">Pilihan dana bergantung pada matlamat dan profil risiko anda, jadi saya tak boleh cadangkan terus dalam chat. Perunding kami akan bantu buat penilaian dulu. Boleh saya aturkan masa?</div><button type="button" class="copy">Salin</button></section></div><div class="qa" data-s="&quot;selamat ke melabur ni?&quot; pelaburan memang ada risiko, dan nilainya boleh naik dan turun. perunding akan terangkan risikonya sebelum anda buat keputusan. anda juga boleh semak pendaftaran perunding kami di website fimm. "><section class="card"><h3>&quot;Selamat ke melabur ni?&quot;</h3><div class="msg">Pelaburan memang ada risiko, dan nilainya boleh naik dan turun. Perunding akan terangkan risikonya sebelum anda buat keputusan. Anda juga boleh semak pendaftaran perunding kami di website FIMM.</div><button type="button" class="copy">Salin</button></section></div><div class="qa" data-s="&quot;sekarang masa sesuai ke nak masuk?&quot; saya tak boleh ramal pasaran. perunding boleh terangkan cara melabur secara berkala dan apa yang sesuai dengan keadaan anda. "><section class="card"><h3>&quot;Sekarang masa sesuai ke nak masuk?&quot;</h3><div class="msg">Saya tak boleh ramal pasaran. Perunding boleh terangkan cara melabur secara berkala dan apa yang sesuai dengan keadaan anda.</div><button type="button" class="copy">Salin</button></section></div><div class="qa" data-s="&quot;boleh labur kurang dari rm100?&quot; minimum pelaburan bulanan dengan kami ialah rm100. kalau nak, perunding boleh terangkan cara nak mula. "><section class="card"><h3>&quot;Boleh labur kurang dari RM100?&quot;</h3><div class="msg">Minimum pelaburan bulanan dengan kami ialah RM100. Kalau nak, perunding boleh terangkan cara nak mula.</div><button type="button" class="copy">Salin</button></section></div><div class="qa" data-s="&quot;boleh guna duit kw$p atau akaun 1?&quot; soalan ni saya serahkan kepada perunding kami, ya. boleh saya aturkan masa untuk berbual? jangan terangkan apa-apa tentang topik ni dalam chat. dalam chat, sentiasa tulis kw$p dan €pf."><section class="card"><h3>&quot;Boleh guna duit KW$P atau Akaun 1?&quot;</h3><div class="msg">Soalan ni saya serahkan kepada perunding kami, ya. Boleh saya aturkan masa untuk berbual?</div><p class="note">Jangan terangkan apa-apa tentang topik ni dalam chat. Dalam chat, sentiasa tulis KW$P dan €PF.</p><button type="button" class="copy">Salin</button></section></div><div class="qa" data-s="&quot;caj dia berapa?&quot; caj berbeza mengikut dana dan dinyatakan dalam prospektus serta product highlights sheet. perunding akan terangkan untuk dana yang berkaitan. "><section class="card"><h3>&quot;Caj dia berapa?&quot;</h3><div class="msg">Caj berbeza mengikut dana dan dinyatakan dalam prospektus serta Product Highlights Sheet. Perunding akan terangkan untuk dana yang berkaitan.</div><button type="button" class="copy">Salin</button></section></div><div class="qa" data-s="&quot;boleh bagi diskaun atau rebat?&quot; maaf, peraturan fimm tak benarkan perunding beri rebat atau diskaun tunai kepada pelabur. "><section class="card"><h3>&quot;Boleh bagi diskaun atau rebat?&quot;</h3><div class="msg">Maaf, peraturan FIMM tak benarkan perunding beri rebat atau diskaun tunai kepada pelabur.</div><button type="button" class="copy">Salin</button></section></div><div class="qa" data-s="&quot;patut ke saya langsaikan loan rumah dulu?&quot; yang ini perlu tengok keadaan kewangan anda secara keseluruhan. boleh saya aturkan perbualan dengan perunding kami? jangan sesekali galakkan client langsaikan pinjaman rumah awal."><section class="card"><h3>&quot;Patut ke saya langsaikan loan rumah dulu?&quot;</h3><div class="msg">Yang ini perlu tengok keadaan kewangan anda secara keseluruhan. Boleh saya aturkan perbualan dengan perunding kami?</div><p class="note">Jangan sesekali galakkan client langsaikan pinjaman rumah awal.</p><button type="button" class="copy">Salin</button></section></div><div class="qa" data-s="&quot;ini company betul ke? bukan scam?&quot; soalan yang baik. maxwealth consultancy berdaftar dengan ssm (ct0171343-h). perunding kami, khairul khalis, berdaftar dengan fimm (f01065736), dan anda boleh semak terus di website fimm. "><section class="card"><h3>&quot;Ini company betul ke? Bukan scam?&quot;</h3><div class="msg">Soalan yang baik. MaxWealth Consultancy berdaftar dengan SSM (CT0171343-H). Perunding kami, Khairul Khalis, berdaftar dengan FIMM (F01065736), dan anda boleh semak terus di website FIMM.</div><button type="button" class="copy">Salin</button></section></div><div class="qa" data-s="&quot;saya nak keluarkan duit&quot; atau &quot;saya nak tutup akaun.&quot; baik, saya maklumkan kepada perunding yang uruskan akaun anda supaya prosesnya dibantu. jangan pujuk client supaya kekal. serahkan pada hari yang sama."><section class="card"><h3>&quot;Saya nak keluarkan duit&quot; atau &quot;Saya nak tutup akaun.&quot;</h3><div class="msg">Baik, saya maklumkan kepada perunding yang uruskan akaun anda supaya prosesnya dibantu.</div><p class="note">Jangan pujuk client supaya kekal. Serahkan pada hari yang sama.</p><button type="button" class="copy">Salin</button></section></div>
-<div class="empty" id="qaEmpty"><section class="card"><h3>Tak jumpa soalan tu. Jawab macam ni:</h3><div class="msg">Saya semak dengan perunding kami dan maklumkan semula, ya.</div><button type="button" class="copy">Salin</button></section></div>
+<h2 data-en="Hard questions">Soalan susah</h2>
+<p class="sub" data-en="Copy the answer when a client asks one of these.">Salin jawapan bila client tanya soalan ni.</p>
+<input id="search" type="search" placeholder="Cari: return, caj, rebat..." data-ms-ph="Cari: return, caj, rebat..." data-en-ph="Search: return, charges, rebate..." aria-label="Search" autocomplete="off">
+<div class="qa" data-s="&quot;berapa return setahun?&quot; pulangan pelaburan berubah-ubah dan tidak dijamin, jadi saya tak boleh bagi angka. perunding kami boleh tunjuk prestasi lalu dana berbanding penanda arasnya, dan terangkan risikonya sekali.  &quot;what return will i get each year?&quot; investment returns vary and are not guaranteed, so i cannot give a figure. our consultant can show the fund&#x27;s past performance against its benchmark, and explain the risks too. "><section class="card"><h3 data-en="&amp;quot;What return will I get each year?&amp;quot;">&quot;Berapa return setahun?&quot;</h3><div class="msg" data-en="Investment returns vary and are not guaranteed, so I cannot give a figure. Our consultant can show the fund&amp;#x27;s past performance against its benchmark, and explain the risks too.">Pulangan pelaburan berubah-ubah dan tidak dijamin, jadi saya tak boleh bagi angka. Perunding kami boleh tunjuk prestasi lalu dana berbanding penanda arasnya, dan terangkan risikonya sekali.</div><button type="button" class="copy" data-en="Copy">Salin</button></section></div><div class="qa" data-s="&quot;kat website tulis 8% atau 10%, betul ke dapat?&quot; itu ilustrasi andaian untuk tunjuk konsep sahaja, bukan unjuran pulangan. pulangan sebenar boleh berbeza dan tidak dijamin.  &quot;the website says 8% or 10%, will i get that?&quot; that is an illustrative assumption to show the concept, not a projected return. actual returns can differ and are not guaranteed. "><section class="card"><h3 data-en="&amp;quot;The website says 8% or 10%, will I get that?&amp;quot;">&quot;Kat website tulis 8% atau 10%, betul ke dapat?&quot;</h3><div class="msg" data-en="That is an illustrative assumption to show the concept, not a projected return. Actual returns can differ and are not guaranteed.">Itu ilustrasi andaian untuk tunjuk konsep sahaja, bukan unjuran pulangan. Pulangan sebenar boleh berbeza dan tidak dijamin.</div><button type="button" class="copy" data-en="Copy">Salin</button></section></div><div class="qa" data-s="&quot;dana mana paling bagus?&quot; atau &quot;saya patut pilih yang mana?&quot; pilihan dana bergantung pada matlamat dan profil risiko anda, jadi saya tak boleh cadangkan terus dalam chat. perunding kami akan bantu buat penilaian dulu. boleh saya aturkan masa?  &quot;which fund is the best?&quot; or &quot;which one should i choose?&quot; the right fund depends on your goals and risk profile, so i cannot recommend one directly in this chat. our consultant will do an assessment first. may i arrange a time? "><section class="card"><h3 data-en="&amp;quot;Which fund is the best?&amp;quot; or &amp;quot;Which one should I choose?&amp;quot;">&quot;Dana mana paling bagus?&quot; atau &quot;Saya patut pilih yang mana?&quot;</h3><div class="msg" data-en="The right fund depends on your goals and risk profile, so I cannot recommend one directly in this chat. Our consultant will do an assessment first. May I arrange a time?">Pilihan dana bergantung pada matlamat dan profil risiko anda, jadi saya tak boleh cadangkan terus dalam chat. Perunding kami akan bantu buat penilaian dulu. Boleh saya aturkan masa?</div><button type="button" class="copy" data-en="Copy">Salin</button></section></div><div class="qa" data-s="&quot;selamat ke melabur ni?&quot; pelaburan memang ada risiko, dan nilainya boleh naik dan turun. perunding akan terangkan risikonya sebelum anda buat keputusan. anda juga boleh semak pendaftaran perunding kami di website fimm.  &quot;is investing safe?&quot; investing does carry risk, and values can go up and down. the consultant will explain the risks before you decide. you can also check our consultant&#x27;s registration on the fimm website. "><section class="card"><h3 data-en="&amp;quot;Is investing safe?&amp;quot;">&quot;Selamat ke melabur ni?&quot;</h3><div class="msg" data-en="Investing does carry risk, and values can go up and down. The consultant will explain the risks before you decide. You can also check our consultant&amp;#x27;s registration on the FIMM website.">Pelaburan memang ada risiko, dan nilainya boleh naik dan turun. Perunding akan terangkan risikonya sebelum anda buat keputusan. Anda juga boleh semak pendaftaran perunding kami di website FIMM.</div><button type="button" class="copy" data-en="Copy">Salin</button></section></div><div class="qa" data-s="&quot;sekarang masa sesuai ke nak masuk?&quot; saya tak boleh ramal pasaran. perunding boleh terangkan cara melabur secara berkala dan apa yang sesuai dengan keadaan anda.  &quot;is now a good time to get in?&quot; i cannot predict the market. the consultant can explain regular investing and what fits your situation. "><section class="card"><h3 data-en="&amp;quot;Is now a good time to get in?&amp;quot;">&quot;Sekarang masa sesuai ke nak masuk?&quot;</h3><div class="msg" data-en="I cannot predict the market. The consultant can explain regular investing and what fits your situation.">Saya tak boleh ramal pasaran. Perunding boleh terangkan cara melabur secara berkala dan apa yang sesuai dengan keadaan anda.</div><button type="button" class="copy" data-en="Copy">Salin</button></section></div><div class="qa" data-s="&quot;boleh labur kurang dari rm100?&quot; minimum pelaburan bulanan dengan kami ialah rm100. kalau nak, perunding boleh terangkan cara nak mula.  &quot;can i invest less than rm100?&quot; the minimum monthly investment with us is rm100. if you like, the consultant can explain how to get started. "><section class="card"><h3 data-en="&amp;quot;Can I invest less than RM100?&amp;quot;">&quot;Boleh labur kurang dari RM100?&quot;</h3><div class="msg" data-en="The minimum monthly investment with us is RM100. If you like, the consultant can explain how to get started.">Minimum pelaburan bulanan dengan kami ialah RM100. Kalau nak, perunding boleh terangkan cara nak mula.</div><button type="button" class="copy" data-en="Copy">Salin</button></section></div><div class="qa" data-s="&quot;boleh guna duit kw$p atau akaun 1?&quot; soalan ni saya serahkan kepada perunding kami, ya. boleh saya aturkan masa untuk berbual? jangan terangkan apa-apa tentang topik ni dalam chat. dalam chat, sentiasa tulis kw$p dan €pf. &quot;can i use my kw$p or account 1 money?&quot; i will pass this question to our consultant. may i arrange a time for you to talk? do not explain anything about this topic in the chat. in chat, always write kw$p and €pf."><section class="card"><h3 data-en="&amp;quot;Can I use my KW$P or Account 1 money?&amp;quot;">&quot;Boleh guna duit KW$P atau Akaun 1?&quot;</h3><div class="msg" data-en="I will pass this question to our consultant. May I arrange a time for you to talk?">Soalan ni saya serahkan kepada perunding kami, ya. Boleh saya aturkan masa untuk berbual?</div><p class="note" data-en="Do not explain anything about this topic in the chat. In chat, always write KW$P and €PF.">Jangan terangkan apa-apa tentang topik ni dalam chat. Dalam chat, sentiasa tulis KW$P dan €PF.</p><button type="button" class="copy" data-en="Copy">Salin</button></section></div><div class="qa" data-s="&quot;caj dia berapa?&quot; caj berbeza mengikut dana dan dinyatakan dalam prospektus serta product highlights sheet. perunding akan terangkan untuk dana yang berkaitan.  &quot;how much are the charges?&quot; charges differ by fund and are stated in the prospectus and product highlights sheet. the consultant will explain them for the relevant fund. "><section class="card"><h3 data-en="&amp;quot;How much are the charges?&amp;quot;">&quot;Caj dia berapa?&quot;</h3><div class="msg" data-en="Charges differ by fund and are stated in the prospectus and Product Highlights Sheet. The consultant will explain them for the relevant fund.">Caj berbeza mengikut dana dan dinyatakan dalam prospektus serta Product Highlights Sheet. Perunding akan terangkan untuk dana yang berkaitan.</div><button type="button" class="copy" data-en="Copy">Salin</button></section></div><div class="qa" data-s="&quot;boleh bagi diskaun atau rebat?&quot; maaf, peraturan fimm tak benarkan perunding beri rebat atau diskaun tunai kepada pelabur.  &quot;can you give me a discount or rebate?&quot; sorry, fimm rules do not allow consultants to give investors cash rebates or discounts. "><section class="card"><h3 data-en="&amp;quot;Can you give me a discount or rebate?&amp;quot;">&quot;Boleh bagi diskaun atau rebat?&quot;</h3><div class="msg" data-en="Sorry, FIMM rules do not allow consultants to give investors cash rebates or discounts.">Maaf, peraturan FIMM tak benarkan perunding beri rebat atau diskaun tunai kepada pelabur.</div><button type="button" class="copy" data-en="Copy">Salin</button></section></div><div class="qa" data-s="&quot;patut ke saya langsaikan loan rumah dulu?&quot; yang ini perlu tengok keadaan kewangan anda secara keseluruhan. boleh saya aturkan perbualan dengan perunding kami? jangan sesekali galakkan client langsaikan pinjaman rumah awal. &quot;should i pay off my house loan first?&quot; that depends on your overall financial position. may i arrange a chat with our consultant? never encourage a client to pay off a house loan early."><section class="card"><h3 data-en="&amp;quot;Should I pay off my house loan first?&amp;quot;">&quot;Patut ke saya langsaikan loan rumah dulu?&quot;</h3><div class="msg" data-en="That depends on your overall financial position. May I arrange a chat with our consultant?">Yang ini perlu tengok keadaan kewangan anda secara keseluruhan. Boleh saya aturkan perbualan dengan perunding kami?</div><p class="note" data-en="Never encourage a client to pay off a house loan early.">Jangan sesekali galakkan client langsaikan pinjaman rumah awal.</p><button type="button" class="copy" data-en="Copy">Salin</button></section></div><div class="qa" data-s="&quot;ini company betul ke? bukan scam?&quot; soalan yang baik. maxwealth consultancy berdaftar dengan ssm (ct0171343-h). perunding kami, khairul khalis, berdaftar dengan fimm (f01065736), dan anda boleh semak terus di website fimm.  &quot;is this a real company? not a scam?&quot; good question. maxwealth consultancy is registered with ssm (ct0171343-h). our consultant, khairul khalis, is registered with fimm (f01065736), and you can check directly on the fimm website. "><section class="card"><h3 data-en="&amp;quot;Is this a real company? Not a scam?&amp;quot;">&quot;Ini company betul ke? Bukan scam?&quot;</h3><div class="msg" data-en="Good question. MaxWealth Consultancy is registered with SSM (CT0171343-H). Our consultant, Khairul Khalis, is registered with FIMM (F01065736), and you can check directly on the FIMM website.">Soalan yang baik. MaxWealth Consultancy berdaftar dengan SSM (CT0171343-H). Perunding kami, Khairul Khalis, berdaftar dengan FIMM (F01065736), dan anda boleh semak terus di website FIMM.</div><button type="button" class="copy" data-en="Copy">Salin</button></section></div><div class="qa" data-s="&quot;saya nak keluarkan duit&quot; atau &quot;saya nak tutup akaun.&quot; baik, saya maklumkan kepada perunding yang uruskan akaun anda supaya prosesnya dibantu. jangan pujuk client supaya kekal. serahkan pada hari yang sama. &quot;i want to withdraw my money&quot; or &quot;i want to close my account.&quot; noted. i will let the consultant managing your account know so the process can be arranged. do not try to persuade the client to stay. hand over the same day."><section class="card"><h3 data-en="&amp;quot;I want to withdraw my money&amp;quot; or &amp;quot;I want to close my account.&amp;quot;">&quot;Saya nak keluarkan duit&quot; atau &quot;Saya nak tutup akaun.&quot;</h3><div class="msg" data-en="Noted. I will let the consultant managing your account know so the process can be arranged.">Baik, saya maklumkan kepada perunding yang uruskan akaun anda supaya prosesnya dibantu.</div><p class="note" data-en="Do not try to persuade the client to stay. Hand over the same day.">Jangan pujuk client supaya kekal. Serahkan pada hari yang sama.</p><button type="button" class="copy" data-en="Copy">Salin</button></section></div>
+<div class="empty" id="qaEmpty"><section class="card"><h3 data-en="Question not found. Reply like this:">Tak jumpa soalan tu. Jawab macam ni:</h3><div class="msg" data-en="I will check with our consultant and get back to you.">Saya semak dengan perunding kami dan maklumkan semula, ya.</div><button type="button" class="copy" data-en="Copy">Salin</button></section></div>
 </div>
 
 <div class="panel" id="serah" role="tabpanel">
-<h2>Serah lead</h2>
-<p class="sub">Isi, salin, dan hantar kepada Khairul. Bila tutup page ni, semua hilang.</p>
+<h2 data-en="Hand over lead">Serah lead</h2>
+<p class="sub" data-en="Fill in, copy and send to Khairul. Everything is gone when you close this page.">Isi, salin, dan hantar kepada Khairul. Bila tutup page ni, semua hilang.</p>
 <form id="lead" class="card" autocomplete="off">
-<label>Topik<select name="topik"><option>Pelaburan unit trust</option><option>PRS dan pelepasan cukai</option><option>Pelaburan untuk syarikat</option><option>Semakan portfolio</option><option>Takaful dan insurans</option><option>Hutang dan kad kredit</option><option>Wasiat, hibah dan pusaka</option><option>Kelas, webinar dan ebook</option><option>Kerjaya perunding</option><option>Bantuan buka akaun</option><option>Lain-lain</option></select></label>
-<label>Nama<input name="nama" autocomplete="off"></label>
-<label>No. WhatsApp<input name="wa" inputmode="tel" autocomplete="off"></label>
-<label>Negeri<input name="negeri" autocomplete="off"></label>
-<label>Bahasa<select name="bahasa"><option>BM</option><option>English</option></select></label>
-<label>Jawapan client<textarea name="jawapan"></textarea></label>
-<label>Soalan yang client tanya<textarea name="soalan"></textarea></label>
-<label>Masa sesuai dihubungi<input name="masa" autocomplete="off"></label>
-<label>Tahap<select name="tahap"><option>Biasa</option><option>Segera</option></select></label>
-<h3>Untuk mesej client</h3>
-<label>Nama perunding<input name="perunding" autocomplete="off"></label>
-<label>Hari dan masa<input name="jadual" autocomplete="off"></label>
-<button type="button" class="ghost" id="clear">Kosongkan borang</button>
+<label><span data-en="Topic">Topik</span><select name="topik"><option data-en="Unit trust investing">Pelaburan unit trust</option><option data-en="PRS and tax relief">PRS dan pelepasan cukai</option><option data-en="Investing for a company">Pelaburan untuk syarikat</option><option data-en="Portfolio review">Semakan portfolio</option><option data-en="Takaful and insurance">Takaful dan insurans</option><option data-en="Debt and credit cards">Hutang dan kad kredit</option><option data-en="Wills, hibah and estate matters">Wasiat, hibah dan pusaka</option><option data-en="Classes, webinars and ebooks">Kelas, webinar dan ebook</option><option data-en="Consultant career">Kerjaya perunding</option><option data-en="Help opening an account">Bantuan buka akaun</option><option data-en="Other">Lain-lain</option></select></label>
+<label><span data-en="Name">Nama</span><input name="nama" autocomplete="off"></label>
+<label><span data-en="WhatsApp No.">No. WhatsApp</span><input name="wa" inputmode="tel" autocomplete="off"></label>
+<label><span data-en="State">Negeri</span><input name="negeri" autocomplete="off"></label>
+<label><span data-en="Language">Bahasa</span><select name="bahasa"><option>BM</option><option>English</option></select></label>
+<label><span data-en="Client answers">Jawapan client</span><textarea name="jawapan"></textarea></label>
+<label><span data-en="Client questions">Soalan yang client tanya</span><textarea name="soalan"></textarea></label>
+<label><span data-en="Best time to contact">Masa sesuai dihubungi</span><input name="masa" autocomplete="off"></label>
+<label><span data-en="Priority">Tahap</span><select name="tahap"><option data-en="Normal">Biasa</option><option data-en="Urgent">Segera</option></select></label>
+<h3 data-en="For the client message">Untuk mesej client</h3>
+<label><span data-en="Consultant name">Nama perunding</span><input name="perunding" autocomplete="off"></label>
+<label><span data-en="Day and time">Hari dan masa</span><input name="jadual" autocomplete="off"></label>
+<button type="button" class="ghost" id="clear" data-en="Clear form">Kosongkan borang</button>
 </form>
-<section class="card"><h3>Hantar kepada Khairul</h3><div class="msg" id="leadOut"></div>
-<button type="button" class="copy">Salin</button>
-<a class="ghost" id="waLink" href="https://wa.me/" target="_blank" rel="noopener noreferrer">Buka WhatsApp</a></section>
-<section class="card"><h3>Lepas serah, beritahu client</h3><div class="msg" id="clientOut"></div>
-<button type="button" class="copy">Salin</button></section>
-<template id="closeTpl">Terima kasih [nama], saya dah catat semua. [Nama perunding] akan hubungi anda pada [hari dan masa]. Sebelum sebarang keputusan dibuat, perunding akan terangkan risiko dan dokumen yang berkaitan.</template>
+<section class="card"><h3 data-en="Send to Khairul">Hantar kepada Khairul</h3><div class="msg" id="leadOut"></div>
+<button type="button" class="copy" data-en="Copy">Salin</button>
+<a class="ghost" id="waLink" href="https://wa.me/" target="_blank" rel="noopener noreferrer" data-en="Open WhatsApp">Buka WhatsApp</a></section>
+<section class="card"><h3 data-en="After handing over, tell the client">Lepas serah, beritahu client</h3><div class="msg" id="clientOut"></div>
+<button type="button" class="copy" data-en="Copy">Salin</button></section>
+<template id="closeMs">Terima kasih [nama], saya dah catat semua. [Nama perunding] akan hubungi anda pada [hari dan masa]. Sebelum sebarang keputusan dibuat, perunding akan terangkan risiko dan dokumen yang berkaitan.</template><template id="closeEn">Thank you [name], I have noted everything. [Consultant name] will contact you on [day and time]. Before any decision is made, the consultant will explain the risks and the relevant documents.</template>
 </div>
 
 <div class="panel" id="setup" role="tabpanel">
-<h2>Setup WhatsApp</h2>
-<p class="sub">Perlu app WhatsApp Business. Buat sekali je di phone Ika. Nama menu mungkin berbeza sikit ikut versi app.</p>
-<section class="card"><h3>Quick Replies</h3><ol class="steps">
-<li>Buka WhatsApp Business, pergi <b>Settings</b> (iPhone) atau menu <b>⋮</b> (Android).</li>
-<li>Tekan <b>Business tools</b>, lepas tu <b>Quick replies</b>, dan tekan <b>+</b>.</li>
-<li>Salin mesej dan shortcut dari senarai bawah, lepas tu <b>Save</b>.</li>
-<li>Dalam chat, taip <b>/</b> dan pilih shortcut. Tukar [nama] sebelum hantar.</li>
-</ol></section>
-<section class="card"><h3>Greeting message</h3><div class="msg">Hai, terima kasih hubungi MaxWealth Consultancy. Saya Ika, Admin di sini. Saya akan balas secepat mungkin.</div><p class="note">Business tools, Greeting message, hidupkan dan tampal.</p><button type="button" class="copy">Salin</button></section>
-<section class="card"><h3>Away message</h3><div class="msg">Terima kasih hubungi MaxWealth Consultancy. Kami dah terima mesej anda dan akan balas pada waktu kerja berikutnya.</div><p class="note">Business tools, Away message, pilih Outside of business hours. Isi waktu kerja dalam Business profile dulu.</p><button type="button" class="copy">Salin</button></section>
-<section class="card"><h3>Labels</h3><p class="note" style="margin:0 0 9px">Buat label ni dan letak pada setiap chat, sama macam status dalam lead sheet.</p><div class="chips"><span class="chip">Baru</span><span class="chip">Dah Tanya</span><span class="chip">Dah Serah</span><span class="chip">Temujanji</span><span class="chip">Selesai</span><span class="chip">Tak Jadi</span></div></section>
-<h4>Senarai Quick Replies (29)</h4>
+<h2 data-en="WhatsApp setup">Setup WhatsApp</h2>
+<p class="sub" data-en="Needs the WhatsApp Business app. Do this once on Ika&amp;#x27;s phone. Menu names may differ slightly by app version.">Perlu app WhatsApp Business. Buat sekali je di phone Ika. Nama menu mungkin berbeza sikit ikut versi app.</p>
+<section class="card"><h3 data-en="Quick Replies">Quick Replies</h3><ol class="steps">
+<li data-en="Open WhatsApp Business and go to &lt;b&gt;Settings&lt;/b&gt; (iPhone) or the &lt;b&gt;⋮&lt;/b&gt; menu (Android).">Buka WhatsApp Business, pergi <b>Settings</b> (iPhone) atau menu <b>⋮</b> (Android).</li>
+<li data-en="Tap &lt;b&gt;Business tools&lt;/b&gt;, then &lt;b&gt;Quick replies&lt;/b&gt;, then &lt;b&gt;+&lt;/b&gt;.">Tekan <b>Business tools</b>, lepas tu <b>Quick replies</b>, dan tekan <b>+</b>.</li>
+<li data-en="Copy the message and shortcut from the list below, then &lt;b&gt;Save&lt;/b&gt;.">Salin mesej dan shortcut dari senarai bawah, lepas tu <b>Save</b>.</li>
+<li data-en="In a chat, type &lt;b&gt;/&lt;/b&gt; and pick the shortcut. Change [name] before sending.">Dalam chat, taip <b>/</b> dan pilih shortcut. Tukar [nama] sebelum hantar.</li>
+</ol><p class="note" data-en="Each shortcut holds one language only. Set them up in BM, and copy from this page for English-speaking clients.">Satu shortcut hanya untuk satu bahasa. Setup dalam BM, dan untuk client English salin terus dari page ni.</p></section>
+<section class="card"><h3 data-en="Greeting message">Greeting message</h3><div class="msg" data-en="Hi, thank you for contacting MaxWealth Consultancy. I am Ika, the Admin here. I will reply as soon as I can.">Hai, terima kasih hubungi MaxWealth Consultancy. Saya Ika, Admin di sini. Saya akan balas secepat mungkin.</div><p class="note" data-en="Business tools, Greeting message, turn on and paste.">Business tools, Greeting message, hidupkan dan tampal.</p><button type="button" class="copy" data-en="Copy">Salin</button></section>
+<section class="card"><h3 data-en="Away message">Away message</h3><div class="msg" data-en="Thank you for contacting MaxWealth Consultancy. We have received your message and will reply during the next working hours.">Terima kasih hubungi MaxWealth Consultancy. Kami dah terima mesej anda dan akan balas pada waktu kerja berikutnya.</div><p class="note" data-en="Business tools, Away message, choose Outside of business hours. Set working hours in Business profile first.">Business tools, Away message, pilih Outside of business hours. Isi waktu kerja dalam Business profile dulu.</p><button type="button" class="copy" data-en="Copy">Salin</button></section>
+<section class="card"><h3 data-en="Labels">Labels</h3><p class="note" style="margin:0 0 9px" data-en="Create these labels and apply one to each chat, matching the status in the lead sheet.">Buat label ni dan letak pada setiap chat, sama macam status dalam lead sheet.</p><div class="chips"><span class="chip">Baru</span><span class="chip">Dah Tanya</span><span class="chip">Dah Serah</span><span class="chip">Temujanji</span><span class="chip">Selesai</span><span class="chip">Tak Jadi</span></div></section>
+<h4 data-en="Quick Replies list (29)">Senarai Quick Replies (29)</h4>
 <section class="card qr">
-<div class="qrhead"><code>/hai</code><span class="lbl">Pembukaan</span><button type="button" class="copy small" data-v="hai">Salin shortcut</button></div>
-<div class="msg">Hai [nama], terima kasih hubungi MaxWealth Consultancy. Saya Ika, Admin di sini. Saya akan bantu aturkan perbualan dengan perunding yang sesuai. Sebelum tu, boleh saya tanya beberapa soalan ringkas?</div>
-<button type="button" class="copy">Salin mesej</button>
+<div class="qrhead"><code>/hai</code><span class="lbl" data-en="Opening">Pembukaan</span><button type="button" class="copy small" data-v="hai" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="Hi [name], thank you for contacting MaxWealth Consultancy. I am Ika, the Admin here. I will help arrange a chat with the right consultant. May I ask a few quick questions first?">Hai [nama], terima kasih hubungi MaxWealth Consultancy. Saya Ika, Admin di sini. Saya akan bantu aturkan perbualan dengan perunding yang sesuai. Sebelum tu, boleh saya tanya beberapa soalan ringkas?</div>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/menu</code><span class="lbl">Menu topik</span><button type="button" class="copy small" data-v="menu">Salin shortcut</button></div>
-<div class="msg">Hai, terima kasih hubungi MaxWealth Consultancy. Saya Ika, Admin di sini. Boleh saya tahu anda nak bantuan tentang apa?
+<div class="qrhead"><code>/menu</code><span class="lbl" data-en="Topic menu">Menu topik</span><button type="button" class="copy small" data-v="menu" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="Hi, thank you for contacting MaxWealth Consultancy. I am Ika, the Admin here. What would you like help with?
+1. Start investing (unit trusts)
+2. PRS and tax relief
+3. Takaful or insurance
+4. Debt and credit cards
+5. Wills, hibah or estate matters
+6. Review existing investments
+7. Investing for a company
+8. Classes, webinars or ebooks
+9. Consultant career">Hai, terima kasih hubungi MaxWealth Consultancy. Saya Ika, Admin di sini. Boleh saya tahu anda nak bantuan tentang apa?
 1. Mula melabur (unit trust)
 2. PRS dan pelepasan cukai
 3. Takaful atau insurans
@@ -308,182 +422,237 @@ code{font:700 15px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--on)}
 7. Pelaburan untuk syarikat
 8. Kelas, webinar atau ebook
 9. Kerjaya perunding</div>
-<button type="button" class="copy">Salin mesej</button>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/hi</code><span class="lbl">Pembukaan English</span><button type="button" class="copy small" data-v="hi">Salin shortcut</button></div>
-<div class="msg">Hi [name], thank you for contacting MaxWealth Consultancy. I am Ika, the Admin here. I will help arrange a chat with the right consultant. May I ask a few quick questions first?</div>
-<button type="button" class="copy">Salin mesej</button>
+<div class="qrhead"><code>/hi</code><span class="lbl" data-en="English opening">Pembukaan English</span><button type="button" class="copy small" data-v="hi" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="Hi [name], thank you for contacting MaxWealth Consultancy. I am Ika, the Admin here. I will help arrange a chat with the right consultant. May I ask a few quick questions first?">Hi [name], thank you for contacting MaxWealth Consultancy. I am Ika, the Admin here. I will help arrange a chat with the right consultant. May I ask a few quick questions first?</div>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/semak</code><span class="lbl">Kalau tak pasti</span><button type="button" class="copy small" data-v="semak">Salin shortcut</button></div>
-<div class="msg">Saya semak dengan perunding kami dan maklumkan semula, ya.</div>
-<button type="button" class="copy">Salin mesej</button>
+<div class="qrhead"><code>/semak</code><span class="lbl" data-en="If unsure">Kalau tak pasti</span><button type="button" class="copy small" data-v="semak" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="I will check with our consultant and get back to you.">Saya semak dengan perunding kami dan maklumkan semula, ya.</div>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/tutup</code><span class="lbl">Selepas serah lead</span><button type="button" class="copy small" data-v="tutup">Salin shortcut</button></div>
-<div class="msg">Terima kasih [nama], saya dah catat semua. [Nama perunding] akan hubungi anda pada [hari dan masa]. Sebelum sebarang keputusan dibuat, perunding akan terangkan risiko dan dokumen yang berkaitan.</div>
-<button type="button" class="copy">Salin mesej</button>
+<div class="qrhead"><code>/tutup</code><span class="lbl" data-en="After handing over">Selepas serah lead</span><button type="button" class="copy small" data-v="tutup" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="Thank you [name], I have noted everything. [Consultant name] will contact you on [day and time]. Before any decision is made, the consultant will explain the risks and the relevant documents.">Terima kasih [nama], saya dah catat semua. [Nama perunding] akan hubungi anda pada [hari dan masa]. Sebelum sebarang keputusan dibuat, perunding akan terangkan risiko dan dokumen yang berkaitan.</div>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/fu1</code><span class="lbl">Follow-up 1</span><button type="button" class="copy small" data-v="fu1">Salin shortcut</button></div>
-<div class="msg">Hai [nama], saya nak pastikan mesej saya sampai. Kalau masih berminat, boleh jawab bila-bila masa yang sesuai ya.</div>
-<button type="button" class="copy">Salin mesej</button>
+<div class="qrhead"><code>/fu1</code><span class="lbl" data-en="Follow-up 1">Follow-up 1</span><button type="button" class="copy small" data-v="fu1" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="Hi [name], just making sure my message reached you. If you are still interested, feel free to reply whenever suits you.">Hai [nama], saya nak pastikan mesej saya sampai. Kalau masih berminat, boleh jawab bila-bila masa yang sesuai ya.</div>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/fu2</code><span class="lbl">Follow-up 2</span><button type="button" class="copy small" data-v="fu2">Salin shortcut</button></div>
-<div class="msg">Hai [nama], saya tak ganggu lagi selepas ni. Kalau perlukan bantuan nanti, boleh WhatsApp saya terus. Terima kasih.</div>
-<button type="button" class="copy">Salin mesej</button>
+<div class="qrhead"><code>/fu2</code><span class="lbl" data-en="Follow-up 2">Follow-up 2</span><button type="button" class="copy small" data-v="fu2" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="Hi [name], I will not disturb you after this. If you need help later, just WhatsApp me. Thank you.">Hai [nama], saya tak ganggu lagi selepas ni. Kalau perlukan bantuan nanti, boleh WhatsApp saya terus. Terima kasih.</div>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/ut</code><span class="lbl">Pelaburan unit trust</span><button type="button" class="copy small" data-v="ut">Salin shortcut</button></div>
-<div class="msg">Boleh bantu jawab ringkas?
+<div class="qrhead"><code>/ut</code><span class="lbl" data-en="Unit trust investing">Pelaburan unit trust</span><button type="button" class="copy small" data-v="ut" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="Could you answer a few quick questions?
+1. Your name and state?
+2. Your main goal: retirement, children&amp;#x27;s education, growing your assets, or something else?
+3. Have you invested in unit trusts before?
+4. Would you start with a lump sum or monthly? An estimate is fine, and it is fine to say you are not sure yet.
+5. When is a good time for a consultant to contact you, and would you prefer WhatsApp or a call?">Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Matlamat utama anda: persaraan, pendidikan anak, tambah aset, atau lain-lain?
 3. Pernah melabur dalam unit trust sebelum ni?
 4. Nak mula secara sekali masuk atau bulanan? Anggaran pun tak apa, kalau belum pasti boleh cakap belum pasti.
 5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?</div>
-<button type="button" class="copy">Salin mesej</button>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/prs</code><span class="lbl">PRS dan pelepasan cukai</span><button type="button" class="copy small" data-v="prs">Salin shortcut</button></div>
-<div class="msg">Boleh bantu jawab ringkas?
+<div class="qrhead"><code>/prs</code><span class="lbl" data-en="PRS and tax relief">PRS dan pelepasan cukai</span><button type="button" class="copy small" data-v="prs" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="Could you answer a few quick questions?
+1. Your name and state?
+2. Your main purpose: tax relief, retirement, or both?
+3. May I know your age?
+4. Do you already have a PRS account?
+5. When is a good time for a consultant to contact you, and would you prefer WhatsApp or a call?">Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Tujuan utama: pelepasan cukai, persaraan, atau dua-dua?
 3. Boleh saya tahu umur anda?
 4. Dah ada akaun PRS sekarang?
 5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?</div>
-<button type="button" class="copy">Salin mesej</button>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/korporat</code><span class="lbl">Pelaburan untuk syarikat</span><button type="button" class="copy small" data-v="korporat">Salin shortcut</button></div>
-<div class="msg">Boleh bantu jawab ringkas?
+<div class="qrhead"><code>/korporat</code><span class="lbl" data-en="Investing for a company">Pelaburan untuk syarikat</span><button type="button" class="copy small" data-v="korporat" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="Could you answer a few quick questions?
+1. Company name, and your name and position?
+2. Roughly how much surplus cash would be invested? A range is fine.
+3. How long will the company not need this money?
+4. Does the company need Shariah-compliant options?
+5. When is a good time for a consultant to contact you, and would you prefer WhatsApp or a call?">Boleh bantu jawab ringkas?
 1. Nama syarikat, dan nama serta jawatan anda?
 2. Anggaran lebihan tunai yang nak dilaburkan? Julat pun tak apa.
 3. Berapa lama wang tu tak diperlukan oleh syarikat?
 4. Syarikat ada keperluan patuh Syariah?
 5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?</div>
-<button type="button" class="copy">Salin mesej</button>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/semakan</code><span class="lbl">Semakan portfolio</span><button type="button" class="copy small" data-v="semakan">Salin shortcut</button></div>
-<div class="msg">Boleh bantu jawab ringkas?
+<div class="qrhead"><code>/semakan</code><span class="lbl" data-en="Portfolio review">Semakan portfolio</span><button type="button" class="copy small" data-v="semakan" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="Could you answer a few quick questions?
+1. Your name and state?
+2. What investments do you have now? Fund names or the platform are enough.
+3. What would you like to know, or what concerns you, about this portfolio?
+4. Is a consultant managing this portfolio now?
+5. When is a good time for a consultant to contact you, and would you prefer WhatsApp or a call?">Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Pelaburan apa yang anda ada sekarang? Nama dana atau platform pun cukup.
 3. Apa yang anda nak tahu atau risau tentang portfolio ni?
 4. Sekarang ada perunding yang uruskan portfolio ni?
 5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?</div>
-<button type="button" class="copy">Salin mesej</button>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/takaful</code><span class="lbl">Takaful dan insurans</span><button type="button" class="copy small" data-v="takaful">Salin shortcut</button></div>
-<div class="msg">Boleh bantu jawab ringkas?
+<div class="qrhead"><code>/takaful</code><span class="lbl" data-en="Takaful and insurance">Takaful dan insurans</span><button type="button" class="copy small" data-v="takaful" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="Could you answer a few quick questions?
+1. Your name and state?
+2. Who is this protection for: yourself, your spouse, your children, or the family?
+3. May I know the age of the person to be covered?
+4. Do you already have a takaful or insurance policy?
+5. When is a good time for a consultant to contact you, and would you prefer WhatsApp or a call?">Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Perlindungan ni untuk siapa: diri sendiri, pasangan, anak, atau keluarga?
 3. Boleh saya tahu umur orang yang nak dilindungi?
 4. Dah ada polisi takaful atau insurans sekarang?
 5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?</div>
-<button type="button" class="copy">Salin mesej</button>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/hutang</code><span class="lbl">Hutang dan kad kredit</span><button type="button" class="copy small" data-v="hutang">Salin shortcut</button></div>
-<div class="msg">Boleh bantu jawab ringkas?
+<div class="qrhead"><code>/hutang</code><span class="lbl" data-en="Debt and credit cards">Hutang dan kad kredit</span><button type="button" class="copy small" data-v="hutang" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="Could you answer a few quick questions?
+1. Your name and state?
+2. What type of debt: credit card, personal loan, car, or something else?
+3. Roughly how much in total, and across how many accounts?
+4. Are any payments overdue, or have you received a demand letter?
+5. When is a good time for a consultant to contact you, and would you prefer WhatsApp or a call?">Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Hutang jenis apa: kad kredit, pinjaman peribadi, kereta, atau lain-lain?
 3. Lebih kurang berapa jumlah semua sekali, dan berapa akaun?
 4. Ada bayaran yang dah tertunggak, atau dah terima surat tuntutan?
 5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?</div>
-<button type="button" class="copy">Salin mesej</button>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/wasiat</code><span class="lbl">Wasiat, hibah dan pusaka</span><button type="button" class="copy small" data-v="wasiat">Salin shortcut</button></div>
-<div class="msg">Boleh bantu jawab ringkas?
+<div class="qrhead"><code>/wasiat</code><span class="lbl" data-en="Wills, hibah and estate matters">Wasiat, hibah dan pusaka</span><button type="button" class="copy small" data-v="wasiat" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="Could you answer a few quick questions?
+1. Your name and state?
+2. Is this for your own arrangements, or for a family member who has passed away?
+3. Do you already have a will or hibah?
+4. What assets are involved: house, land, ASB, takaful, or something else?
+5. When is a good time for a consultant to contact you, and would you prefer WhatsApp or a call?">Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Ini untuk perancangan diri sendiri, atau urusan ahli keluarga yang dah meninggal dunia?
 3. Dah ada wasiat atau hibah sekarang?
 4. Jenis harta yang terlibat: rumah, tanah, ASB, takaful, atau lain-lain?
 5. Bila masa sesuai untuk perunding hubungi anda, dan nak WhatsApp atau call?</div>
-<button type="button" class="copy">Salin mesej</button>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/kelas</code><span class="lbl">Kelas, webinar dan ebook</span><button type="button" class="copy small" data-v="kelas">Salin shortcut</button></div>
-<div class="msg">Boleh bantu jawab ringkas?
+<div class="qrhead"><code>/kelas</code><span class="lbl" data-en="Classes, webinars and ebooks">Kelas, webinar dan ebook</span><button type="button" class="copy small" data-v="kelas" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="Could you answer a few quick questions?
+1. Your name and state?
+2. Are you interested in a class, a webinar, or an ebook?
+3. Is it for yourself, or for a company or organisation?
+4. If for an organisation: its name, estimated participants and planned date?">Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Anda berminat dengan kelas, webinar atau ebook?
 3. Untuk diri sendiri, atau untuk syarikat dan organisasi?
 4. Kalau untuk organisasi: nama organisasi, anggaran peserta dan tarikh yang dirancang?</div>
-<button type="button" class="copy">Salin mesej</button>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/kerjaya</code><span class="lbl">Kerjaya perunding</span><button type="button" class="copy small" data-v="kerjaya">Salin shortcut</button></div>
-<div class="msg">Boleh bantu jawab ringkas?
+<div class="qrhead"><code>/kerjaya</code><span class="lbl" data-en="Consultant career">Kerjaya perunding</span><button type="button" class="copy small" data-v="kerjaya" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="Could you answer a few quick questions?
+1. Your name and state?
+2. What field do you work in now?
+3. Are you interested full time or part time?
+4. Do you already have a licence, or have you taken the FIMM exam?
+5. Can you attend a briefing online or in person?">Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Sekarang bekerja dalam bidang apa?
 3. Berminat secara sepenuh masa atau sambilan?
 4. Dah ada lesen atau pernah ambil peperiksaan FIMM?
 5. Boleh hadir sesi taklimat secara online atau bersemuka?</div>
-<button type="button" class="copy">Salin mesej</button>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/bukaakaun</code><span class="lbl">Bantuan buka akaun</span><button type="button" class="copy small" data-v="bukaakaun">Salin shortcut</button></div>
-<div class="msg">Boleh bantu jawab ringkas?
+<div class="qrhead"><code>/bukaakaun</code><span class="lbl" data-en="Help opening an account">Bantuan buka akaun</span><button type="button" class="copy small" data-v="bukaakaun" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="Could you answer a few quick questions?
+1. Your name and state?
+2. Do you want to open a unit trust, PRS, or joint account?
+3. Have you spoken to one of our consultants before? Who?
+4. Which step are you stuck on? You can send a screenshot, but cover personal details first.">Boleh bantu jawab ringkas?
 1. Nama dan negeri anda?
 2. Nak buka akaun unit trust, PRS, atau akaun bersama?
 3. Dah berbual dengan perunding kami sebelum ni? Dengan siapa?
 4. Tersangkut di langkah mana? Boleh hantar screenshot, tapi tutup maklumat peribadi dulu.</div>
-<button type="button" class="copy">Salin mesej</button>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/return</code><span class="lbl">Berapa return setahun?</span><button type="button" class="copy small" data-v="return">Salin shortcut</button></div>
-<div class="msg">Pulangan pelaburan berubah-ubah dan tidak dijamin, jadi saya tak boleh bagi angka. Perunding kami boleh tunjuk prestasi lalu dana berbanding penanda arasnya, dan terangkan risikonya sekali.</div>
-<button type="button" class="copy">Salin mesej</button>
+<div class="qrhead"><code>/return</code><span class="lbl" data-en="What return will I get each year?">Berapa return setahun?</span><button type="button" class="copy small" data-v="return" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="Investment returns vary and are not guaranteed, so I cannot give a figure. Our consultant can show the fund&amp;#x27;s past performance against its benchmark, and explain the risks too.">Pulangan pelaburan berubah-ubah dan tidak dijamin, jadi saya tak boleh bagi angka. Perunding kami boleh tunjuk prestasi lalu dana berbanding penanda arasnya, dan terangkan risikonya sekali.</div>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/ilustrasi</code><span class="lbl">Kat website tulis 8% atau 10%, betul ke dapat?</span><button type="button" class="copy small" data-v="ilustrasi">Salin shortcut</button></div>
-<div class="msg">Itu ilustrasi andaian untuk tunjuk konsep sahaja, bukan unjuran pulangan. Pulangan sebenar boleh berbeza dan tidak dijamin.</div>
-<button type="button" class="copy">Salin mesej</button>
+<div class="qrhead"><code>/ilustrasi</code><span class="lbl" data-en="The website says 8% or 10%, will I get that?">Kat website tulis 8% atau 10%, betul ke dapat?</span><button type="button" class="copy small" data-v="ilustrasi" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="That is an illustrative assumption to show the concept, not a projected return. Actual returns can differ and are not guaranteed.">Itu ilustrasi andaian untuk tunjuk konsep sahaja, bukan unjuran pulangan. Pulangan sebenar boleh berbeza dan tidak dijamin.</div>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/dana</code><span class="lbl">Dana mana paling bagus?&quot; atau &quot;Saya patut pilih yang mana?</span><button type="button" class="copy small" data-v="dana">Salin shortcut</button></div>
-<div class="msg">Pilihan dana bergantung pada matlamat dan profil risiko anda, jadi saya tak boleh cadangkan terus dalam chat. Perunding kami akan bantu buat penilaian dulu. Boleh saya aturkan masa?</div>
-<button type="button" class="copy">Salin mesej</button>
+<div class="qrhead"><code>/dana</code><span class="lbl" data-en="Which fund is the best?&amp;quot; or &amp;quot;Which one should I choose?">Dana mana paling bagus?&quot; atau &quot;Saya patut pilih yang mana?</span><button type="button" class="copy small" data-v="dana" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="The right fund depends on your goals and risk profile, so I cannot recommend one directly in this chat. Our consultant will do an assessment first. May I arrange a time?">Pilihan dana bergantung pada matlamat dan profil risiko anda, jadi saya tak boleh cadangkan terus dalam chat. Perunding kami akan bantu buat penilaian dulu. Boleh saya aturkan masa?</div>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/risiko</code><span class="lbl">Selamat ke melabur ni?</span><button type="button" class="copy small" data-v="risiko">Salin shortcut</button></div>
-<div class="msg">Pelaburan memang ada risiko, dan nilainya boleh naik dan turun. Perunding akan terangkan risikonya sebelum anda buat keputusan. Anda juga boleh semak pendaftaran perunding kami di website FIMM.</div>
-<button type="button" class="copy">Salin mesej</button>
+<div class="qrhead"><code>/risiko</code><span class="lbl" data-en="Is investing safe?">Selamat ke melabur ni?</span><button type="button" class="copy small" data-v="risiko" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="Investing does carry risk, and values can go up and down. The consultant will explain the risks before you decide. You can also check our consultant&amp;#x27;s registration on the FIMM website.">Pelaburan memang ada risiko, dan nilainya boleh naik dan turun. Perunding akan terangkan risikonya sebelum anda buat keputusan. Anda juga boleh semak pendaftaran perunding kami di website FIMM.</div>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/masa</code><span class="lbl">Sekarang masa sesuai ke nak masuk?</span><button type="button" class="copy small" data-v="masa">Salin shortcut</button></div>
-<div class="msg">Saya tak boleh ramal pasaran. Perunding boleh terangkan cara melabur secara berkala dan apa yang sesuai dengan keadaan anda.</div>
-<button type="button" class="copy">Salin mesej</button>
+<div class="qrhead"><code>/masa</code><span class="lbl" data-en="Is now a good time to get in?">Sekarang masa sesuai ke nak masuk?</span><button type="button" class="copy small" data-v="masa" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="I cannot predict the market. The consultant can explain regular investing and what fits your situation.">Saya tak boleh ramal pasaran. Perunding boleh terangkan cara melabur secara berkala dan apa yang sesuai dengan keadaan anda.</div>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/minimum</code><span class="lbl">Boleh labur kurang dari RM100?</span><button type="button" class="copy small" data-v="minimum">Salin shortcut</button></div>
-<div class="msg">Minimum pelaburan bulanan dengan kami ialah RM100. Kalau nak, perunding boleh terangkan cara nak mula.</div>
-<button type="button" class="copy">Salin mesej</button>
+<div class="qrhead"><code>/minimum</code><span class="lbl" data-en="Can I invest less than RM100?">Boleh labur kurang dari RM100?</span><button type="button" class="copy small" data-v="minimum" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="The minimum monthly investment with us is RM100. If you like, the consultant can explain how to get started.">Minimum pelaburan bulanan dengan kami ialah RM100. Kalau nak, perunding boleh terangkan cara nak mula.</div>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/akaun1</code><span class="lbl">Boleh guna duit KW$P atau Akaun 1?</span><button type="button" class="copy small" data-v="akaun1">Salin shortcut</button></div>
-<div class="msg">Soalan ni saya serahkan kepada perunding kami, ya. Boleh saya aturkan masa untuk berbual?</div>
-<button type="button" class="copy">Salin mesej</button>
+<div class="qrhead"><code>/akaun1</code><span class="lbl" data-en="Can I use my KW$P or Account 1 money?">Boleh guna duit KW$P atau Akaun 1?</span><button type="button" class="copy small" data-v="akaun1" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="I will pass this question to our consultant. May I arrange a time for you to talk?">Soalan ni saya serahkan kepada perunding kami, ya. Boleh saya aturkan masa untuk berbual?</div>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/caj</code><span class="lbl">Caj dia berapa?</span><button type="button" class="copy small" data-v="caj">Salin shortcut</button></div>
-<div class="msg">Caj berbeza mengikut dana dan dinyatakan dalam prospektus serta Product Highlights Sheet. Perunding akan terangkan untuk dana yang berkaitan.</div>
-<button type="button" class="copy">Salin mesej</button>
+<div class="qrhead"><code>/caj</code><span class="lbl" data-en="How much are the charges?">Caj dia berapa?</span><button type="button" class="copy small" data-v="caj" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="Charges differ by fund and are stated in the prospectus and Product Highlights Sheet. The consultant will explain them for the relevant fund.">Caj berbeza mengikut dana dan dinyatakan dalam prospektus serta Product Highlights Sheet. Perunding akan terangkan untuk dana yang berkaitan.</div>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/rebat</code><span class="lbl">Boleh bagi diskaun atau rebat?</span><button type="button" class="copy small" data-v="rebat">Salin shortcut</button></div>
-<div class="msg">Maaf, peraturan FIMM tak benarkan perunding beri rebat atau diskaun tunai kepada pelabur.</div>
-<button type="button" class="copy">Salin mesej</button>
+<div class="qrhead"><code>/rebat</code><span class="lbl" data-en="Can you give me a discount or rebate?">Boleh bagi diskaun atau rebat?</span><button type="button" class="copy small" data-v="rebat" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="Sorry, FIMM rules do not allow consultants to give investors cash rebates or discounts.">Maaf, peraturan FIMM tak benarkan perunding beri rebat atau diskaun tunai kepada pelabur.</div>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/loanrumah</code><span class="lbl">Patut ke saya langsaikan loan rumah dulu?</span><button type="button" class="copy small" data-v="loanrumah">Salin shortcut</button></div>
-<div class="msg">Yang ini perlu tengok keadaan kewangan anda secara keseluruhan. Boleh saya aturkan perbualan dengan perunding kami?</div>
-<button type="button" class="copy">Salin mesej</button>
+<div class="qrhead"><code>/loanrumah</code><span class="lbl" data-en="Should I pay off my house loan first?">Patut ke saya langsaikan loan rumah dulu?</span><button type="button" class="copy small" data-v="loanrumah" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="That depends on your overall financial position. May I arrange a chat with our consultant?">Yang ini perlu tengok keadaan kewangan anda secara keseluruhan. Boleh saya aturkan perbualan dengan perunding kami?</div>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/sah</code><span class="lbl">Ini company betul ke? Bukan scam?</span><button type="button" class="copy small" data-v="sah">Salin shortcut</button></div>
-<div class="msg">Soalan yang baik. MaxWealth Consultancy berdaftar dengan SSM (CT0171343-H). Perunding kami, Khairul Khalis, berdaftar dengan FIMM (F01065736), dan anda boleh semak terus di website FIMM.</div>
-<button type="button" class="copy">Salin mesej</button>
+<div class="qrhead"><code>/sah</code><span class="lbl" data-en="Is this a real company? Not a scam?">Ini company betul ke? Bukan scam?</span><button type="button" class="copy small" data-v="sah" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="Good question. MaxWealth Consultancy is registered with SSM (CT0171343-H). Our consultant, Khairul Khalis, is registered with FIMM (F01065736), and you can check directly on the FIMM website.">Soalan yang baik. MaxWealth Consultancy berdaftar dengan SSM (CT0171343-H). Perunding kami, Khairul Khalis, berdaftar dengan FIMM (F01065736), dan anda boleh semak terus di website FIMM.</div>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section><section class="card qr">
-<div class="qrhead"><code>/keluar</code><span class="lbl">Saya nak keluarkan duit&quot; atau &quot;Saya nak tutup akaun.</span><button type="button" class="copy small" data-v="keluar">Salin shortcut</button></div>
-<div class="msg">Baik, saya maklumkan kepada perunding yang uruskan akaun anda supaya prosesnya dibantu.</div>
-<button type="button" class="copy">Salin mesej</button>
+<div class="qrhead"><code>/keluar</code><span class="lbl" data-en="I want to withdraw my money&amp;quot; or &amp;quot;I want to close my account.">Saya nak keluarkan duit&quot; atau &quot;Saya nak tutup akaun.</span><button type="button" class="copy small" data-v="keluar" data-en="Copy shortcut">Salin shortcut</button></div>
+<div class="msg" data-en="Noted. I will let the consultant managing your account know so the process can be arranged.">Baik, saya maklumkan kepada perunding yang uruskan akaun anda supaya prosesnya dibantu.</div>
+<button type="button" class="copy" data-en="Copy message">Salin mesej</button>
 </section>
 </div>
 
 </main>
-<nav class="nav" role="tablist" aria-label="Bahagian">
-<button type="button" role="tab" data-p="mula">Mula</button>
-<button type="button" role="tab" data-p="topik">Topik</button>
-<button type="button" role="tab" data-p="soalan">Soalan</button>
-<button type="button" role="tab" data-p="serah">Serah</button>
-<button type="button" role="tab" data-p="setup">Setup</button>
+<nav class="nav" role="tablist" aria-label="Sections">
+<button type="button" role="tab" data-p="mula" data-en="Start">Mula</button>
+<button type="button" role="tab" data-p="topik" data-en="Topics">Topik</button>
+<button type="button" role="tab" data-p="soalan" data-en="Q&amp;amp;A">Soalan</button>
+<button type="button" role="tab" data-p="serah" data-en="Lead">Serah</button>
+<button type="button" role="tab" data-p="setup" data-en="Setup">Setup</button>
 </nav>
 <div id="toast" role="status" aria-live="polite"></div>
 <script>
 document.documentElement.className='js';
 (function(){
 var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
-var CLOSE=$('#closeTpl').content.textContent;
+var lang='ms';
+var UI={ms:{copied:'Disalin \u2713',fail:'Tak dapat salin. Tekan lama pada teks untuk salin.',cleared:'Borang dah dikosongkan.'},
+        en:{copied:'Copied \u2713',fail:'Could not copy. Press and hold the text to copy it.',cleared:'Form cleared.'}};
+var CLOSE={ms:$('#closeMs').content.textContent,en:$('#closeEn').content.textContent};
+var TOKENS={ms:['[nama]','[Nama perunding]','[hari dan masa]'],en:['[name]','[Consultant name]','[day and time]']};
+var LEAD={ms:['LEAD WEBSITE','Topik','Nama','No. WhatsApp','Negeri','Bahasa','Jawapan client','Soalan yang client tanya','Masa sesuai dihubungi','Tahap'],
+          en:['WEBSITE LEAD','Topic','Name','WhatsApp No.','State','Language','Client answers','Client questions','Best time to contact','Priority']};
 var toast=$('#toast'),tt;
 function say(m){toast.textContent=m;toast.classList.add('show');clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove('show')},2200)}
+function label(b){return lang==='en'?b.dataset.en:b.dataset.ms}
 function fallback(text){
   var a=document.createElement('textarea');a.value=text;a.setAttribute('readonly','');
   a.style.position='fixed';a.style.top='0';a.style.opacity='0';a.style.fontSize='16px';
@@ -492,10 +661,9 @@ function fallback(text){
   document.body.removeChild(a);return ok;
 }
 function mark(b,ok){
-  if(!ok){say('Tak dapat salin. Tekan lama pada teks untuk salin.');return}
-  var t=b.textContent;if(b.dataset.t)t=b.dataset.t;b.dataset.t=t;
-  b.textContent='Disalin \u2713';b.classList.add('done');
-  setTimeout(function(){b.textContent=b.dataset.t;b.classList.remove('done')},1500);
+  if(!ok){say(UI[lang].fail);return}
+  b.textContent=UI[lang].copied;b.classList.add('done');
+  setTimeout(function(){b.innerHTML=label(b);b.classList.remove('done')},1500);
 }
 function copy(text,b){
   if(navigator.clipboard&&window.isSecureContext){
@@ -504,7 +672,7 @@ function copy(text,b){
 }
 document.addEventListener('click',function(ev){
   var b=ev.target.closest&&ev.target.closest('button.copy');if(!b)return;
-  var v=b.getAttribute('data-v');
+  var v=lang==='en'&&b.dataset.vEn?b.dataset.vEn:b.getAttribute('data-v');
   if(v===null){var m=b.parentNode.querySelector('.msg');v=m?m.textContent:''}
   copy(v,b);
 });
@@ -515,7 +683,6 @@ function show(id){
   window.scrollTo(0,0);
 }
 tabs.forEach(function(t){t.addEventListener('click',function(){show(t.dataset.p)})});
-show('mula');
 var s=$('#search'),empty=$('#qaEmpty'),qas=$$('.qa');
 s.addEventListener('input',function(){
   var q=s.value.trim().toLowerCase(),n=0;
@@ -525,15 +692,28 @@ s.addEventListener('input',function(){
 var f=$('#lead'),out=$('#leadOut'),cOut=$('#clientOut'),wa=$('#waLink');
 function val(n){return f.elements[n].value.trim()}
 function render(){
-  var text=['LEAD WEBSITE','Topik: '+val('topik'),'Nama: '+val('nama'),'No. WhatsApp: '+val('wa'),'Negeri: '+val('negeri'),'Bahasa: '+val('bahasa'),
-    'Jawapan client: '+val('jawapan'),'Soalan yang client tanya: '+val('soalan'),'Masa sesuai dihubungi: '+val('masa'),'Tahap: '+val('tahap')].join('\n');
+  var L=LEAD[lang],V=['topik','nama','wa','negeri','bahasa','jawapan','soalan','masa','tahap'].map(val);
+  var text=[L[0]].concat(V.map(function(v,i){return L[i+1]+': '+v})).join('\n');
   out.textContent=text;wa.href='https://wa.me/?text='+encodeURIComponent(text);
-  cOut.textContent=CLOSE.replace('[nama]',val('nama')||'[nama]').replace('[Nama perunding]',val('perunding')||'[Nama perunding]').replace('[hari dan masa]',val('jadual')||'[hari dan masa]');
+  var T=TOKENS[lang];
+  cOut.textContent=CLOSE[lang].replace(T[0],val('nama')||T[0]).replace(T[1],val('perunding')||T[1]).replace(T[2],val('jadual')||T[2]);
 }
+function setLang(l){
+  lang=l;document.documentElement.lang=l==='en'?'en':'ms';
+  $$('[data-en]').forEach(function(el){
+    if(el.dataset.ms===undefined)el.dataset.ms=el.innerHTML;
+    el.innerHTML=l==='en'?el.dataset.en:el.dataset.ms;
+    el.classList.remove('done');
+  });
+  s.placeholder=l==='en'?s.dataset.enPh:s.dataset.msPh;
+  $$('.lang button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.lang===l?'true':'false')});
+  render();
+}
+$$('.lang button').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.lang)})});
 f.addEventListener('input',render);f.addEventListener('change',render);
 f.addEventListener('submit',function(e){e.preventDefault()});
-$('#clear').addEventListener('click',function(){f.reset();setTimeout(render,0);window.scrollTo(0,0);say('Borang dah dikosongkan.')});
-render();
+$('#clear').addEventListener('click',function(){f.reset();setLang(lang);window.scrollTo(0,0);say(UI[lang].cleared)});
+show('mula');setLang('ms');
 })();
 </script>
 </body></html>
