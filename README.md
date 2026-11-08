@@ -19,6 +19,11 @@ Temporary live URL until the custom domain is set: https://khairulkhalis.com/max
 ## Publishing
 Edit `tools/build.py` → `python3 tools/build.py` → preview → ask the user → `git commit` + `git push` (Pages redeploys in ~1 min). Undo = revert commit, never force-push.
 
+## Live domain
+Launched on **maxwealthconsultancy.com** (8 Nov 2026) while the .com.my was still pending at Exabytes. Cloudflare DNS for the .com: `A` `@` → the four GitHub IPs below and `CNAME` `www` → `khairulkhalis000404-hue.github.io`, both DNS only (grey cloud).
+
+To move to the .com.my: change `DOMAIN` in `tools/build.py`, build, push, do steps 1–2 below, then step 3 so the .com redirects (delete its GitHub A/CNAME records first).
+
 ## Connecting the domains (when maxwealthconsultancy.com.my is active)
 1. **Exabytes, DNS for maxwealthconsultancy.com.my** (the .com.my had no nameservers yet on 8 Nov 2026; activation was pending email/SSM verification):
    - `A` `@` → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`

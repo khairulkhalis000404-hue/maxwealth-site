@@ -15,7 +15,7 @@ from urllib.parse import quote
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.normpath(os.path.join(HERE, '..', 'docs'))  # GitHub Pages serves main /docs
-DOMAIN = 'https://maxwealthconsultancy.com.my'
+DOMAIN = 'https://maxwealthconsultancy.com'  # temporary until the .com.my is active; change here to move
 UPDATED = '2026-11-08'
 WA_NUMBER = '60194024401'
 REGISTER_URL = ('https://client.asia.manulifeam.com/en_MY/NewUser?invitation_url=8e4d7c50-fed4-11f0-ac63-'
@@ -1059,6 +1059,7 @@ def build_404():
 def build_meta_files():
     urls = ''.join(f'  <url><loc>{DOMAIN}{p}</loc><lastmod>{UPDATED}</lastmod><priority>{pr}</priority></url>\n' for p, pr in PAGES)
     files = {
+        'CNAME': DOMAIN.removeprefix('https://') + '\n',
         'sitemap.xml': f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n',
         'robots.txt': f'User-agent: *\nAllow: /\n\nSitemap: {DOMAIN}/sitemap.xml\n',
         'site.webmanifest': '{\n  "name": "MaxWealth Consultancy",\n  "short_name": "MaxWealth",\n  "start_url": "/",\n  "display": "browser",\n  "background_color": "#FFFFFF",\n  "theme_color": "#124674",\n  "icons": [{ "src": "/assets/icon-512.png", "sizes": "512x512", "type": "image/png" }]\n}\n',
