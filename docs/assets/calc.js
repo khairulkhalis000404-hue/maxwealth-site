@@ -180,7 +180,43 @@
       'UNIT TRUST - Hi Ika, I used the TVM calculator on the website and would like to discuss.\nTarget: ' + rm(fv) + '\nLump sum: ' + rm(pv) + '\nMonthly: ' + rm(pmt) + '\nYears: ' + years);
   }
 
-  function render() { renderEf(); renderCompound(); renderTvm(); }
+  // €PF Basic Savings in Akaun Persaraan by age, effective 1 Jan 2026 (ages 18 to 55)
+  var BASIC = [900, 1100, 1500, 1900, 4000, 6200, 8500, 11000, 13700, 16600, 19600, 22900, 26300, 30000, 33900,
+    38100, 42400, 47000, 51900, 57000, 62400, 68100, 74000, 80200, 86700, 93600, 100000, 108000, 115000, 124000,
+    132000, 141000, 150000, 160000, 170000, 181000, 192000, 203000];
+
+  function renderEp() {
+    var en = isEn(), age = Math.floor(num('epAge')), bal = num('epBal'), html;
+    if (age < 18) {
+      html = note(en ? 'Enter an age of 18 or above.' : 'Masukkan umur 18 tahun ke atas.', true);
+    } else if (age >= 55) {
+      html = note(en
+        ? 'At 55 and above, the Members Investment Scheme no longer applies. WhatsApp us to check your options.'
+        : 'Pada umur 55 tahun ke atas, Skim Pelaburan Ahli tidak lagi terpakai. WhatsApp kami untuk semak pilihan anda.', true);
+    } else {
+      var basic = BASIC[age - 18], excess = Math.max(bal - basic, 0), can = excess * 0.3, ok = can >= 1000;
+      var msg = ok
+        ? (en ? 'You are eligible. The minimum investment is RM1,000.' : 'Anda layak. Pelaburan minimum ialah RM1,000.')
+        : excess <= 0
+          ? (en ? 'Your balance has not passed the Basic Savings for age ' + age + ' (' + rm(basic) + ') yet, so you can’t invest from €PF for now.'
+                : 'Baki anda belum melebihi Simpanan Asas umur ' + age + ' (' + rm(basic) + '), jadi belum boleh melabur dari KW$P buat masa ini.')
+          : (en ? 'Below the RM1,000 minimum. Your balance needs to be at least ' + rm(basic + 1000 / 0.3) + ' to qualify.'
+                : 'Kurang daripada minimum RM1,000. Baki anda perlu sekurang-kurangnya ' + rm(basic + 1000 / 0.3) + ' untuk layak.');
+      html = bigOut(en ? 'You can invest up to' : 'Anda boleh labur sehingga', rm(ok ? can : 0)) +
+        '<dl>' + row('#FFFFFF', en ? 'Basic Savings (age ' + age + ')' : 'Simpanan Asas (umur ' + age + ')', rm(basic)) +
+        row('rgba(255,255,255,.35)', en ? 'Amount above Basic Savings' : 'Jumlah melebihi Simpanan Asas', rm(excess)) +
+        row('var(--accent)', en ? '30% of that amount' : '30% daripada jumlah itu', rm(can)) + '</dl>' + note(msg, !ok);
+    }
+    $('epResult').innerHTML = html;
+    $('epFine').textContent = en
+      ? 'Based on the €PF Basic Savings table effective 1 January 2026. Minimum investment RM1,000; you must be below 55. Check your exact eligible amount in the KW$P app or i-Akaun. Investing involves risk.'
+      : 'Berdasarkan jadual Simpanan Asas KW$P berkuat kuasa 1 Januari 2026. Pelaburan minimum RM1,000; anda mesti berumur bawah 55 tahun. Semak jumlah layak sebenar dalam aplikasi KW$P atau i-Akaun. Pelaburan melibatkan risiko.';
+    setCta('epCta',
+      'Hai Ika, saya baru guna kalkulator Akaun Persaraan di website dan nak bincang.\nUmur: ' + age + '\nBaki Akaun Persaraan: ' + rm(bal),
+      'Hi Ika, I used the Akaun Persaraan calculator on the website and would like to discuss.\nAge: ' + age + '\nAkaun Persaraan balance: ' + rm(bal));
+  }
+
+  function render() { renderEf(); renderCompound(); renderTvm(); renderEp(); }
 
   box.addEventListener('input', function (e) {
     if (e.target.id === 'efMonthly') efEdited = true;
