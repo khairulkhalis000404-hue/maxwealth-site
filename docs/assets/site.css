@@ -112,12 +112,13 @@ em.hl { font-style: normal; color: var(--emph); }
 .site-header .wrap { height: var(--header-h); display: flex; align-items: center; gap: 24px; }
 .brand { display: block; flex-shrink: 0; }
 /* logo as large as the 72px header allows, with equal space above and below */
-.brand img { height: 46px; width: auto; }
-@media (min-width: 720px) { .brand img { height: 54px; } }
+.brand img { height: clamp(46px, 13.6vw, 60px); width: auto; }
+@media (max-width: 719px) { .site-header .wrap { gap: 12px; } }
+@media (min-width: 720px) { .brand img { height: 64px; } }
 /* small phones (320–359px): tighter header so logo, BM/EN and menu fit */
 @media (max-width: 359px) {
   .site-header .wrap { gap: 10px; }
-  .brand img { height: 38px; }
+  .brand img { height: 42px; }
   .head-tools { gap: 6px; }
   .lang button { padding: 7px 8px; }
   .menu-btn { width: 40px; height: 40px; }
