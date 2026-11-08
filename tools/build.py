@@ -280,7 +280,7 @@ def footer():
     <div class="foot-grid">
       <div class="foot-about">
         <a class="foot-logo" href="/"><img src="/assets/maxwealth-logo.png" alt="MaxWealth Consultancy, Inspiring Financial Excellence" width="800" height="241" loading="lazy"></a>
-        {t("p", "Agensi unit trust dan PRS yang mewakili Manulife Investment Management (M) Berhad. Penerangan yang jelas, langkah yang teratur.", "A unit trust and PRS agency representing Manulife Investment Management (M) Berhad. Clear explanations, well-ordered steps.")}
+        {t("p", "Kami bantu anda susun kewangan dan cari penyelesaian yang sesuai. Penerangan yang jelas, langkah yang teratur.", "We help you get your finances in order and find the right solutions. Clear explanations, well-ordered steps.")}
         <div class="social">
           <a {wa(*WA_GENERAL)} aria-label="WhatsApp Admin">{I["wa"]}</a>
           <a href="mailto:{EMAIL}" aria-label="Emel" data-en-aria-label="Email">{I["mail"]}</a>
@@ -307,7 +307,7 @@ def footer():
       </div>
     </div>
     <div class="foot-legal">
-      <p class="reg">{t("span", "Khairul Khalis, perunding unit trust (UTC) dan PRS berdaftar FIMM (F01065736). Mewakili Manulife Investment Management (M) Berhad melalui agensi MaxWealth Consultancy.", "Khairul Khalis, FIMM-registered unit trust (UTC) and PRS consultant (F01065736). Representing Manulife Investment Management (M) Berhad through MaxWealth Consultancy.")}
+      <p class="reg">{t("span", "Khairul Khalis, perunding unit trust (UTC) dan PRS berdaftar FIMM (F01065736). Mewakili Manulife Investment Management (M) Berhad melalui MaxWealth Consultancy. Takaful, insurans, wasiat dan hibah dikendalikan oleh ahli pasukan atau pihak yang berlesen atau berdaftar untuk bidang masing-masing.", "Khairul Khalis, FIMM-registered unit trust (UTC) and PRS consultant (F01065736). Representing Manulife Investment Management (M) Berhad through MaxWealth Consultancy. Takaful, insurance, wills and hibah are handled by team members or parties licensed or registered in those fields.")}
         <a href="https://www.fimm.com.my" target="_blank" rel="noopener" data-en="Verify at FIMM">Semak di FIMM</a></p>
       {t("p", "Pelaburan melibatkan risiko. Prestasi lalu bukan petunjuk prestasi masa depan. Harga unit dan agihan (jika ada) boleh naik dan turun. Sila baca dan fahami Prospektus / Disclosure Document dan Product Highlights Sheet (PHS) sebelum melabur. Laman ini untuk maklumat umum sahaja dan bukan tawaran atau ajakan untuk membeli atau menjual mana-mana produk pelaburan.", "Investing involves risk. Past performance is not indicative of future performance. Unit prices and distributions (if any) may go down as well as up. Please read and understand the Prospectus / Disclosure Document and Product Highlights Sheet (PHS) before investing. This site is for general information only and is not an offer or solicitation to buy or sell any investment product.")}
       <div class="foot-bottom">
@@ -385,12 +385,24 @@ SERVICES = [
     ('prs', 'prs', 'PRS (Skim Persaraan Swasta)', 'PRS (Private Retirement Scheme)',
      'Pelaburan persaraan jangka panjang secara sukarela, layak pelepasan cukai tahunan (tertakluk syarat LHDN).',
      'Voluntary long-term retirement investing, eligible for yearly tax relief (subject to LHDN rules).'),
+    ('takaful', 'shield', 'Takaful dan insurans', 'Takaful and insurance',
+     'Perlindungan untuk diri dan keluarga, melalui ahli pasukan yang berlesen.',
+     'Protection for you and your family, through licensed team members.'),
+    ('hutang', 'calc', 'Hutang dan kad kredit', 'Debt and credit cards',
+     'Bimbingan untuk menyusun hutang dan mengawal penggunaan kad kredit.',
+     'Guidance on organising debt and keeping credit card use under control.'),
+    ('wasiat', 'doc', 'Wasiat, hibah dan pusaka', 'Wills, hibah and estate matters',
+     'Urusan pengagihan harta, melalui pihak yang berlesen atau berdaftar.',
+     'Passing on your assets, through licensed or registered parties.'),
     ('korporat', 'corp', 'Pelaburan korporat', 'Corporate investing',
      'Untuk lebihan tunai syarikat yang tidak diperlukan dalam masa terdekat.',
      'For company surplus cash that is not needed in the near term.'),
     ('semakan-portfolio', 'review', 'Semakan portfolio', 'Portfolio review',
      'Semak pelaburan sedia ada dan susun semula supaya selari dengan matlamat anda.',
      'Review your existing investments and realign them with your goals.'),
+    ('pendidikan', 'book', 'Pendidikan kewangan', 'Financial education',
+     'Ebook, panduan, kelas dan webinar untuk faham wang dengan lebih baik.',
+     'Ebooks, guides, classes and webinars to understand money better.'),
 ]
 
 
@@ -406,8 +418,8 @@ def build_home():
     body = f'''<section class="hero"><div class="wrap hero-grid">
   <div>
     {t("p", "MaxWealth Consultancy", "MaxWealth Consultancy", 'class="eyebrow"')}
-    {t("h1", 'Unit trust dan PRS, <em class="hl">diterangkan dengan jelas.</em>', 'Unit trusts and PRS, <em class="hl">explained clearly.</em>')}
-    {t("p", "Kami agensi yang mewakili Manulife Investment Management (M) Berhad. Kami bantu individu, keluarga dan syarikat faham pilihan pelaburan mereka, dan mula dengan langkah yang sesuai dengan matlamat serta profil risiko masing-masing.", "We are an agency representing Manulife Investment Management (M) Berhad. We help individuals, families and companies understand their investment options, and start with steps that fit their goals and risk profile.", 'class="lead"')}
+    {t("h1", 'Kewangan anda, <em class="hl">disusun dengan jelas.</em>', 'Your finances, <em class="hl">sorted out clearly.</em>')}
+    {t("p", "Kami bantu anda susun kewangan dan cari penyelesaian yang sesuai untuk masalah kewangan anda, dari pelaburan dan persaraan hingga perlindungan, hutang dan pusaka.", "We help you get your finances in order and find the right solutions to your money problems, from investing and retirement to protection, debt and estate matters.", 'class="lead"')}
     <div class="btns">
       <a class="btn" href="/servis/">{t("span", "Lihat servis", "See services")}</a>
       <a class="btn ghost" href="/tentang/">{t("span", "Kenali kami", "About us")}</a>
@@ -450,9 +462,9 @@ def build_home():
   </div>
   <ol class="steps row">
     <li><div>{t("h3", "Berbual", "Talk")}{t("p", "Mesej Admin kami di WhatsApp. Kami aturkan perbualan atau temujanji ikut masa anda.", "Message our Admin on WhatsApp. We arrange a call or meeting at a time that suits you.")}</div></li>
-    <li><div>{t("h3", "Faham matlamat", "Understand your goals")}{t("p", "Kita lihat matlamat, tempoh dan profil risiko anda melalui soal selidik profil risiko.", "We look at your goals, time frame and risk profile through a risk profiling questionnaire.")}</div></li>
-    <li><div>{t("h3", "Pilih dan buka akaun", "Choose and open an account")}{t("p", "Kami terangkan pilihan dana, caj dan risiko. Akaun dibuka online dalam lebih kurang 10 minit.", "We explain the fund options, charges and risks. Your account is opened online in about 10 minutes.")}</div></li>
-    <li><div>{t("h3", "Semakan berkala", "Regular reviews")}{t("p", "Kami semak portfolio anda dari semasa ke semasa dan kemas kini bila matlamat berubah.", "We review your portfolio from time to time and adjust when your goals change.")}</div></li>
+    <li><div>{t("h3", "Faham matlamat", "Understand your goals")}{t("p", "Kita lihat situasi, matlamat dan profil risiko anda.", "We look at your situation, goals and risk profile.")}</div></li>
+    <li><div>{t("h3", "Pilih penyelesaian", "Choose a solution")}{t("p", "Kami terangkan pilihan yang ada, caj dan risikonya. Keputusan tetap di tangan anda.", "We explain the options, their charges and risks. The decision stays with you.")}</div></li>
+    <li><div>{t("h3", "Semakan berkala", "Regular reviews")}{t("p", "Kami semak perkembangan anda dari semasa ke semasa dan kemas kini bila matlamat berubah.", "We review your progress from time to time and adjust when your goals change.")}</div></li>
   </ol>
 </div></section>
 
@@ -460,9 +472,9 @@ def build_home():
   <div style="max-width:680px">
     {t("p", "Pengasas MaxWealth", "MaxWealth founder", 'class="eyebrow"')}
     <h2 class="profile-name">Khairul Khalis</h2>
-    <p class="titles"><b>Founder &amp; Agency Manager, MaxWealth Consultancy</b><br>{t("span", "Perunding unit trust (UTC) dan PRS berdaftar FIMM", "FIMM-registered unit trust (UTC) and PRS consultant")}</p>
+    <p class="titles"><b>Founder, MaxWealth Consultancy</b><br>{t("span", "Perunding unit trust (UTC) dan PRS berdaftar FIMM", "FIMM-registered unit trust (UTC) and PRS consultant")}</p>
     {STATS}
-    <p style="margin-top:32px"><a class="text-link" href="/tentang/">{t("span", "Kenali agensi dan pasukan kami", "Meet the agency and our team")}{I["arrow"]}</a></p>
+    <p style="margin-top:32px"><a class="text-link" href="/tentang/">{t("span", "Kenali pasukan kami", "Meet our team")}{I["arrow"]}</a></p>
   </div>
 </div></section>
 
@@ -484,9 +496,9 @@ def build_home():
 </div></section>
 
 {band("Ada soalan? Mula dengan satu mesej.", "Have a question? Start with one message.", "Tiada komitmen. Ceritakan matlamat anda, dan kami terangkan pilihan yang ada dengan jelas.", "No commitment. Tell us your goals, and we will explain the options clearly.")}'''
-    page('/', 'MaxWealth Consultancy · Unit trust & PRS', 'MaxWealth Consultancy · Unit trusts & PRS',
-         'MaxWealth Consultancy, agensi unit trust dan PRS yang mewakili Manulife Investment Management (M) Berhad. Perunding berdaftar FIMM, penerangan yang jelas, mula dari RM100 sebulan.',
-         'MaxWealth Consultancy, a unit trust and PRS agency representing Manulife Investment Management (M) Berhad. FIMM-registered consultants, clear explanations, from RM100 a month.',
+    page('/', 'MaxWealth Consultancy · Penyelesaian kewangan anda', 'MaxWealth Consultancy · Solutions for your finances',
+         'MaxWealth Consultancy bantu anda susun kewangan dan cari penyelesaian untuk masalah kewangan: unit trust, PRS, takaful, hutang, wasiat dan pendidikan kewangan.',
+         'MaxWealth Consultancy helps you get your finances in order and find solutions to money problems: unit trusts, PRS, takaful, debt, wills and financial education.',
          body, priority='1.0')
 
 
@@ -510,7 +522,7 @@ def build_about():
         ('Penceramah jemputan, “Game On! Carnival Boss Preview”', 'Guest speaker, “Game On! Carnival Boss Preview”', 'Sep 2026'),
     ]
     arows = ''.join(f'<li>{t("b", a, b)}<span>{y}</span></li>' for a, b, y in awards)
-    body = f'''{page_hero("Tentang kami", "About us", "Agensi kecil, penerangan yang besar maknanya.", "A focused agency that explains things properly.", "MaxWealth Consultancy ialah agensi unit trust dan PRS yang mewakili Manulife Investment Management (M) Berhad. Tagline kami, Inspiring Financial Excellence, bermaksud satu perkara yang mudah: bantu orang faham wang mereka dan mula melabur dengan langkah yang teratur.", "MaxWealth Consultancy is a unit trust and PRS agency representing Manulife Investment Management (M) Berhad. Our tagline, Inspiring Financial Excellence, means something simple: help people understand their money and start investing in well-ordered steps.")}
+    body = f'''{page_hero("Tentang kami", "About us", "Satu pasukan, pelbagai penyelesaian kewangan.", "One team, many financial solutions.", "MaxWealth Consultancy bantu individu, keluarga dan syarikat menyusun kewangan dan mencari penyelesaian yang sesuai. Tagline kami, Inspiring Financial Excellence, bermaksud satu perkara yang mudah: bantu orang faham wang mereka dan ambil langkah yang teratur.", "MaxWealth Consultancy helps individuals, families and companies get their finances in order and find the right solutions. Our tagline, Inspiring Financial Excellence, means something simple: help people understand their money and take well-ordered steps.")}
 
 <section class="section"><div class="wrap">
   <div class="section-head">
@@ -521,12 +533,12 @@ def build_about():
 </div></section>
 
 <section class="section alt"><div class="wrap split">
-  {photo("about", "Khairul Khalis", "Khairul Khalis", "Founder & Agency Manager, MaxWealth Consultancy", "Founder & Agency Manager, MaxWealth Consultancy")}
+  {photo("about", "Khairul Khalis", "Khairul Khalis", "Founder, MaxWealth Consultancy", "Founder, MaxWealth Consultancy")}
   <div>
     {t("p", "Pengasas MaxWealth", "MaxWealth founder", 'class="eyebrow"')}
     <h2 class="profile-name">Khairul Khalis</h2>
-    <p class="titles"><b>Founder &amp; Agency Manager, MaxWealth Consultancy</b><br>{t("span", "Perunding unit trust (UTC) dan PRS berdaftar FIMM · F01065736", "FIMM-registered unit trust (UTC) and PRS consultant · F01065736")}</p>
-    {t("p", "Khairul mula dalam industri kewangan pada 2020 dan dalam unit trust sejak 2021. Beliau mengasaskan MaxWealth Consultancy dan kini, sebagai Agency Manager, membimbing pasukan perunding dan berkongsi pendidikan kewangan melalui ebook, panduan dan media sosial.", "Khairul started in the finance industry in 2020 and in unit trusts in 2021. He founded MaxWealth Consultancy and now, as Agency Manager, coaches a team of consultants and shares financial education through ebooks, guides and social media.", 'class="muted" style="margin-bottom:28px"')}
+    <p class="titles"><b>Founder, MaxWealth Consultancy</b><br>{t("span", "Perunding unit trust (UTC) dan PRS berdaftar FIMM · F01065736", "FIMM-registered unit trust (UTC) and PRS consultant · F01065736")}</p>
+    {t("p", "Khairul mula dalam industri kewangan pada 2020 dan dalam unit trust sejak 2021. Beliau mengasaskan MaxWealth Consultancy dan kini membimbing pasukan serta berkongsi pendidikan kewangan melalui ebook, panduan dan media sosial.", "Khairul started in the finance industry in 2020 and in unit trusts in 2021. Khairul founded MaxWealth Consultancy and now coaches the team and shares financial education through ebooks, guides and social media.", 'class="muted" style="margin-bottom:28px"')}
     {STATS}
   </div>
 </div></section>
@@ -535,7 +547,7 @@ def build_about():
   <div>
     {t("p", "Pengiktirafan", "Recognition", 'class="eyebrow"')}
     {t("h2", "Anugerah dan pengiktirafan.", "Awards and recognition.")}
-    {t("p", "Anugerah Manulife Investments yang diterima oleh Khairul Khalis. Ia mencerminkan pencapaian peribadi beliau, bukan jaminan hasil untuk pelabur atau perunding lain.", "Manulife Investments awards received by Khairul Khalis. They reflect his own results, not an indication of outcomes for any investor or consultant.", 'class="muted" style="margin-top:16px"')}
+    {t("p", "Anugerah Manulife Investments yang diterima oleh Khairul Khalis. Ia mencerminkan pencapaian peribadi beliau, bukan jaminan hasil untuk pelabur atau perunding lain.", "Manulife Investments awards received by Khairul Khalis. They reflect Khairul’s own results, not an indication of outcomes for any investor or consultant.", 'class="muted" style="margin-top:16px"')}
   </div>
   <ul class="rows">{arows}</ul>
 </div></section>
@@ -546,9 +558,9 @@ def build_about():
     {t("h2", "Siapa yang anda akan berurusan.", "Who you will work with.")}
   </div>
   <div class="grid c3">
-    <div class="card"><span class="ic-round">{I["shield"]}</span><h3>Khairul Khalis</h3>{t("p", "Founder &amp; Agency Manager. Membimbing pasukan dan menguruskan semakan portfolio pelanggan.", "Founder &amp; Agency Manager. Coaches the team and handles client portfolio reviews.")}</div>
+    <div class="card"><span class="ic-round">{I["shield"]}</span><h3>Khairul Khalis</h3>{t("p", "Founder. Membimbing pasukan dan menguruskan semakan portfolio pelanggan.", "Founder. Coaches the team and handles client portfolio reviews.")}</div>
     <div class="card"><span class="ic-round">{I["chat"]}</span><h3>Ika</h3>{t("p", "Admin. Titik hubungan pertama anda untuk soalan, temujanji dan urusan akaun di WhatsApp.", "Admin. Your first point of contact for questions, appointments and account matters on WhatsApp.")}</div>
-    <div class="card"><span class="ic-round">{I["people"]}</span>{t("h3", "Perunding kami", "Our consultants")}{t("p", "Perunding unit trust dan PRS berdaftar FIMM di bawah agensi MaxWealth Consultancy.", "FIMM-registered unit trust and PRS consultants under the MaxWealth Consultancy agency.")}</div>
+    <div class="card"><span class="ic-round">{I["people"]}</span>{t("h3", "Pasukan kami", "Our team")}{t("p", "Perunding unit trust dan PRS berdaftar FIMM, serta ahli pasukan yang berlesen untuk takaful dan insurans.", "FIMM-registered unit trust and PRS consultants, and team members licensed for takaful and insurance.")}</div>
   </div>
   <div class="callout" style="margin-top:40px">
     <div>{t("h3", "Semak perunding anda", "Check your consultant")}{t("p", 'Setiap perunding unit trust dan PRS mesti berdaftar dengan FIMM. Anda boleh semak status pendaftaran di <a href="https://www.fimm.com.my" target="_blank" rel="noopener">laman FIMM</a>.', 'Every unit trust and PRS consultant must be registered with FIMM. You can check registration status on the <a href="https://www.fimm.com.my" target="_blank" rel="noopener">FIMM website</a>.')}</div>
@@ -598,6 +610,36 @@ def build_services():
              ('Penerangan prestasi berbanding penanda aras, dalam tempoh yang dinyatakan', 'Performance explained against benchmarks, over stated periods'),
              ('Tukar dana (switching) hanya bila ada sebab yang jelas', 'Fund switching only when there is a clear reason')],
             ('SEMAKAN - Hai Ika, saya nak semak portfolio pelaburan saya.', 'REVIEW - Hi Ika, I would like a review of my investment portfolio.')),
+        'takaful': (
+            'Perlindungan membantu anda dan keluarga berdepan risiko seperti sakit, kemalangan atau kematian. Ahli pasukan kami yang berlesen akan terangkan pilihan yang ada dan semak perlindungan sedia ada anda.',
+            'Protection helps you and your family face risks such as illness, accidents or death. Our licensed team members explain the options and review the cover you already have.',
+            [('Semakan perlindungan sedia ada', 'A review of your existing cover'),
+             ('Pilihan pelan ikut keperluan dan bajet anda', 'Plan options that fit your needs and budget'),
+             ('Manfaat dan pengecualian diterangkan sebelum anda membuat keputusan', 'Benefits and exclusions explained before you decide'),
+             ('Dikendalikan oleh ahli pasukan yang berlesen takaful atau insurans', 'Handled by team members licensed for takaful or insurance')],
+            ('TAKAFUL - Hai Ika, saya nak tahu tentang takaful atau insurans.', 'TAKAFUL - Hi Ika, I would like to know about takaful or insurance.')),
+        'hutang': (
+            'Hutang yang tidak tersusun boleh menjejaskan aliran tunai bulanan. Kami bantu anda lihat gambaran penuh hutang anda dan susun langkah untuk mengurusnya.',
+            'Unorganised debt can strain your monthly cash flow. We help you see the full picture of your debt and set out steps to manage it.',
+            [('Senarai semua hutang dan kadar caj', 'A list of all your debts and their charges'),
+             ('Susunan keutamaan bayaran yang jelas', 'A clear order of payment priorities'),
+             ('Tips menggunakan kad kredit secara berhemah', 'Tips for using credit cards prudently'),
+             ('Bimbingan umum sahaja; kami bukan pemberi pinjaman', 'General guidance only; we are not a lender')],
+            ('HUTANG - Hai Ika, saya perlukan bantuan susun hutang dan kad kredit.', 'DEBT - Hi Ika, I need help organising my debt and credit cards.')),
+        'wasiat': (
+            'Tanpa dokumen yang teratur, urusan harta selepas kematian boleh jadi panjang untuk keluarga. Kami hubungkan anda dengan pihak yang berlesen atau berdaftar untuk urusan wasiat, hibah dan pusaka.',
+            'Without proper documents, settling assets after a death can take a long time for the family. We connect you with licensed or registered parties for wills, hibah and estate matters.',
+            [('Penerangan asas tentang wasiat dan hibah', 'A basic explanation of wills and hibah'),
+             ('Mengikut keperluan keluarga anda', 'Based on your family’s needs'),
+             ('Dokumen disediakan oleh pihak yang berlesen atau berdaftar', 'Documents prepared by licensed or registered parties')],
+            ('WASIAT - Hai Ika, saya nak tahu tentang wasiat, hibah atau pusaka.', 'WILLS - Hi Ika, I would like to know about wills, hibah or estate matters.')),
+        'pendidikan': (
+            'Keputusan kewangan lebih mudah bila anda faham asasnya. Kami kongsikan ilmu kewangan dalam bahasa yang mudah, untuk individu dan syarikat.',
+            'Money decisions are easier when you understand the basics. We share financial knowledge in plain language, for individuals and companies.',
+            [('Ebook dan panduan langkah demi langkah', 'Ebooks and step-by-step guides'),
+             ('Kelas dan webinar', 'Classes and webinars'),
+             ('Kalkulator untuk kira sendiri', 'Calculators to work things out yourself')],
+            ('PENDIDIKAN - Hai Ika, saya nak tahu tentang kelas atau webinar kewangan.', 'EDUCATION - Hi Ika, I would like to know about financial classes or webinars.')),
     }
     blocks = ''
     for sid, ic, tms, ten, dms, den in SERVICES:
@@ -611,7 +653,7 @@ def build_services():
     <div class="btns">{wa_btn("Tanya tentang ini", "Ask about this", msg)}</div>
   </div>
 </article>'''
-    body = f'''{page_hero("Servis", "Services", "Pelaburan yang dipilih ikut matlamat anda.", "Investments chosen around your goals.", "Empat servis utama, satu pendekatan: faham dulu, kemudian baru melabur.", "Four main services, one approach: understand first, then invest.")}
+    body = f'''{page_hero("Servis", "Services", "Penyelesaian untuk masalah kewangan anda.", "Solutions to your money problems.", "Lapan servis, satu pendekatan: faham dulu situasi anda, kemudian baru cari penyelesaian.", "Eight services, one approach: understand your situation first, then find the solution.")}
 <section class="section"><div class="wrap">{blocks}</div></section>
 
 <section class="section alt"><div class="wrap split">
@@ -627,16 +669,19 @@ def build_services():
   {ticks([("MyKad (atau pasport untuk bukan warganegara)", "MyKad (or passport for non-citizens)"), ("Akaun bank atas nama sendiri", "A bank account in your own name"), ("Alamat emel dan nombor telefon aktif", "An active email address and phone number"), ("Lebih kurang 10 minit", "About 10 minutes")])}
 </div></section>
 
-<section class="section"><div class="wrap">
+<section class="section"><div class="wrap" style="display:grid;gap:16px">
   <div class="callout">
-    <div>{t("h3", "Caj dan yuran", "Charges and fees", )}{t("p", "Caj jualan, yuran pengurusan dan caj lain adalah seperti yang dinyatakan dalam prospektus / Disclosure Document dan PHS setiap dana. Kami tidak mengenakan sebarang caj tambahan, dan tidak menawarkan rebat atau diskaun tunai, selaras dengan Kod Etika FIMM.", "Sales charges, management fees and other charges are as stated in each fund’s prospectus / Disclosure Document and PHS. We do not add any extra charges, and do not offer cash rebates or discounts, in line with the FIMM Code of Ethics.")}</div>
+    <div>{t("h3", "Siapa yang mengendalikan servis ini", "Who handles these services")}{t("p", "Unit trust dan PRS dikendalikan oleh perunding berdaftar FIMM. Takaful, insurans, wasiat dan hibah dikendalikan oleh ahli pasukan atau pihak yang berlesen atau berdaftar untuk bidang masing-masing.", "Unit trusts and PRS are handled by FIMM-registered consultants. Takaful, insurance, wills and hibah are handled by team members or parties licensed or registered in those fields.")}</div>
+  </div>
+  <div class="callout">
+    <div>{t("h3", "Caj dan yuran", "Charges and fees", )}{t("p", "Untuk unit trust dan PRS, caj jualan, yuran pengurusan dan caj lain adalah seperti yang dinyatakan dalam prospektus / Disclosure Document dan PHS setiap dana. Kami tidak mengenakan sebarang caj tambahan, dan tidak menawarkan rebat atau diskaun tunai, selaras dengan Kod Etika FIMM.", "For unit trusts and PRS, sales charges, management fees and other charges are as stated in each fund’s prospectus / Disclosure Document and PHS. We do not add any extra charges, and do not offer cash rebates or discounts, in line with the FIMM Code of Ethics.")}</div>
   </div>
 </div></section>
 
 {band("Tak pasti servis mana yang sesuai?", "Not sure which service fits?", "Ceritakan situasi anda dalam satu mesej. Kami bantu tunjukkan arah.", "Describe your situation in one message. We will point you in the right direction.")}'''
     page('/servis/', 'Servis', 'Services',
-         'Unit trust, PRS, pelaburan korporat dan semakan portfolio bersama MaxWealth Consultancy. Mula dari RM100 sebulan, akaun dibuka online.',
-         'Unit trusts, PRS, corporate investing and portfolio reviews with MaxWealth Consultancy. From RM100 a month, accounts opened online.',
+         'Unit trust, PRS, takaful, urusan hutang, wasiat dan hibah, pelaburan korporat, semakan portfolio dan pendidikan kewangan bersama MaxWealth Consultancy.',
+         'Unit trusts, PRS, takaful, debt guidance, wills and hibah, corporate investing, portfolio reviews and financial education with MaxWealth Consultancy.',
          body)
 
 
@@ -646,7 +691,7 @@ def build_careers():
            'CAREER - Hi Ika, I am interested in a unit trust consultant career at MaxWealth Consultancy.')
     offer = [
         ('Latihan', 'Training', 'Latihan produk, proses dan etika sebelum dan selepas anda berdaftar.', 'Product, process and ethics training before and after you register.'),
-        ('Bimbingan', 'Mentoring', 'Bimbingan terus daripada pengasas agensi, termasuk sesi bersama pelanggan.', 'Direct mentoring from the agency’s founder, including client sessions.'),
+        ('Bimbingan', 'Mentoring', 'Bimbingan terus daripada pengasas MaxWealth, termasuk sesi bersama pelanggan.', 'Direct mentoring from MaxWealth’s founder, including client sessions.'),
         ('Bahan sokongan', 'Support materials', 'Panduan pelanggan, ebook pendidikan dan kandungan media sosial yang patuh garis panduan.', 'Client guides, educational ebooks and guideline-compliant social media content.'),
         ('Sokongan admin', 'Admin support', 'Bantuan urusan akaun dan temujanji, supaya anda boleh fokus kepada pelanggan.', 'Help with accounts and appointments, so you can focus on clients.'),
         ('Ilmu kewangan yang lebih luas', 'Wider financial knowledge', 'Belajar tentang produk kewangan lain dan asas pengurusan wang, bukan unit trust sahaja, supaya anda lebih faham keperluan pelanggan.', 'Learn about other financial products and money management basics, not just unit trusts, so you understand clients’ needs better.'),
@@ -660,7 +705,7 @@ def build_careers():
     {t("h2", "Dari taklimat hingga berdaftar.", "From briefing to registration.")}
   </div>
   <ol class="steps">
-    <li><div>{t("h3", "Sesi taklimat", "Briefing session")}{t("p", "Kenali industri, peranan perunding dan cara agensi kami bekerja. Tiada komitmen.", "Learn about the industry, the consultant’s role and how our agency works. No commitment.")}</div></li>
+    <li><div>{t("h3", "Sesi taklimat", "Briefing session")}{t("p", "Kenali industri, peranan perunding dan cara pasukan kami bekerja. Tiada komitmen.", "Learn about the industry, the consultant’s role and how our team works. No commitment.")}</div></li>
     <li><div>{t("h3", "Peperiksaan FIMM", "FIMM exam")}{t("p", "Daftar dan lulus peperiksaan perunding unit trust (dan PRS jika berminat). Kami bantu dengan bahan dan sesi ulang kaji.", "Register for and pass the unit trust consultant exam (and PRS if you wish). We help with materials and revision sessions.")}</div></li>
     <li><div>{t("h3", "Pendaftaran", "Registration")}{t("p", "Selepas lulus, anda didaftarkan dengan FIMM melalui syarikat pengurusan dana. Hanya perunding berdaftar boleh memasarkan unit trust dan PRS.", "After passing, you are registered with FIMM through the fund management company. Only registered consultants may market unit trusts and PRS.")}</div></li>
     <li><div>{t("h3", "Latihan dan bimbingan", "Training and mentoring")}{t("p", "Latihan produk dan etika, kemudian mula berkhidmat kepada pelanggan bersama bimbingan pasukan.", "Product and ethics training, then you start serving clients with the team’s guidance.")}</div></li>
@@ -729,7 +774,7 @@ def build_resources():
 <section class="section alt" id="kalkulator"><div class="wrap">
   <div class="section-head">
     {t("p", "Kalkulator", "Calculators", 'class="eyebrow"')}
-    {t("h2", "Kira dulu, rancang kemudian.", "Do the sums first.")}
+    {t("h2", "Kira dulu, buat keputusan kemudian.", "Do the sums first.")}
     {t("p", "Kalkulator ini berada di laman peribadi Khairul Khalis. Ilustrasi sahaja, berdasarkan andaian pulangan tetap; pulangan sebenar berubah-ubah dan tidak dijamin.", "These calculators live on Khairul Khalis’s personal site. Illustrations only, based on a fixed return assumption; actual returns vary and are not guaranteed.", 'class="lead"')}
   </div>
   <div class="grid c3">{ccards}</div>
@@ -811,6 +856,9 @@ def build_faq():
             ('Bagaimana nak semak perunding berdaftar?', 'How do I check that a consultant is registered?',
              'Semua perunding unit trust dan PRS mesti berdaftar dengan FIMM. Semak status pendaftaran di <a href="https://www.fimm.com.my" target="_blank" rel="noopener">laman FIMM</a>.',
              'All unit trust and PRS consultants must be registered with FIMM. Check registration status on the <a href="https://www.fimm.com.my" target="_blank" rel="noopener">FIMM website</a>.'),
+            ('Siapa yang mengendalikan setiap servis?', 'Who handles each service?',
+             'Unit trust dan PRS dikendalikan oleh perunding berdaftar FIMM. Takaful, insurans, wasiat dan hibah dikendalikan oleh ahli pasukan atau pihak yang berlesen atau berdaftar untuk bidang masing-masing.',
+             'Unit trusts and PRS are handled by FIMM-registered consultants. Takaful, insurance, wills and hibah are handled by team members or parties licensed or registered in those fields.'),
             ('Siapa yang akan membalas WhatsApp saya?', 'Who will answer my WhatsApp message?',
              'Ika, Admin kami. Ika akan menjawab soalan asas dan mengatur masa untuk anda berbual dengan perunding.',
              'Ika, our Admin. Ika answers basic questions and arranges a time for you to talk to a consultant.'),
@@ -833,7 +881,9 @@ def build_faq():
 def build_contact():
     topics = [
         ('Unit trust', 'Unit trusts'), ('PRS dan pelepasan cukai', 'PRS and tax relief'),
-        ('Pelaburan korporat', 'Corporate investing'), ('Semakan portfolio', 'Portfolio review'),
+        ('Takaful dan insurans', 'Takaful and insurance'), ('Hutang dan kad kredit', 'Debt and credit cards'),
+        ('Wasiat, hibah dan pusaka', 'Wills, hibah and estate matters'), ('Pelaburan korporat', 'Corporate investing'),
+        ('Semakan portfolio', 'Portfolio review'), ('Kelas dan webinar kewangan', 'Financial classes and webinars'),
         ('Bantuan buka akaun', 'Help opening an account'), ('Kerjaya perunding', 'Consultant career'),
         ('Lain-lain', 'Other'),
     ]
@@ -886,7 +936,7 @@ def build_legal():
 <h2>2. Tujuan</h2>
 <ul><li>menjawab pertanyaan anda dan mengatur temujanji;</li><li>menerangkan produk dan membantu proses membuka akaun;</li><li>membuat semakan portfolio dan perkhidmatan selepas jualan;</li><li>mematuhi kehendak undang-undang dan kawal selia.</li></ul>
 <h2>3. Pendedahan</h2>
-<p>Kami mungkin berkongsi data anda dengan Manulife Investment Management (M) Berhad sebagai pembekal produk (bagi tujuan membuka dan mengurus akaun anda), serta dengan pihak berkuasa atau badan kawal selia apabila dikehendaki oleh undang-undang. Kami tidak menjual data peribadi anda. Pembukaan akaun dibuat di laman Manulife Investments dan tertakluk kepada notis privasi mereka sendiri.</p>
+<p>Kami mungkin berkongsi data anda dengan Manulife Investment Management (M) Berhad sebagai pembekal produk (bagi tujuan membuka dan mengurus akaun anda), dengan ahli pasukan atau pihak berlesen yang mengendalikan servis yang anda minta (contohnya takaful, wasiat atau hibah), serta dengan pihak berkuasa atau badan kawal selia apabila dikehendaki oleh undang-undang. Kami tidak menjual data peribadi anda. Pembukaan akaun dibuat di laman Manulife Investments dan tertakluk kepada notis privasi mereka sendiri.</p>
 <h2>4. Penyimpanan dan keselamatan</h2>
 <p>Kami menyimpan data hanya selama yang perlu untuk tujuan di atas atau seperti yang dikehendaki undang-undang, dan mengambil langkah munasabah untuk melindunginya daripada akses, pendedahan atau kehilangan tanpa kebenaran.</p>
 <h2>5. Kuki dan storan pelayar</h2>
@@ -907,7 +957,7 @@ def build_legal():
 <h2>2. Purposes</h2>
 <ul><li>to answer your questions and arrange appointments;</li><li>to explain products and help with account opening;</li><li>to carry out portfolio reviews and after-sales service;</li><li>to comply with legal and regulatory requirements.</li></ul>
 <h2>3. Disclosure</h2>
-<p>We may share your data with Manulife Investment Management (M) Berhad as the product provider (to open and manage your account), and with authorities or regulators when required by law. We do not sell your personal data. Accounts are opened on the Manulife Investments site and are subject to their own privacy notice.</p>
+<p>We may share your data with Manulife Investment Management (M) Berhad as the product provider (to open and manage your account), with team members or licensed parties handling a service you ask for (for example takaful, wills or hibah), and with authorities or regulators when required by law. We do not sell your personal data. Accounts are opened on the Manulife Investments site and are subject to their own privacy notice.</p>
 <h2>4. Retention and security</h2>
 <p>We keep data only as long as needed for the purposes above or as required by law, and take reasonable steps to protect it from unauthorised access, disclosure or loss.</p>
 <h2>5. Cookies and browser storage</h2>
@@ -936,7 +986,9 @@ def build_legal():
 <h2>Pautan luar</h2>
 <p>Laman ini memaut ke laman lain, termasuk khairulkhalis.com, laman Manulife Investments dan WhatsApp. Kami tidak bertanggungjawab ke atas kandungan atau amalan privasi laman tersebut.</p>
 <h2>Status perunding</h2>
-<p>Khairul Khalis ialah perunding unit trust (UTC) dan PRS berdaftar FIMM (F01065736), mewakili Manulife Investment Management (M) Berhad melalui agensi MaxWealth Consultancy.</p>'''
+<p>Khairul Khalis ialah perunding unit trust (UTC) dan PRS berdaftar FIMM (F01065736), mewakili Manulife Investment Management (M) Berhad melalui MaxWealth Consultancy.</p>
+<h2>Servis lain</h2>
+<p>Takaful, insurans, wasiat dan hibah dikendalikan oleh ahli pasukan atau pihak yang berlesen atau berdaftar untuk bidang masing-masing. Bimbingan hutang dan pendidikan kewangan adalah maklumat umum, dan MaxWealth Consultancy bukan pemberi pinjaman.</p>'''
     disc_en = '''
 <h2>General information only</h2>
 <p>The content on this site is for general information and education only. It is not investment, tax or legal advice, and is not an offer or solicitation to buy or sell any investment product. Investment decisions should be based on your own objectives, financial situation and risk profile.</p>
@@ -949,7 +1001,9 @@ def build_legal():
 <h2>External links</h2>
 <p>This site links to other sites, including khairulkhalis.com, the Manulife Investments site and WhatsApp. We are not responsible for their content or privacy practices.</p>
 <h2>Consultant status</h2>
-<p>Khairul Khalis is a FIMM-registered unit trust (UTC) and PRS consultant (F01065736), representing Manulife Investment Management (M) Berhad through the MaxWealth Consultancy agency.</p>'''
+<p>Khairul Khalis is a FIMM-registered unit trust (UTC) and PRS consultant (F01065736), representing Manulife Investment Management (M) Berhad through MaxWealth Consultancy.</p>
+<h2>Other services</h2>
+<p>Takaful, insurance, wills and hibah are handled by team members or parties licensed or registered in those fields. Debt guidance and financial education are general information, and MaxWealth Consultancy is not a lender.</p>'''
     legal_page('/penafian/', 'Penafian', 'Disclaimer',
                'Penafian MaxWealth Consultancy: maklumat umum sahaja, risiko pelaburan unit trust dan PRS, dokumen produk dan pautan luar.',
                'MaxWealth Consultancy disclaimer: general information only, unit trust and PRS investment risk, product documents and external links.',
