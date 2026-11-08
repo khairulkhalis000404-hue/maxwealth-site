@@ -198,8 +198,8 @@
       var msg = ok
         ? (en ? 'You are eligible. The minimum investment is RM1,000.' : 'Anda layak. Pelaburan minimum ialah RM1,000.')
         : excess <= 0
-          ? (en ? 'Your balance has not passed the Basic Savings for age ' + age + ' (' + rm(basic) + ') yet, so you can’t invest from €PF for now.'
-                : 'Baki anda belum melebihi Simpanan Asas umur ' + age + ' (' + rm(basic) + '), jadi belum boleh melabur dari KW$P buat masa ini.')
+          ? (en ? 'Your balance has not passed the Basic Savings for age ' + age + ' (' + rm(basic) + ') yet, so you can’t invest from it for now.'
+                : 'Baki anda belum melebihi Simpanan Asas umur ' + age + ' (' + rm(basic) + '), jadi belum boleh melabur dari Akaun Persaraan buat masa ini.')
           : (en ? 'Below the RM1,000 minimum. Your balance needs to be at least ' + rm(basic + 1000 / 0.3) + ' to qualify.'
                 : 'Kurang daripada minimum RM1,000. Baki anda perlu sekurang-kurangnya ' + rm(basic + 1000 / 0.3) + ' untuk layak.');
       html = bigOut(en ? 'You can invest up to' : 'Anda boleh labur sehingga', rm(ok ? can : 0)) +
@@ -209,11 +209,11 @@
     }
     $('epResult').innerHTML = html;
     $('epFine').textContent = en
-      ? 'Based on the €PF Basic Savings table effective 1 January 2026. Minimum investment RM1,000; you must be below 55. Check your exact eligible amount in the KW$P app or i-Akaun. Investing involves risk.'
-      : 'Berdasarkan jadual Simpanan Asas KW$P berkuat kuasa 1 Januari 2026. Pelaburan minimum RM1,000; anda mesti berumur bawah 55 tahun. Semak jumlah layak sebenar dalam aplikasi KW$P atau i-Akaun. Pelaburan melibatkan risiko.';
+      ? 'Based on the Basic Savings table effective 1 January 2026. Minimum investment RM1,000; you must be below 55. Check your exact eligible amount in i-Akaun. Investing involves risk.'
+      : 'Berdasarkan jadual Simpanan Asas berkuat kuasa 1 Januari 2026. Pelaburan minimum RM1,000; anda mesti berumur bawah 55 tahun. Semak jumlah layak sebenar dalam i-Akaun. Pelaburan melibatkan risiko.';
     setCta('epCta',
       'Hai Ika, saya baru guna kalkulator Akaun Persaraan di website dan nak bincang.\nUmur: ' + age + '\nBaki Akaun Persaraan: ' + rm(bal),
-      'Hi Ika, I used the Akaun Persaraan calculator on the website and would like to discuss.\nAge: ' + age + '\nAkaun Persaraan balance: ' + rm(bal));
+      'Hi Ika, I used the Retirement Account calculator on the website and would like to discuss.\nAge: ' + age + '\nRetirement Account balance: ' + rm(bal));
   }
 
   function render() { renderEf(); renderCompound(); renderTvm(); renderEp(); }

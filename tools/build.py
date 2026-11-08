@@ -782,7 +782,7 @@ def build_resources():
         ('ef', 'Dana kecemasan', 'Emergency fund', 'Berapa perlu ada, dan berapa lama nak capai.', 'How much you need, and how long to get there.'),
         ('cc', 'Pertumbuhan kompaun', 'Compound growth', 'Lihat bagaimana pelaburan berkala boleh berkembang.', 'See how regular investing could grow.'),
         ('tv', 'TVM (nilai masa wang)', 'TVM (time value of money)', 'Kira sasaran, jumlah bulanan, jumlah sekali atau tempoh.', 'Work out a target, monthly amount, lump sum or time needed.'),
-        ('ep', 'Kelayakan pelaburan KW$P', '€PF investment eligibility', 'Berapa dari Akaun Persaraan yang boleh dilabur.', 'How much of your Akaun Persaraan you can invest.'),
+        ('ep', 'Akaun Persaraan (Akaun 1)', 'Retirement Account (Account 1)', 'Berapa dari Akaun Persaraan yang boleh dilabur.', 'How much of your Retirement Account you can invest.'),
     ]
     ctabs = ''.join(f'<button type="button" class="calc-tab" data-calc="{k}" aria-pressed="{"true" if k == "ef" else "false"}"><span class="ic-round">{I["calc"]}</span><span>{t("b", a, b)}{t("small", c, d)}</span></button>' for k, a, b, c, d in calcs)
     tvsegs = ''.join(f'<button type="button" data-tvm="{k}" aria-pressed="{"true" if k == "fv" else "false"}"{t_attr}>{ms}</button>' for k, ms, t_attr in (
@@ -808,9 +808,9 @@ def build_resources():
                  + cfield('tvYears', 'Tempoh', 'Years', '10', '', 'tahun', 'years', need='fv pmt pv')) \
         + cpanel('ep',
                  cfield('epAge', 'Umur anda', 'Your age', '30', '', 'tahun', 'years')
-                 + cfield('epBal', 'Baki Akaun Persaraan', 'Akaun Persaraan balance', '50000', 'RM'),
-                 t('p', '30% daripada jumlah dalam Akaun Persaraan yang melebihi Simpanan Asas mengikut umur anda. Semak baki dalam aplikasi KW$P atau i-Akaun.',
-                   '30% of the amount in your Akaun Persaraan above the Basic Savings for your age. Check your balance in the KW$P app or i-Akaun.', 'class="calc-fine"'))
+                 + cfield('epBal', 'Baki Akaun Persaraan', 'Retirement Account balance', '50000', 'RM'),
+                 t('p', '30% daripada jumlah dalam Akaun Persaraan yang melebihi Simpanan Asas mengikut umur anda. Semak baki dalam i-Akaun.',
+                   '30% of the amount in your Retirement Account above the Basic Savings for your age. Check your balance in i-Akaun.', 'class="calc-fine"'))
     body = f'''{page_hero("Sumber", "Resources", "Belajar dulu, labur kemudian.", "Learn first, invest later.", "Panduan langkah demi langkah, kalkulator dan ebook pendidikan untuk bantu anda faham sebelum membuat keputusan.", "Step-by-step guides, calculators and educational ebooks to help you understand before you decide.")}
 
 <section class="section" id="panduan"><div class="wrap split" style="align-items:start">
