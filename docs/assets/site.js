@@ -61,7 +61,7 @@
     pop.setAttribute('aria-modal', 'true');
     pop.setAttribute('aria-labelledby', 'langPopTitle');
     pop.innerHTML = '<div class="lang-pop-box">' +
-      '<h2 id="langPopTitle">Pilih bahasa <span>Choose your language</span></h2>' +
+      '<h2 id="langPopTitle">Choose your language <span>Pilih bahasa</span></h2>' +
       '<div class="lang-pop-btns"><button type="button" class="btn" data-pick="ms">Bahasa Melayu</button><button type="button" class="btn ghost" data-pick="en">English</button></div></div>';
     var done = function (lang) {
       current = lang;
