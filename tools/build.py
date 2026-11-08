@@ -33,6 +33,7 @@ def file_version(name):
 
 CSS_V = file_version('site.css')
 JS_V = file_version('site.js')
+CALC_V = file_version('calc.js')
 
 
 def esc(s):
@@ -754,12 +755,56 @@ def build_resources():
   <span class="txt">{t("b", ms, en)}{t("span", "PDF, BM dan English", "PDF, BM and English")}</span>
   <span class="pdf"><a href="{PERSONAL}/guides/{bm}" target="_blank" rel="noopener">BM</a><a href="{PERSONAL}/guides/{eng}" target="_blank" rel="noopener">EN</a></span>
 </div>''' for ic, ms, en, bm, eng in guides)
+    def cfield(fid, ms, en, value='', pre='', post='', post_en='', need='', hint=False):
+        inner = f'<input id="{fid}" type="number" inputmode="decimal" min="0" step="any" value="{value}">'
+        left = f'<i>{pre}</i>' if pre else ''
+        right = t('i', post, post_en) if post else ''
+        n = f' data-need="{need}"' if need else ''
+        h = f'<small class="calc-hint" id="{fid}Hint"></small>' if hint else ''
+        lab = f'for="{fid}"'
+        return f'<div class="field"{n}>{t("label", ms, en, lab)}<span class="inp">{left}{inner}{right}</span>{h}</div>'
+
+    def crate(fid, need=''):
+        n = f' data-need="{need}"' if need else ''
+        opts = ''.join(f'<option value="{r}"{" selected" if r == 10 else ""}>{r}%</option>' for r in (8, 9, 10))
+        lab = f'for="{fid}"'
+        return f'<div class="field"{n}>{t("label", "Andaian pulangan setahun", "Assumed return per year", lab)}<select id="{fid}">{opts}</select></div>'
+
+    def cpanel(key, fields, extra=''):
+        return f'''<div class="calc-panel" data-panel="{key}"{" hidden" if key != "ef" else ""}>
+    <div><div class="calc-fields">{fields}</div>{extra}</div>
+    <div><div class="calc-result" id="{key}Result" aria-live="polite"></div>
+    <p class="calc-fine" id="{key}Fine"></p>
+    <a class="btn ghost calc-cta" id="{key}Cta" target="_blank" rel="noopener">{I["wa"]}{t("span", "Bincang angka ini di WhatsApp", "Discuss these numbers on WhatsApp")}</a></div>
+  </div>'''
+
     calcs = [
-        ('Dana kecemasan', 'Emergency fund', 'Berapa perlu ada, dan berapa lama nak capai.', 'How much you need, and how long to get there.'),
-        ('Pertumbuhan kompaun', 'Compound growth', 'Lihat bagaimana pelaburan berkala boleh berkembang dari tahun ke tahun.', 'See how regular investing could grow over the years.'),
-        ('TVM (nilai masa wang)', 'TVM (time value of money)', 'Kira sasaran, jumlah bulanan, jumlah sekali atau tempoh.', 'Work out a target, monthly amount, lump sum or time needed.'),
+        ('ef', 'Dana kecemasan', 'Emergency fund', 'Berapa perlu ada, dan berapa lama nak capai.', 'How much you need, and how long to get there.'),
+        ('cc', 'Pertumbuhan kompaun', 'Compound growth', 'Lihat bagaimana pelaburan berkala boleh berkembang.', 'See how regular investing could grow.'),
+        ('tv', 'TVM (nilai masa wang)', 'TVM (time value of money)', 'Kira sasaran, jumlah bulanan, jumlah sekali atau tempoh.', 'Work out a target, monthly amount, lump sum or time needed.'),
     ]
-    ccards = ''.join(f'<div class="card"><span class="ic-round">{I["calc"]}</span>{t("h3", a, b)}{t("p", c, d)}</div>' for a, b, c, d in calcs)
+    ctabs = ''.join(f'<button type="button" class="calc-tab" data-calc="{k}" aria-pressed="{"true" if k == "ef" else "false"}"><span class="ic-round">{I["calc"]}</span><span>{t("b", a, b)}{t("small", c, d)}</span></button>' for k, a, b, c, d in calcs)
+    tvsegs = ''.join(f'<button type="button" data-tvm="{k}" aria-pressed="{"true" if k == "fv" else "false"}"{t_attr}>{ms}</button>' for k, ms, t_attr in (
+        ('fv', 'Nilai akhir', ' data-en="Final value"'), ('pmt', 'Pelaburan bulanan', ' data-en="Monthly investment"'),
+        ('pv', 'Jumlah sekali', ' data-en="Lump sum"'), ('n', 'Tempoh', ' data-en="Time needed"')))
+    cpanels = cpanel('ef',
+                     cfield('efSalary', 'Gaji bulanan', 'Monthly salary', '4000', 'RM')
+                     + cfield('efNeeds', 'Perbelanjaan wajib sebulan', 'Essential expenses a month', '2500', 'RM')
+                     + cfield('efHave', 'Dana kecemasan sedia ada', 'Emergency fund you have now', '', 'RM')
+                     + cfield('efMonthly', 'Simpan setiap bulan', 'Save every month', '', 'RM', hint=True),
+                     f'<label class="tick"><input id="efCard" type="checkbox">{t("span", "Saya ada kad kredit dengan had yang cukup untuk tampung kecemasan", "I have a credit card with enough limit to cover an emergency")}</label>') \
+        + cpanel('cc',
+                 cfield('ccStart', 'Jumlah permulaan', 'Starting amount', '1000', 'RM')
+                 + cfield('ccMonthly', 'Tambahan bulanan', 'Monthly top-up', '200', 'RM')
+                 + crate('ccRate')
+                 + cfield('ccYears', 'Tempoh', 'Years', '10', '', 'tahun', 'years')) \
+        + cpanel('tv',
+                 f'<div class="calc-seg" role="group" aria-label="Kira" data-en-aria-label="Work out">{tvsegs}</div>'
+                 + cfield('tvFv', 'Sasaran', 'Target amount', '100000', 'RM', need='pmt pv n')
+                 + cfield('tvPv', 'Jumlah sekali sekarang', 'Lump sum now', '5000', 'RM', need='fv pmt n')
+                 + cfield('tvPmt', 'Pelaburan bulanan', 'Monthly investment', '300', 'RM', need='fv pv n')
+                 + crate('tvRate')
+                 + cfield('tvYears', 'Tempoh', 'Years', '10', '', 'tahun', 'years', need='fv pmt pv'))
     body = f'''{page_hero("Sumber", "Resources", "Belajar dulu, labur kemudian.", "Learn first, invest later.", "Panduan langkah demi langkah, kalkulator dan ebook pendidikan untuk bantu anda faham sebelum membuat keputusan.", "Step-by-step guides, calculators and educational ebooks to help you understand before you decide.")}
 
 <section class="section" id="panduan"><div class="wrap split" style="align-items:start">
@@ -775,10 +820,13 @@ def build_resources():
   <div class="section-head">
     {t("p", "Kalkulator", "Calculators", 'class="eyebrow"')}
     {t("h2", "Kira dulu, buat keputusan kemudian.", "Do the sums first.")}
-    {t("p", "Kalkulator ini berada di laman peribadi Khairul Khalis. Ilustrasi sahaja, berdasarkan andaian pulangan tetap; pulangan sebenar berubah-ubah dan tidak dijamin.", "These calculators live on Khairul Khalis’s personal site. Illustrations only, based on a fixed return assumption; actual returns vary and are not guaranteed.", 'class="lead"')}
+    {t("p", "Taip nombor anda dan keputusan dikira terus. Ini ilustrasi sahaja, dan tiada maklumat anda disimpan.", "Type your numbers and the result updates as you go. These are illustrations only, and nothing you type is stored.", 'class="lead"')}
   </div>
-  <div class="grid c3">{ccards}</div>
-  <p style="margin-top:32px"><a class="btn" href="{PERSONAL}/" target="_blank" rel="noopener">{t("span", "Buka kalkulator di khairulkhalis.com", "Open the calculators on khairulkhalis.com")}{I["out"]}</a></p>
+  <div class="calc" id="calc">
+    <div class="calc-tabs">{ctabs}</div>
+    {cpanels}
+  </div>
+  <script defer src="/assets/calc.js?v={CALC_V}"></script>
 </div></section>
 
 <section class="section" id="ebook"><div class="wrap">

@@ -37,6 +37,7 @@
       b.setAttribute('aria-pressed', String(b.dataset.lang === (en ? 'en' : 'ms')));
     });
     root.classList.remove('lang-pending');
+    document.dispatchEvent(new CustomEvent('mw:lang'));
   }
 
   var current = getLang() === 'en' ? 'en' : 'ms';
