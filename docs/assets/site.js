@@ -55,13 +55,12 @@
     try { localStorage.setItem(KEY + 'Test', '1'); localStorage.removeItem(KEY + 'Test'); return true; } catch (e) { return false; }
   }
   if (getLang() === null && canRemember()) {
-    var logo = document.querySelector('.brand img');
     var pop = document.createElement('div');
     pop.className = 'lang-pop';
     pop.setAttribute('role', 'dialog');
     pop.setAttribute('aria-modal', 'true');
     pop.setAttribute('aria-labelledby', 'langPopTitle');
-    pop.innerHTML = '<div class="lang-pop-box">' + (logo ? '<img src="' + logo.getAttribute('src') + '" alt="MaxWealth Consultancy">' : '') +
+    pop.innerHTML = '<div class="lang-pop-box">' +
       '<h2 id="langPopTitle">Pilih bahasa <span>Choose your language</span></h2>' +
       '<div class="lang-pop-btns"><button type="button" class="btn" data-pick="ms">Bahasa Melayu</button><button type="button" class="btn ghost" data-pick="en">English</button></div></div>';
     var done = function (lang) {

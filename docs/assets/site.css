@@ -576,7 +576,6 @@ a.card:hover { border-color: var(--brand-2); }
 /* First-visit language popup */
 .lang-pop { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: var(--gutter); background: rgba(10,35,66,.55); }
 .lang-pop-box { width: 100%; max-width: 380px; padding: 32px 26px 26px; text-align: center; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); }
-.lang-pop-box img { display: block; height: 52px; width: auto; margin: 0 auto 20px; background: #FFFFFF; border-radius: 8px; }
 .lang-pop-box h2 { font-size: 1.5rem; }
 .lang-pop-box h2 span { display: block; margin-top: 6px; font-family: inherit; font-size: 1rem; color: var(--muted); }
 .lang-pop-btns { display: grid; gap: 10px; margin-top: 24px; }
