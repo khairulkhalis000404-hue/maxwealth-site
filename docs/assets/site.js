@@ -50,6 +50,44 @@
     });
   });
 
+  // First visit: ask which language; the choice is remembered, so it only shows once
+  function canRemember() {
+    try { localStorage.setItem(KEY + 'Test', '1'); localStorage.removeItem(KEY + 'Test'); return true; } catch (e) { return false; }
+  }
+  if (getLang() === null && canRemember()) {
+    var logo = document.querySelector('.brand img');
+    var pop = document.createElement('div');
+    pop.className = 'lang-pop';
+    pop.setAttribute('role', 'dialog');
+    pop.setAttribute('aria-modal', 'true');
+    pop.setAttribute('aria-labelledby', 'langPopTitle');
+    pop.innerHTML = '<div class="lang-pop-box">' + (logo ? '<img src="' + logo.getAttribute('src') + '" alt="MaxWealth Consultancy">' : '') +
+      '<h2 id="langPopTitle">Pilih bahasa <span>Choose your language</span></h2>' +
+      '<div class="lang-pop-btns"><button type="button" class="btn" data-pick="ms">Bahasa Melayu</button><button type="button" class="btn ghost" data-pick="en">English</button></div></div>';
+    var done = function (lang) {
+      current = lang;
+      apply(lang);
+      saveLang(lang);
+      pop.remove();
+      document.body.classList.remove('menu-lock');
+    };
+    pop.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-pick]');
+      if (b) done(b.dataset.pick);
+    });
+    pop.addEventListener('keydown', function (e) {
+      var btns = pop.querySelectorAll('button');
+      if (e.key === 'Escape') done(current);
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        btns[document.activeElement === btns[0] ? 1 : 0].focus();
+      }
+    });
+    document.body.appendChild(pop);
+    document.body.classList.add('menu-lock');
+    pop.querySelector('button').focus();
+  }
+
   // Mobile menu
   var header = document.querySelector('.site-header');
   var menuBtn = document.querySelector('.menu-btn');
