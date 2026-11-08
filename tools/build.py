@@ -779,10 +779,10 @@ def build_resources():
   </div>'''
 
     calcs = [
-        ('ef', 'Dana kecemasan', 'Emergency fund', 'Berapa perlu ada, dan berapa lama nak capai.', 'How much you need, and how long to get there.'),
-        ('cc', 'Pertumbuhan kompaun', 'Compound growth', 'Lihat bagaimana pelaburan berkala boleh berkembang.', 'See how regular investing could grow.'),
-        ('tv', 'TVM (nilai masa wang)', 'TVM (time value of money)', 'Kira sasaran, jumlah bulanan, jumlah sekali atau tempoh.', 'Work out a target, monthly amount, lump sum or time needed.'),
-        ('ep', 'Akaun Persaraan (Akaun 1)', 'Retirement Account (Account 1)', 'Berapa dari Akaun Persaraan yang boleh dilabur.', 'How much of your Retirement Account you can invest.'),
+        ('ef', 'Kalkulator dana kecemasan', 'Emergency fund calculator', 'Berapa perlu ada, dan berapa lama nak capai.', 'How much you need, and how long to get there.'),
+        ('cc', 'Kalkulator faedah kompaun', 'Compound interest calculator', 'Lihat bagaimana pelaburan berkala boleh berkembang.', 'See how regular investing could grow.'),
+        ('tv', 'Kalkulator TVM (nilai masa wang)', 'TVM calculator (time value of money)', 'Kira sasaran, jumlah bulanan, jumlah sekali atau tempoh.', 'Work out a target, monthly amount, lump sum or time needed.'),
+        ('ep', 'Kalkulator Akaun Persaraan (Akaun 1)', 'Retirement Account (Account 1) calculator', 'Berapa dari Akaun Persaraan yang boleh dilabur.', 'How much of your Retirement Account you can invest.'),
     ]
     ctabs = ''.join(f'<button type="button" class="calc-tab" data-calc="{k}" aria-pressed="{"true" if k == "ef" else "false"}"><span class="ic-round">{I["calc"]}</span><span>{t("b", a, b)}{t("small", c, d)}</span></button>' for k, a, b, c, d in calcs)
     tvsegs = ''.join(f'<button type="button" data-tvm="{k}" aria-pressed="{"true" if k == "fv" else "false"}"{t_attr}>{ms}</button>' for k, ms, t_attr in (
