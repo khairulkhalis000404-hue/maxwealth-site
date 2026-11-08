@@ -186,7 +186,7 @@
     132000, 141000, 150000, 160000, 170000, 181000, 192000, 203000];
 
   function renderEp() {
-    var en = isEn(), age = Math.floor(num('epAge')), bal = num('epBal'), html;
+    var en = isEn(), age = Math.floor(num('epAge')), bal = num('epBal'), html, eligible = null;
     if (age < 18) {
       html = note(en ? 'Enter an age of 18 or above.' : 'Masukkan umur 18 tahun ke atas.', true);
     } else if (age >= 55) {
@@ -195,6 +195,7 @@
         : 'Pada umur 55 tahun ke atas, Skim Pelaburan Ahli tidak lagi terpakai. WhatsApp kami untuk semak pilihan anda.', true);
     } else {
       var basic = BASIC[age - 18], excess = Math.max(bal - basic, 0), can = excess * 0.3, ok = can >= 1000;
+      eligible = ok ? can : 0;
       var msg = ok
         ? (en ? 'You are eligible. The minimum investment is RM1,000.' : 'Anda layak. Pelaburan minimum ialah RM1,000.')
         : excess <= 0
@@ -212,8 +213,8 @@
       ? 'Based on the Basic Savings table effective 1 January 2026. Minimum investment RM1,000; you must be below 55. Check your exact eligible amount in i-Akaun. Investing involves risk.'
       : 'Berdasarkan jadual Simpanan Asas berkuat kuasa 1 Januari 2026. Pelaburan minimum RM1,000; anda mesti berumur bawah 55 tahun. Semak jumlah layak sebenar dalam i-Akaun. Pelaburan melibatkan risiko.';
     setCta('epCta',
-      'Hai Ika, saya baru guna kalkulator Akaun Persaraan di website dan nak bincang.\nUmur: ' + age + '\nBaki Akaun Persaraan: ' + rm(bal),
-      'Hi Ika, I used the Retirement Account calculator on the website and would like to discuss.\nAge: ' + age + '\nRetirement Account balance: ' + rm(bal));
+      'Hai Ika, saya baru guna kalkulator Akaun Persaraan di website dan nak bincang.\nUmur: ' + age + '\nBaki Akaun Persaraan: ' + rm(bal) + (eligible === null ? '' : '\nAnggaran boleh dilabur: ' + rm(eligible)),
+      'Hi Ika, I used the Retirement Account calculator on the website and would like to discuss.\nAge: ' + age + '\nRetirement Account balance: ' + rm(bal) + (eligible === null ? '' : '\nEstimated amount I can invest: ' + rm(eligible)));
   }
 
   function render() { renderEf(); renderCompound(); renderTvm(); renderEp(); }
