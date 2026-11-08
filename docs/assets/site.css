@@ -246,7 +246,7 @@ body.menu-lock { overflow: hidden; }
   display: flex; gap: 14px; align-items: center;
 }
 .panel .float b { display: block; color: var(--heading); font-size: 15px; }
-.panel .float span { font-size: 13px; color: var(--muted); line-height: 1.45; display: block; }
+.panel .float span:not(.ic-round) { font-size: 13px; color: var(--muted); line-height: 1.45; display: block; }
 .panel .chip-top {
   position: absolute; top: 20px; left: 20px;
   background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
@@ -457,6 +457,26 @@ a.card:hover { border-color: var(--brand-2); }
 .contact-list a { font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }
 .contact-list a:hover { text-decoration: underline; }
 .contact-list li > div > span { font-size: 14px; color: var(--muted); display: block; }
+
+/* Team list on Contact: tap a person to see what they handle */
+.people { display: grid; gap: 12px; max-width: 760px; }
+.person { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; }
+.person summary { display: flex; gap: 14px; align-items: center; padding: 14px 16px; cursor: pointer; list-style: none; border-radius: 16px; }
+.person summary::-webkit-details-marker { display: none; }
+.person summary:focus-visible { outline: 2px solid var(--brand-2); }
+.person .avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; flex: none; }
+.person .avatar.ic-round svg { width: 26px; height: 26px; }
+.person .who { flex: 1; min-width: 0; }
+.person .who b { display: block; color: var(--heading); font-weight: 600; }
+.person .who span { display: block; font-size: 14px; color: var(--muted); }
+.person .chev { display: grid; color: var(--muted); transform: rotate(90deg); transition: transform .2s; }
+.person .chev svg { width: 18px; height: 18px; }
+.person[open] .chev { transform: rotate(-90deg); }
+.person-body { display: grid; gap: 20px; padding: 6px 16px 20px; }
+.person-body .titles { margin: 0; }
+.person-body .form { padding: 20px; }
+.person-body > .btn { justify-self: start; }
+.person-label { margin-bottom: 12px; font-size: 13px; font-weight: 700; color: var(--heading); }
 .form { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: clamp(24px, 4vw, 40px); display: grid; gap: 20px; }
 .form h2 { font-size: 1.6rem; }
 .field { display: grid; gap: 8px; }

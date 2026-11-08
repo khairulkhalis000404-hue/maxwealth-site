@@ -22,6 +22,8 @@ REGISTER_URL = ('https://client.asia.manulifeam.com/en_MY/NewUser?invitation_url
                 'b9c251055f4f_rzk7z4m3gtsdl1wj7tla9m59yzqxze2cxwgtpcqwrmxqqkbqyejemhy83v7sriho.1769884932245')
 PERSONAL = 'https://khairulkhalis.com'
 CHANNEL = 'https://whatsapp.com/channel/0029Vb6tZx5ADTOEl9TRTX2B'
+AZNAH_WA = '601116442835'  # Aznah's form on /hubungi/; no other links on the profile
+AZNAH_FIMM = ''  # awaiting Aznah; the FIMM line on /hubungi/ only renders once this is filled
 EMAIL = 'khairulkhalis@manulifeinvestment.com.my'
 
 
@@ -475,7 +477,7 @@ def build_home():
     <h2 class="profile-name">Khairul Khalis</h2>
     <p class="titles"><b>Founder, MaxWealth Consultancy</b><br>{t("span", "Perunding unit trust (UTC) dan PRS berdaftar FIMM", "FIMM-registered unit trust (UTC) and PRS consultant")}</p>
     {STATS}
-    <p style="margin-top:32px"><a class="text-link" href="/tentang/">{t("span", "Kenali pasukan kami", "Meet our team")}{I["arrow"]}</a></p>
+    <p style="margin-top:32px"><a class="text-link" href="/hubungi/#pasukan">{t("span", "Kenali pasukan kami", "Meet our team")}{I["arrow"]}</a></p>
   </div>
 </div></section>
 
@@ -503,6 +505,10 @@ def build_home():
          body, priority='1.0')
 
 
+def ticks(items):
+    return '<ul class="ticks">' + ''.join(f'<li>{I["check"]}{t("span", a, b)}</li>' for a, b in items) + '</ul>'
+
+
 # ---------- About ----------
 def build_about():
     values = [
@@ -512,17 +518,6 @@ def build_about():
         ('Dekat', 'Close by', 'Admin kami membantu urusan akaun dan temujanji, dan perunding kami membuat semakan berkala.', 'Our Admin helps with accounts and appointments, and our consultants carry out regular reviews.'),
     ]
     vcards = ''.join(f'<div class="card">{t("h3", a, b)}{t("p", c, d)}</div>' for a, b, c, d in values)
-    awards = [
-        ('Champion, Top Regional Producer (Southern)', 'Champion, Top Regional Producer (Southern)', '2026'),
-        ('Champion, iFUNDS Personal Sales (Top Regional)', 'Champion, iFUNDS Personal Sales (Top Regional)', '2026'),
-        # UTEA explained in plain words: people outside Manulife don't know the title (user, 8 Nov 2026)
-        ('1st Runner Up, Top UTEA<small>UTEA (Unit Trust Executive Advisor) ialah gelaran perunding unit trust di Manulife Investments.</small>',
-         '1st Runner Up, Top UTEA<small>UTEA (Unit Trust Executive Advisor) is a unit trust consultant title at Manulife Investments.</small>', '2026'),
-        ('Million Ringgit Producer', 'Million Ringgit Producer', '2026'),
-        ('1st Runner Up, Manulife iFUNDS (Personal Sales) Top Regional Producer (Southern)', '1st Runner Up, Manulife iFUNDS (Personal Sales) Top Regional Producer (Southern)', 'MAC 2025'),
-        ('Penceramah jemputan, “Game On! Carnival Boss Preview”', 'Guest speaker, “Game On! Carnival Boss Preview”', 'Sep 2026'),
-    ]
-    arows = ''.join(f'<li>{t("b", a, b)}<span>{y}</span></li>' for a, b, y in awards)
     body = f'''{page_hero("Tentang kami", "About us", "Satu pasukan, pelbagai penyelesaian kewangan.", "One team, many financial solutions.", "MaxWealth Consultancy bantu individu, keluarga dan syarikat menyusun kewangan dan mencari penyelesaian yang sesuai. Tagline kami, Inspiring Financial Excellence, bermaksud satu perkara yang mudah: bantu orang faham wang mereka dan ambil langkah yang teratur.", "MaxWealth Consultancy helps individuals, families and companies get their finances in order and find the right solutions. Our tagline, Inspiring Financial Excellence, means something simple: help people understand their money and take well-ordered steps.")}
 
 <section class="section"><div class="wrap">
@@ -533,53 +528,21 @@ def build_about():
   <div class="grid c4">{vcards}</div>
 </div></section>
 
-<section class="section alt"><div class="wrap split">
-  {photo("about", "Khairul Khalis", "Khairul Khalis", "Founder, MaxWealth Consultancy", "Founder, MaxWealth Consultancy")}
-  <div>
-    {t("p", "Pengasas MaxWealth", "MaxWealth founder", 'class="eyebrow"')}
-    <h2 class="profile-name">Khairul Khalis</h2>
-    <p class="titles"><b>Founder, MaxWealth Consultancy</b><br>{t("span", "Perunding unit trust (UTC) dan PRS berdaftar FIMM · F01065736", "FIMM-registered unit trust (UTC) and PRS consultant · F01065736")}</p>
-    {t("p", "Khairul mula dalam industri kewangan pada 2020 dan dalam unit trust sejak 2021. Beliau mengasaskan MaxWealth Consultancy dan kini membimbing pasukan serta berkongsi pendidikan kewangan melalui ebook, panduan dan media sosial.", "Khairul started in the finance industry in 2020 and in unit trusts in 2021. Khairul founded MaxWealth Consultancy and now coaches the team and shares financial education through ebooks, guides and social media.", 'class="muted" style="margin-bottom:28px"')}
-    {STATS}
-  </div>
-</div></section>
-
-<section class="section"><div class="wrap split">
-  <div>
-    {t("p", "Pengiktirafan", "Recognition", 'class="eyebrow"')}
-    {t("h2", "Anugerah dan pengiktirafan.", "Awards and recognition.")}
-    {t("p", "Anugerah Manulife Investments yang diterima oleh Khairul Khalis. Ia mencerminkan pencapaian peribadi beliau, bukan jaminan hasil untuk pelabur atau perunding lain.", "Manulife Investments awards received by Khairul Khalis. They reflect Khairul’s own results, not an indication of outcomes for any investor or consultant.", 'class="muted" style="margin-top:16px"')}
-  </div>
-  <ul class="rows">{arows}</ul>
-</div></section>
-
 <section class="section alt"><div class="wrap">
-  <div class="section-head">
-    {t("p", "Pasukan", "Team", 'class="eyebrow"')}
-    {t("h2", "Siapa yang anda akan berurusan.", "Who you will work with.")}
-  </div>
-  <div class="grid c3">
-    <div class="card"><span class="ic-round">{I["shield"]}</span><h3>Khairul Khalis</h3>{t("p", "Founder. Membimbing pasukan dan menguruskan semakan portfolio pelanggan.", "Founder. Coaches the team and handles client portfolio reviews.")}</div>
-    <div class="card"><span class="ic-round">{I["chat"]}</span><h3>Ika</h3>{t("p", "Admin. Titik hubungan pertama anda untuk soalan, temujanji dan urusan akaun di WhatsApp.", "Admin. Your first point of contact for questions, appointments and account matters on WhatsApp.")}</div>
-    <div class="card"><span class="ic-round">{I["people"]}</span>{t("h3", "Pasukan kami", "Our team")}{t("p", "Perunding unit trust dan PRS berdaftar FIMM, serta ahli pasukan yang berlesen untuk takaful dan insurans.", "FIMM-registered unit trust and PRS consultants, and team members licensed for takaful and insurance.")}</div>
-  </div>
-  <div class="callout" style="margin-top:40px">
-    <div>{t("h3", "Semak perunding anda", "Check your consultant")}{t("p", 'Setiap perunding unit trust dan PRS mesti berdaftar dengan FIMM. Anda boleh semak status pendaftaran di <a href="https://www.fimm.com.my" target="_blank" rel="noopener">laman FIMM</a>.', 'Every unit trust and PRS consultant must be registered with FIMM. You can check registration status on the <a href="https://www.fimm.com.my" target="_blank" rel="noopener">FIMM website</a>.')}</div>
+  <div class="callout">
+    <div>{t("h3", "Kenali pasukan kami", "Meet our team")}{t("p", "Perunding unit trust dan PRS berdaftar FIMM, serta ahli pasukan yang berlesen untuk takaful dan insurans.", "FIMM-registered unit trust and PRS consultants, and team members licensed for takaful and insurance.")}<p style="margin-top:12px"><a class="text-link" href="/hubungi/#pasukan">{t("span", "Lihat pasukan", "See the team")}{I["arrow"]}</a></p></div>
   </div>
 </div></section>
 
 {band("Nak berbual dengan pasukan kami?", "Want to talk to our team?", "Hantar satu mesej. Ika akan bantu aturkan masa yang sesuai.", "Send one message. Ika will help arrange a suitable time.")}'''
     page('/tentang/', 'Tentang kami', 'About us',
-         'Kenali MaxWealth Consultancy dan pengasasnya, Khairul Khalis, perunding unit trust dan PRS berdaftar FIMM.',
-         'Meet MaxWealth Consultancy and its founder, Khairul Khalis, a FIMM-registered unit trust and PRS consultant.',
+         'Kenali MaxWealth Consultancy dan cara kami berurusan dengan anda.',
+         'Meet MaxWealth Consultancy and how we work with you.',
          body)
 
 
 # ---------- Services ----------
 def build_services():
-    def ticks(items):
-        return '<ul class="ticks">' + ''.join(f'<li>{I["check"]}{t("span", a, b)}</li>' for a, b in items) + '</ul>'
-
     detail = {
         'unit-trust': (
             'Unit trust mengumpul wang ramai pelabur ke dalam satu dana yang diurus oleh pengurus dana profesional, dan dilaburkan dalam saham, bon atau aset lain ikut objektif dana.',
@@ -942,6 +905,56 @@ def build_contact():
         ('Lain-lain', 'Other'),
     ]
     opts = ''.join(f'<option data-en="{esc(en)}">{ms}</option>' for ms, en in topics)
+    awards = [
+        ('Champion, Top Regional Producer (Southern)', 'Champion, Top Regional Producer (Southern)', '2026'),
+        ('Champion, iFUNDS Personal Sales (Top Regional)', 'Champion, iFUNDS Personal Sales (Top Regional)', '2026'),
+        # UTEA explained in plain words: people outside Manulife don't know the title (user, 8 Nov 2026)
+        ('1st Runner Up, Top UTEA<small>UTEA (Unit Trust Executive Advisor) ialah gelaran perunding unit trust di Manulife Investments.</small>',
+         '1st Runner Up, Top UTEA<small>UTEA (Unit Trust Executive Advisor) is a unit trust consultant title at Manulife Investments.</small>', '2026'),
+        ('Million Ringgit Producer', 'Million Ringgit Producer', '2026'),
+        ('1st Runner Up, Manulife iFUNDS (Personal Sales) Top Regional Producer (Southern)', '1st Runner Up, Manulife iFUNDS (Personal Sales) Top Regional Producer (Southern)', 'MAC 2025'),
+        ('Penceramah jemputan, “Game On! Carnival Boss Preview”', 'Guest speaker, “Game On! Carnival Boss Preview”', 'Sep 2026'),
+    ]
+    arows = ''.join(f'<li>{t("b", a, b)}<span>{y}</span></li>' for a, b, y in awards)
+    def person(avatar, name, ms, en, inner):
+        """Tap a row to see what this person handles; a shared details name keeps one open at a time."""
+        pic = (f'<img class="avatar" src="/assets/photos/avatar-{avatar}.jpg" alt="" width="64" height="64" loading="lazy">'
+               if avatar else f'<span class="avatar ic-round">{I["chat"]}</span>')
+        return (f'<details class="person" name="pasukan"><summary>{pic}<span class="who"><b>{name}</b>{t("span", ms, en)}</span>'
+                f'<span class="chev">{I["arrow"]}</span></summary><div class="person-body">{inner}</div></details>')
+
+    def label(ms, en):
+        return t("p", ms, en, 'class="person-label"')
+
+    khairul = f"""<p class="titles">{t("span", "Perunding unit trust (UTC) dan PRS berdaftar FIMM · F01065736", "FIMM-registered unit trust (UTC) and PRS consultant · F01065736")}</p>
+      {t("p", "Khairul mula dalam industri kewangan pada 2020 dan dalam unit trust sejak 2021. Beliau mengasaskan MaxWealth Consultancy dan kini membimbing pasukan serta berkongsi pendidikan kewangan melalui ebook, panduan dan media sosial.", "Khairul started in the finance industry in 2020 and in unit trusts in 2021. Khairul founded MaxWealth Consultancy and now coaches the team and shares financial education through ebooks, guides and social media.", 'class="muted"')}
+      <div>{label("Servis", "Services")}{ticks([("Unit trust", "Unit trusts"), ("PRS", "PRS"), ("Semakan portfolio pelanggan", "Client portfolio reviews"), ("Pendidikan kewangan: ebook dan panduan", "Financial education: ebooks and guides")])}</div>
+      <div>{STATS}</div>
+      <div>{label("Anugerah dan pengiktirafan", "Awards and recognition")}<ul class="rows">{arows}</ul>{t("p", "Anugerah Manulife Investments yang diterima oleh Khairul Khalis. Ia mencerminkan pencapaian peribadi beliau, bukan jaminan hasil untuk pelabur atau perunding lain.", "Manulife Investments awards received by Khairul Khalis. They reflect Khairul’s own results, not an indication of outcomes for any investor or consultant.", 'class="stats-note"')}</div>"""
+
+    aznah_reg = '<p class="titles">' + t("span", f"Perunding unit trust dan PRS berdaftar FIMM · {AZNAH_FIMM}", f"FIMM-registered unit trust and PRS consultant · {AZNAH_FIMM}") + '</p>' if AZNAH_FIMM else ''
+    # data-ika: Ika only covers unit trust and PRS (user, 9 Nov 2026); other topics go to Aznah
+    az_topics = ''.join(f'<option{" data-ika" if ika else ""} data-en="{esc(en)}">{ms}</option>' for ms, en, ika in [
+        ('Unit trust', 'Unit trust', True), ('PRS', 'PRS', True), ('Hutang dan kad kredit', 'Debt and credit cards', False),
+        ('Kelas dan webinar kewangan', 'Financial classes and webinars', False), ('Lain-lain', 'Other', False),
+    ])
+    aznah = f"""{aznah_reg}
+      {t("p", "Dikenali di TikTok sebagai Aznah MoneyTalk, Aznah membantu rakyat Malaysia menguruskan kewangan dengan lebih bijak, daripada penggunaan kad kredit secara strategik hingga pelaburan dan persediaan persaraan melalui unit trust dan PRS. Beliau pernah menjadi tetamu di pelbagai podcast kewangan tempatan dan mengendalikan kelas Credit Card Mastery untuk mereka yang ingin mengawal aliran tunai dengan lebih baik.", "Known on TikTok as Aznah MoneyTalk, Aznah helps Malaysians manage their money more wisely, from using credit cards strategically to investing and preparing for retirement through unit trusts and PRS. Aznah has been a guest on various local finance podcasts and runs the Credit Card Mastery class for people who want better control of their cash flow.", 'class="muted"')}
+      <div>{label("Servis", "Services")}{ticks([("Unit trust", "Unit trusts"), ("PRS", "PRS"), ("Kad kredit dan kelas Credit Card Mastery", "Credit cards and the Credit Card Mastery class")])}</div>
+      <form class="form" id="waFormAznah">
+        {t("h3", "Hubungi Aznah", "Contact Aznah")}
+        {t("p", "Isi ringkas di bawah. Butang ini membuka WhatsApp dengan mesej siap ditulis; laman ini tidak menyimpan apa-apa.", "Fill in the short form below. The button opens WhatsApp with your message ready; this site does not store anything.", 'class="note"')}
+        <div class="field">{t("label", "Nama", "Name", 'for="az-name"')}<input id="az-name" name="name" type="text" autocomplete="name" required pattern=".*\\S.*" placeholder="Nama anda" data-en-placeholder="Your name"></div>
+        <div class="field">{t("label", "Topik", "Topic", 'for="az-topic"')}<select id="az-topic" name="topic">{az_topics}</select></div>
+        <div class="field">{t("label", "Hantar kepada", "Send to", 'for="az-to"')}<select id="az-to" name="to"><option value="{AZNAH_WA}" data-hello="Hai Aznah, saya jumpa profile anda di website MaxWealth Consultancy." data-hello-en="Hi Aznah, I found your profile on the MaxWealth Consultancy website.">Aznah Abas</option><option value="{WA_NUMBER}" data-hello="Hai Ika, saya jumpa profile Aznah Abas di website MaxWealth Consultancy." data-hello-en="Hi Ika, I found Aznah Abas’s profile on the MaxWealth Consultancy website.">Ika (Admin)</option></select></div>
+        <div class="field">{t("label", "Mesej (pilihan)", "Message (optional)", 'for="az-msg"')}<textarea id="az-msg" name="message" placeholder="Contoh: Saya nak tahu cara guna kad kredit dengan lebih bijak." data-en-placeholder="Example: I would like to learn how to use credit cards more wisely."></textarea></div>
+        <button class="btn" type="submit">{I["wa"]}{t("span", "Buka WhatsApp", "Open WhatsApp")}</button>
+      </form>"""
+
+    ika = f"""{t("p", "Admin dan pembantu Khairul untuk urusan unit trust dan PRS. Ika menjawab soalan asas dan mengatur masa untuk anda berbual dengan perunding.", "Admin and Khairul’s assistant for unit trust and PRS matters. Ika answers basic questions and arranges a time for you to talk to a consultant.", 'class="muted"')}
+      <div>{label("Servis", "Services")}{ticks([("Soalan asas unit trust dan PRS", "Basic unit trust and PRS questions"), ("Aturkan temujanji dengan perunding", "Appointments with a consultant"), ("Bantuan urusan akaun", "Help with account matters")])}</div>
+      <a class="btn" {wa(*WA_GENERAL)}>{I["wa"]}{t("span", "WhatsApp Ika", "WhatsApp Ika")}</a>"""
+
     body = f'''{page_hero("Hubungi", "Contact", "Mula dengan satu mesej.", "Start with one message.", "Cara paling cepat ialah WhatsApp. Ika (Admin) akan membalas dan mengatur masa untuk anda berbual dengan perunding.", "WhatsApp is the fastest way. Ika (Admin) will reply and arrange a time for you to talk to a consultant.")}
 <section class="section"><div class="wrap contact-grid">
   <div>
@@ -960,6 +973,22 @@ def build_contact():
     <div class="field">{t("label", "Mesej (pilihan)", "Message (optional)", 'for="f-msg"')}<textarea id="f-msg" name="message" placeholder="Contoh: Saya nak mula melabur RM200 sebulan untuk persaraan." data-en-placeholder="Example: I would like to start investing RM200 a month for retirement."></textarea></div>
     <button class="btn" type="submit">{I["wa"]}{t("span", "Buka WhatsApp", "Open WhatsApp")}</button>
   </form>
+</div></section>
+
+<section class="section alt" id="pasukan"><div class="wrap">
+  <div class="section-head">
+    {t("p", "Pasukan", "Team", 'class="eyebrow"')}
+    {t("h2", "Siapa yang anda akan berurusan.", "Who you will work with.")}
+    {t("p", "Tap nama untuk lihat servis setiap orang.", "Tap a name to see what each person handles.", 'class="lead"')}
+  </div>
+  <div class="people">
+    {person("khairul", "Khairul Khalis", "Founder, MaxWealth Consultancy", "Founder, MaxWealth Consultancy", khairul)}
+    {person("aznah", "Aznah Abas", "Unit Trust &amp; PRS Consultant", "Unit Trust & PRS Consultant", aznah)}
+    {person("", "Ika", "Admin", "Admin", ika)}
+  </div>
+  <div class="callout" style="margin-top:40px">
+    <div>{t("h3", "Semak perunding anda", "Check your consultant")}{t("p", 'Setiap perunding unit trust dan PRS mesti berdaftar dengan FIMM. Anda boleh semak status pendaftaran di <a href="https://www.fimm.com.my" target="_blank" rel="noopener">laman FIMM</a>.', 'Every unit trust and PRS consultant must be registered with FIMM. You can check registration status on the <a href="https://www.fimm.com.my" target="_blank" rel="noopener">FIMM website</a>.')}</div>
+  </div>
 </div></section>'''
     page('/hubungi/', 'Hubungi', 'Contact',
          'Hubungi MaxWealth Consultancy melalui WhatsApp (Ika, Admin) di +60 19-402 4401 atau emel. Tanya tentang unit trust, PRS, semakan portfolio atau kerjaya.',

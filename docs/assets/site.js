@@ -156,9 +156,19 @@
     show(Math.floor(Math.random() * facts.length));
   }
 
-  // Contact page: compose a WhatsApp message to Ika (Admin); nothing is stored or sent by this site
-  var form = document.getElementById('waForm');
-  if (form) {
+  // Contact forms: compose a WhatsApp message to Ika (Admin) or the person picked in the form; nothing is stored or sent by this site
+  document.querySelectorAll('#waForm, #waFormAznah').forEach(function (form) {
+    // Aznah's form: Ika only covers unit trust and PRS, every other topic goes to Aznah
+    if (form.elements.to) {
+      var syncTo = function () {
+        var topic = form.elements.topic;
+        var ika = topic.options[topic.selectedIndex].hasAttribute('data-ika');
+        form.elements.to.closest('.field').style.display = ika ? '' : 'none';
+        if (!ika) form.elements.to.selectedIndex = 0;
+      };
+      form.elements.topic.addEventListener('change', syncTo);
+      syncTo();
+    }
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var en = current === 'en';
@@ -166,15 +176,17 @@
       var topicEl = form.elements.topic;
       var topic = topicEl.options[topicEl.selectedIndex].text.trim();
       var msg = form.elements.message.value.trim();
+      var to = form.elements.to ? form.elements.to.options[form.elements.to.selectedIndex] : null;
       var lines = [];
-      lines.push(en ? 'Hi Ika, I found MaxWealth Consultancy through the website.' : 'Hai Ika, saya jumpa MaxWealth Consultancy melalui website.');
+      if (to) lines.push(en ? to.dataset.helloEn : to.dataset.hello);
+      else lines.push(en ? 'Hi Ika, I found MaxWealth Consultancy through the website.' : 'Hai Ika, saya jumpa MaxWealth Consultancy melalui website.');
       if (name) lines.push((en ? 'Name: ' : 'Nama: ') + name);
       lines.push((en ? 'Topic: ' : 'Topik: ') + topic);
       if (msg) lines.push((en ? 'Message: ' : 'Mesej: ') + msg);
-      var url = 'https://wa.me/60194024401?text=' + encodeURIComponent(lines.join('\n'));
+      var url = 'https://wa.me/' + (to ? to.value : '60194024401') + '?text=' + encodeURIComponent(lines.join('\n'));
       // 'noopener' would make window.open return null, so detach the opener by hand
       var w = window.open(url, '_blank');
       if (w) w.opener = null; else location.href = url;
     });
-  }
+  });
 })();
