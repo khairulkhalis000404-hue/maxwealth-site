@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://maxwealthconsultancy.com/sitemap.xml
+Sitemap: https://maxwealthconsultancy.com.my/sitemap.xml
