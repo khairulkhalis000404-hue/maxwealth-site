@@ -509,6 +509,11 @@ def ticks(items):
     return '<ul class="ticks">' + ''.join(f'<li>{I["check"]}{t("span", a, b)}</li>' for a, b in items) + '</ul>'
 
 
+def avatar_pic(avatar):
+    return (f'<img class="avatar" src="/assets/photos/avatar-{avatar}.jpg" alt="" width="64" height="64" loading="lazy">'
+            if avatar else f'<span class="avatar ic-round">{I["chat"]}</span>')
+
+
 # ---------- About ----------
 def build_about():
     values = [
@@ -518,6 +523,13 @@ def build_about():
         ('Dekat', 'Close by', 'Admin kami membantu urusan akaun dan temujanji, dan perunding kami membuat semakan berkala.', 'Our Admin helps with accounts and appointments, and our consultants carry out regular reviews.'),
     ]
     vcards = ''.join(f'<div class="card">{t("h3", a, b)}{t("p", c, d)}</div>' for a, b, c, d in values)
+    team = ''.join(
+        f'<a class="person person-row" href="/hubungi/#pasukan">{avatar_pic(a)}<span class="who"><b>{name}</b>{t("span", ms, en)}</span></a>'
+        for a, name, ms, en in [
+            ('khairul', 'Khairul Khalis', 'Founder, MaxWealth Consultancy', 'Founder, MaxWealth Consultancy'),
+            ('aznah', 'Aznah Abas', 'Unit Trust, PRS &amp; Takaful Consultant', 'Unit Trust, PRS & Takaful Consultant'),
+            ('', 'Ika', 'Admin', 'Admin'),
+        ])
     body = f'''{page_hero("Tentang kami", "About us", "Satu pasukan, pelbagai penyelesaian kewangan.", "One team, many financial solutions.", "MaxWealth Consultancy bantu individu, keluarga dan syarikat menyusun kewangan dan mencari penyelesaian yang sesuai. Tagline kami, Inspiring Financial Excellence, bermaksud satu perkara yang mudah: bantu orang faham wang mereka dan ambil langkah yang teratur.", "MaxWealth Consultancy helps individuals, families and companies get their finances in order and find the right solutions. Our tagline, Inspiring Financial Excellence, means something simple: help people understand their money and take well-ordered steps.")}
 
 <section class="section"><div class="wrap">
@@ -529,9 +541,12 @@ def build_about():
 </div></section>
 
 <section class="section alt"><div class="wrap">
-  <div class="callout">
-    <div>{t("h3", "Kenali pasukan kami", "Meet our team")}{t("p", "Perunding unit trust dan PRS berdaftar FIMM, serta ahli pasukan yang berlesen untuk takaful dan insurans.", "FIMM-registered unit trust and PRS consultants, and team members licensed for takaful and insurance.")}<p style="margin-top:12px"><a class="text-link" href="/hubungi/#pasukan">{t("span", "Lihat pasukan", "See the team")}{I["arrow"]}</a></p></div>
+  <div class="section-head">
+    {t("p", "Pasukan", "Team", 'class="eyebrow"')}
+    {t("h2", "Kenali pasukan kami.", "Meet our team.")}
   </div>
+  <div class="team-mini">{team}</div>
+  <p style="margin-top:24px"><a class="text-link" href="/hubungi/#pasukan">{t("span", "Lihat servis setiap orang", "See what each person does")}{I["arrow"]}</a></p>
 </div></section>
 
 {band("Nak berbual dengan pasukan kami?", "Want to talk to our team?", "Hantar satu mesej. Ika akan bantu aturkan masa yang sesuai.", "Send one message. Ika will help arrange a suitable time.")}'''
@@ -918,9 +933,7 @@ def build_contact():
     arows = ''.join(f'<li>{t("b", a, b)}<span>{y}</span></li>' for a, b, y in awards)
     def person(avatar, name, ms, en, inner):
         """Tap a row to see what this person handles; a shared details name keeps one open at a time."""
-        pic = (f'<img class="avatar" src="/assets/photos/avatar-{avatar}.jpg" alt="" width="64" height="64" loading="lazy">'
-               if avatar else f'<span class="avatar ic-round">{I["chat"]}</span>')
-        return (f'<details class="person" name="pasukan"><summary>{pic}<span class="who"><b>{name}</b>{t("span", ms, en)}</span>'
+        return (f'<details class="person" name="pasukan"><summary>{avatar_pic(avatar)}<span class="who"><b>{name}</b>{t("span", ms, en)}</span>'
                 f'<span class="chev">{I["arrow"]}</span></summary><div class="person-body">{inner}</div></details>')
 
     def label(ms, en):
@@ -935,12 +948,12 @@ def build_contact():
     aznah_reg = '<p class="titles">' + t("span", f"Perunding unit trust dan PRS berdaftar FIMM · {AZNAH_FIMM}", f"FIMM-registered unit trust and PRS consultant · {AZNAH_FIMM}") + '</p>' if AZNAH_FIMM else ''
     # data-ika: Ika only covers unit trust and PRS (user, 9 Nov 2026); other topics go to Aznah
     az_topics = ''.join(f'<option{" data-ika" if ika else ""} data-en="{esc(en)}">{ms}</option>' for ms, en, ika in [
-        ('Unit trust', 'Unit trust', True), ('PRS', 'PRS', True), ('Hutang dan kad kredit', 'Debt and credit cards', False),
+        ('Unit trust', 'Unit trust', True), ('PRS', 'PRS', True), ('Takaful', 'Takaful', False), ('Hutang dan kad kredit', 'Debt and credit cards', False),
         ('Kelas dan webinar kewangan', 'Financial classes and webinars', False), ('Lain-lain', 'Other', False),
     ])
     aznah = f"""{aznah_reg}
-      {t("p", "Dikenali di TikTok sebagai Aznah MoneyTalk, Aznah membantu rakyat Malaysia menguruskan kewangan dengan lebih bijak, daripada penggunaan kad kredit secara strategik hingga pelaburan dan persediaan persaraan melalui unit trust dan PRS. Beliau pernah menjadi tetamu di pelbagai podcast kewangan tempatan dan mengendalikan kelas Credit Card Mastery untuk mereka yang ingin mengawal aliran tunai dengan lebih baik.", "Known on TikTok as Aznah MoneyTalk, Aznah helps Malaysians manage their money more wisely, from using credit cards strategically to investing and preparing for retirement through unit trusts and PRS. Aznah has been a guest on various local finance podcasts and runs the Credit Card Mastery class for people who want better control of their cash flow.", 'class="muted"')}
-      <div>{label("Servis", "Services")}{ticks([("Unit trust", "Unit trusts"), ("PRS", "PRS"), ("Kad kredit dan kelas Credit Card Mastery", "Credit cards and the Credit Card Mastery class")])}</div>
+      {t("p", "Dikenali sebagai Aznah Abas di TikTok dan Aznah MoneyTalk di Channel WhatsApp, Aznah membantu rakyat Malaysia menguruskan kewangan dengan lebih bijak, daripada penggunaan kad kredit secara strategik hingga pelaburan dan persediaan persaraan melalui unit trust dan PRS. Beliau pernah menjadi tetamu di pelbagai podcast kewangan tempatan dan mengendalikan kelas Credit Card Mastery untuk mereka yang ingin mengawal aliran tunai dengan lebih baik.", "Known as Aznah Abas on TikTok and Aznah MoneyTalk on WhatsApp Channel, Aznah helps Malaysians manage their money more wisely, from using credit cards strategically to investing and preparing for retirement through unit trusts and PRS. Aznah has been a guest on various local finance podcasts and runs the Credit Card Mastery class for people who want better control of their cash flow.", 'class="muted"')}
+      <div>{label("Servis", "Services")}{ticks([("Unit trust", "Unit trusts"), ("PRS", "PRS"), ("Takaful", "Takaful"), ("Kad kredit dan kelas Credit Card Mastery", "Credit cards and the Credit Card Mastery class")])}</div>
       <form class="form" id="waFormAznah">
         {t("h3", "Hubungi Aznah", "Contact Aznah")}
         {t("p", "Isi ringkas di bawah. Butang ini membuka WhatsApp dengan mesej siap ditulis; laman ini tidak menyimpan apa-apa.", "Fill in the short form below. The button opens WhatsApp with your message ready; this site does not store anything.", 'class="note"')}
@@ -983,7 +996,7 @@ def build_contact():
   </div>
   <div class="people">
     {person("khairul", "Khairul Khalis", "Founder, MaxWealth Consultancy", "Founder, MaxWealth Consultancy", khairul)}
-    {person("aznah", "Aznah Abas", "Unit Trust &amp; PRS Consultant", "Unit Trust & PRS Consultant", aznah)}
+    {person("aznah", "Aznah Abas", "Unit Trust, PRS &amp; Takaful Consultant", "Unit Trust, PRS & Takaful Consultant", aznah)}
     {person("", "Ika", "Admin", "Admin", ika)}
   </div>
   <div class="callout" style="margin-top:40px">

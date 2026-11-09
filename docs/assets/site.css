@@ -477,6 +477,10 @@ a.card:hover { border-color: var(--brand-2); }
 .person-body .form { padding: 20px; }
 .person-body > .btn { justify-self: start; }
 .person-label { margin-bottom: 12px; font-size: 13px; font-weight: 700; color: var(--heading); }
+.team-mini { display: grid; gap: 12px; }
+@media (min-width: 900px) { .team-mini { grid-template-columns: repeat(3, 1fr); } }
+.person-row { display: flex; gap: 14px; align-items: center; padding: 14px 16px; text-decoration: none; }
+.person-row:hover { border-color: var(--brand-2); }
 .form { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: clamp(24px, 4vw, 40px); display: grid; gap: 20px; }
 .form h2 { font-size: 1.6rem; }
 .field { display: grid; gap: 8px; }
