@@ -421,6 +421,12 @@ a.card:hover { border-color: var(--brand-2); }
 .book:hover .cover img { transform: scale(1.02); }
 .book b { color: var(--heading); font-size: 1.05rem; }
 .book span { font-size: 14px; color: var(--muted); }
+@media (max-width: 619px) {
+  .books { gap: 16px; }
+  .book { display: grid; grid-template-columns: 104px 1fr; gap: 4px 14px; align-content: start; }
+  .book .cover { grid-row: 1 / span 5; align-self: start; }
+  .book .tag { justify-self: start; }
+}
 .tag { display: inline-block; align-self: flex-start; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: var(--brand-soft); color: var(--link); }
 .tag.y { background: var(--accent); color: var(--on-accent); }
 

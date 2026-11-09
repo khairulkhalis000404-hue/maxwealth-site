@@ -791,15 +791,6 @@ def build_resources():
                    '30% of the amount in your Retirement Account above the Basic Savings for your age. Check your balance in i-Akaun.', 'class="calc-fine"'))
     body = f'''{page_hero("Sumber", "Resources", "Belajar dulu, labur kemudian.", "Learn first, invest later.", "Panduan langkah demi langkah, kalkulator dan ebook pendidikan untuk bantu anda faham sebelum membuat keputusan.", "Step-by-step guides, calculators and educational ebooks to help you understand before you decide.")}
 
-<section class="section" id="panduan"><div class="wrap split" style="align-items:start">
-  <div>
-    {t("p", "Panduan", "Guides", 'class="eyebrow"')}
-    {t("h2", "Panduan langkah demi langkah.", "Step-by-step guides.")}
-    {t("p", "Panduan bergambar untuk aplikasi dan laman Manulife iFUNDS. Setiap panduan ada dalam BM dan English, dan dibuka di khairulkhalis.com.", "Illustrated guides for the Manulife iFUNDS app and site. Each guide comes in BM and English, and opens on khairulkhalis.com.", 'class="muted" style="margin-top:16px"')}
-  </div>
-  <div>{grows}</div>
-</div></section>
-
 <section class="section alt" id="kalkulator"><div class="wrap">
   <div class="section-head">
     {t("p", "Kalkulator", "Calculators", 'class="eyebrow"')}
@@ -841,6 +832,15 @@ def build_resources():
     <div style="flex:1">{t("h3", "Saluran WhatsApp Unit Trust", "Unit Trust WhatsApp Channel")}{t("p", "Info pasaran dan tips, percuma untuk diikuti.", "Market updates and tips, free to follow.")}</div>
     {I["out"].replace('<svg', '<svg width="20" height="20"')}
   </a>
+</div></section>
+
+<section class="section alt" id="panduan"><div class="wrap split" style="align-items:start">
+  <div>
+    {t("p", "Panduan", "Guides", 'class="eyebrow"')}
+    {t("h2", "Panduan langkah demi langkah.", "Step-by-step guides.")}
+    {t("p", "Panduan bergambar untuk aplikasi dan laman Manulife iFUNDS. Setiap panduan ada dalam BM dan English, dan dibuka di khairulkhalis.com.", "Illustrated guides for the Manulife iFUNDS app and site. Each guide comes in BM and English, and opens on khairulkhalis.com.", 'class="muted" style="margin-top:16px"')}
+  </div>
+  <div>{grows}</div>
 </div></section>
 
 {band("Ada soalan selepas membaca?", "Questions after reading?", "Kami boleh terangkan bahagian yang kurang jelas.", "We can explain anything that is not clear.")}'''
