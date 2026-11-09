@@ -95,7 +95,7 @@ NAV = [
     ('/tentang/', 'Tentang', 'About'),
     ('/servis/', 'Servis', 'Services'),
     ('/kerjaya/', 'Kerjaya', 'Careers'),
-    ('/sumber/', 'Sumber', 'Resources'),
+    ('/sumber/', 'Tools &amp; Bahan Belajar', 'Tools & Learning Materials'),
     ('/faq/', 'FAQ', 'FAQ'),
     ('/hubungi/', 'Hubungi', 'Contact'),
 ]
@@ -296,7 +296,7 @@ def footer():
         <ul>{nav}</ul>
       </div>
       <div>
-        {t("h2", "Sumber", "Resources")}
+        {t("h2", "Tools &amp; Bahan Belajar", "Tools & Learning Materials")}
         <ul>
           <li><a href="/sumber/#panduan">{t("span", "Panduan langkah demi langkah", "Step-by-step guides")}</a></li>
           <li><a href="/sumber/#kalkulator">{t("span", "Kalkulator", "Calculators")}</a></li>
@@ -719,7 +719,7 @@ def build_careers():
          body)
 
 
-# ---------- Resources ----------
+# ---------- Tools & Learning Materials ----------
 def build_resources():
     guides = [
         ('ut', 'Daftar akaun Unit Trust', 'Register a Unit Trust account', 'panduan-daftar-akaun-unit-trust-bm.pdf', 'guide-register-unit-trust-account-en.pdf'),
@@ -743,12 +743,17 @@ def build_resources():
         return f'<div class="field"{n}>{t("label", ms, en, lab)}<span class="inp">{left}{inner}{right}</span>{h}</div>'
 
     def crate(fid, need=''):
-        return cfield(fid, "Andaian pulangan setahun", "Assumed return per year", value='10', post='%', post_en='%', need=need)
+        return cfield(fid, "Pulangan setahun", "Return per year", value='10', post='%', post_en='%', need=need)
 
     def cpanel(key, fields, extra=''):
-        return f'''<div class="calc-panel" data-panel="{key}"{" hidden" if key != "ef" else ""}>
-    <div><div class="calc-fields">{fields}</div>{extra}</div>
-    <div><div class="calc-result" id="{key}Result" aria-live="polite"></div>
+        title, title_en = heads[key]
+        why, why_en = whys[key]
+        return f'''<dialog class="calc-sheet" data-panel="{key}" aria-labelledby="{key}Title"><div class="calc-sheet-in">
+    <button type="button" class="calc-x" data-close aria-label="Tutup" data-en-aria-label="Close">&times;</button>
+    {t("h3", title, title_en, f'id="{key}Title"')}
+    {t("p", why, why_en, 'class="calc-why"')}
+    <div class="calc-fields">{fields}</div>{extra}
+    <div class="calc-result" id="{key}Result" aria-live="polite"></div>
     <p class="calc-fine" id="{key}Fine"></p>
     <a class="btn ghost calc-cta" id="{key}Cta" target="_blank" rel="noopener">{I["wa"]}{t("span", "Bincang angka ini di WhatsApp", "Discuss these numbers on WhatsApp")}</a></div>
   </div>'''
@@ -756,16 +761,23 @@ def build_resources():
     calcs = [
         ('ef', 'Kalkulator dana kecemasan', 'Emergency fund calculator', 'Berapa perlu ada, dan berapa lama nak capai.', 'How much you need, and how long to get there.'),
         ('cc', 'Kalkulator faedah kompaun', 'Compound interest calculator', 'Lihat bagaimana pelaburan berkala boleh berkembang.', 'See how regular investing could grow.'),
-        ('tv', 'Kalkulator TVM (nilai masa wang)', 'TVM calculator (time value of money)', 'Kira sasaran, jumlah bulanan, jumlah sekali atau tempoh.', 'Work out a target, monthly amount, lump sum or time needed.'),
         ('ep', 'Kalkulator Akaun Persaraan (Akaun 1)', 'Retirement Account (Account 1) calculator', 'Berapa dari Akaun Persaraan yang boleh dilabur.', 'How much of your Retirement Account you can invest.'),
+        ('tv', 'Kalkulator TVM (nilai masa wang)', 'TVM calculator (time value of money)', 'Kira sasaran, jumlah bulanan, jumlah sekali atau tempoh.', 'Work out a target, monthly amount, lump sum or time needed.'),
     ]
-    ctabs = ''.join(f'<button type="button" class="calc-tab" data-calc="{k}" aria-pressed="{"true" if k == "ef" else "false"}"><span class="ic-round">{I["calc"]}</span><span>{t("b", a, b)}{t("small", c, d)}</span></button>' for k, a, b, c, d in calcs)
+    heads = {k: (a.split(' (')[0], b.split(' (')[0]) for k, a, b, c, d in calcs}
+    whys = {
+        'ef': ('Sasarkan 3 hingga 6 bulan gaji. Lagi besar komitmen anda, lagi dekat dengan 6 bulan.', 'Aim for 3 to 6 months of your salary. The bigger your commitments, the closer to 6 months.'),
+        'cc': ('Taip nombor anda. Keputusan dikira terus.', 'Type your numbers. Results update as you type.'),
+        'ep': ('30% daripada jumlah dalam Akaun Persaraan yang melebihi Simpanan Asas mengikut umur anda. Semak baki dalam i-Akaun.', '30% of the amount in your Retirement Account above the Basic Savings for your age. Check your balance in i-Akaun.'),
+        'tv': ('Pilih apa yang nak dikira, kemudian isi yang lain.', 'Choose what to work out, then fill in the rest.'),
+    }
+    ctabs = ''.join(f'<button type="button" class="calc-tab" data-calc="{k}"><span class="ic-round">{I["calc"]}</span><span class="txt">{t("b", a, b)}{t("small", c, d)}</span>{I["arrow"]}</button>' for k, a, b, c, d in calcs)
     tvsegs = ''.join(f'<button type="button" data-tvm="{k}" aria-pressed="{"true" if k == "fv" else "false"}"{t_attr}>{ms}</button>' for k, ms, t_attr in (
         ('fv', 'Nilai akhir', ' data-en="Final value"'), ('pmt', 'Pelaburan bulanan', ' data-en="Monthly investment"'),
         ('pv', 'Jumlah sekali', ' data-en="Lump sum"'), ('n', 'Tempoh', ' data-en="Time needed"')))
     cpanels = cpanel('ef',
                      cfield('efSalary', 'Gaji bulanan', 'Monthly salary', '4000', 'RM')
-                     + cfield('efNeeds', 'Perbelanjaan wajib sebulan', 'Essential expenses a month', '2500', 'RM')
+                     + cfield('efNeeds', 'Perbelanjaan wajib / bulan', 'Essential expenses / month', '2500', 'RM')
                      + cfield('efHave', 'Dana kecemasan sedia ada', 'Emergency fund you have now', '', 'RM')
                      + cfield('efMonthly', 'Simpan setiap bulan', 'Save every month', '', 'RM', hint=True),
                      f'<label class="tick"><input id="efCard" type="checkbox">{t("span", "Saya ada kad kredit dengan had yang cukup untuk tampung kecemasan", "I have a credit card with enough limit to cover an emergency")}</label>') \
@@ -783,10 +795,8 @@ def build_resources():
                  + cfield('tvYears', 'Tempoh', 'Years', '10', '', 'tahun', 'years', need='fv pmt pv')) \
         + cpanel('ep',
                  cfield('epAge', 'Umur anda', 'Your age', '30', '', 'tahun', 'years')
-                 + cfield('epBal', 'Baki Akaun Persaraan', 'Retirement Account balance', '50000', 'RM'),
-                 t('p', '30% daripada jumlah dalam Akaun Persaraan yang melebihi Simpanan Asas mengikut umur anda. Semak baki dalam i-Akaun.',
-                   '30% of the amount in your Retirement Account above the Basic Savings for your age. Check your balance in i-Akaun.', 'class="calc-fine"'))
-    body = f'''{page_hero("Sumber", "Resources", "Belajar dulu, labur kemudian.", "Learn first, invest later.", "Panduan langkah demi langkah, kalkulator dan ebook pendidikan untuk bantu anda faham sebelum membuat keputusan.", "Step-by-step guides, calculators and educational ebooks to help you understand before you decide.")}
+                 + cfield('epBal', 'Baki Akaun Persaraan', 'Retirement Account balance', '50000', 'RM'))
+    body = f'''{page_hero("Tools &amp; Bahan Belajar", "Tools & Learning Materials", "Belajar dulu, labur kemudian.", "Learn first, invest later.", "Panduan langkah demi langkah, kalkulator dan ebook pendidikan untuk bantu anda faham sebelum membuat keputusan.", "Step-by-step guides, calculators and educational ebooks to help you understand before you decide.")}
 
 <section class="section alt" id="kalkulator"><div class="wrap">
   <div class="section-head">
@@ -841,7 +851,7 @@ def build_resources():
 </div></section>
 
 {band("Ada soalan selepas membaca?", "Questions after reading?", "Kami boleh terangkan bahagian yang kurang jelas.", "We can explain anything that is not clear.")}'''
-    page('/sumber/', 'Sumber', 'Resources',
+    page('/sumber/', 'Tools dan Bahan Belajar', 'Tools and Learning Materials',
          'Panduan buka akaun unit trust dan PRS (BM dan English), kalkulator dan ebook pendidikan kewangan daripada MaxWealth Consultancy.',
          'Guides to open unit trust and PRS accounts (BM and English), calculators and financial education ebooks from MaxWealth Consultancy.',
          body)
@@ -869,8 +879,8 @@ def build_faq():
              'Melalui pelan pelaburan bulanan, anda boleh mula dari RM100 sebulan. Jumlah minimum untuk pelaburan sekali bergantung pada dana; kami akan maklumkan semasa memilih dana.',
              'Through a monthly investment plan you can start from RM100 a month. The minimum for a lump sum depends on the fund; we will let you know when choosing one.'),
             ('Bagaimana nak buka akaun?', 'How do I open an account?',
-             'Akaun dibuka online melalui Manulife Investments dalam lebih kurang 10 minit. Anda perlukan MyKad, akaun bank atas nama sendiri, emel dan nombor telefon. Panduan bergambar ada di halaman <a href="/sumber/#panduan">Sumber</a>.',
-             'Accounts are opened online through Manulife Investments in about 10 minutes. You need your MyKad, a bank account in your own name, an email address and a phone number. Illustrated guides are on the <a href="/sumber/#panduan">Resources</a> page.'),
+             'Akaun dibuka online melalui Manulife Investments dalam lebih kurang 10 minit. Anda perlukan MyKad, akaun bank atas nama sendiri, emel dan nombor telefon. Panduan bergambar ada di halaman <a href="/sumber/#panduan">Tools &amp; Bahan Belajar</a>.',
+             'Accounts are opened online through Manulife Investments in about 10 minutes. You need your MyKad, a bank account in your own name, an email address and a phone number. Illustrated guides are on the <a href="/sumber/#panduan">Tools & Learning Materials</a> page.'),
             ('Boleh keluarkan wang bila-bila masa?', 'Can I withdraw at any time?',
              'Untuk unit trust, anda boleh menjual (redeem) unit pada hari bekerja dan wang dibayar dalam tempoh yang dinyatakan dalam prospektus. Untuk PRS, pengeluaran sebelum umur persaraan adalah terhad dan tertakluk syarat serta penalti cukai.',
              'For unit trusts, you can redeem units on business days and the money is paid within the period stated in the prospectus. For PRS, withdrawals before retirement age are limited and subject to conditions and a tax penalty.'),

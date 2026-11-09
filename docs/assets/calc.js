@@ -41,7 +41,7 @@
     for (var y = 0; y <= years; y++) paid.push(start + monthly * 12 * y);
     var rates = (pct === 8 || pct === 10 ? [8, 10] : [8, 10, pct]).sort(function (a, b) { return a - b; });
     var lines = [{ vals: paid, color: 'rgba(255,255,255,.55)', dash: '4 4', label: en ? 'Your money in' : 'Wang anda masuk' }].concat(rates.map(function (r) {
-      return { vals: growthPath(start, monthly, r, years), color: r === pct ? 'var(--accent)' : '#FFFFFF', dash: '', label: r + (en ? '% a year' : '% setahun') };
+      return { vals: growthPath(start, monthly, r, years), color: r === pct ? 'var(--accent)' : '#FFFFFF', dash: '', label: r === pct ? (en ? 'Your rate ' : 'Kadar anda ') + r + '%' : r + (en ? '% a year' : '% setahun') };
     }));
     var max = Math.max.apply(null, lines.map(function (l) { return l.vals[years]; })) || 1;
     var mag = Math.pow(10, Math.floor(Math.log10(max / 3)));
@@ -106,7 +106,7 @@
       };
       var goal = function (key) {
         var g = goals[key], on = key === efPick;
-        return '<button type="button" class="ef-goal' + (on ? ' on' : '') + '" data-goal="' + key + '" aria-pressed="' + on + '"><small>' + g.label + '</small><b>' + rm(g.amt) + '</b><span>' + span(g.amt) + '</span></button>';
+        return '<button type="button" class="ef-goal' + (on ? ' pick on' : '') + '" data-goal="' + key + '" aria-pressed="' + on + '"><small><i class="ef-radio"></i>' + g.label + '</small><b>' + rm(g.amt) + '</b><span>' + span(g.amt) + '</span></button>';
       };
       var aim = goals[efPick].amt, bank = Math.min(Math.max(aim / 3, sal), 6000, aim);
       html = '<div class="ef-goals">' + goal('min') + goal('ideal') + goal('max') + '</div>' +
@@ -236,9 +236,17 @@
     }
     var tab = e.target.closest('[data-calc]');
     if (tab) {
-      box.querySelectorAll('[data-calc]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === tab)); });
-      box.querySelectorAll('[data-panel]').forEach(function (p) { p.hidden = p.dataset.panel !== tab.dataset.calc; });
+      var sheet = box.querySelector('[data-panel="' + tab.dataset.calc + '"]');
+      sheet.showModal();
+      sheet.firstElementChild.scrollTop = 0;
+      document.body.classList.add('menu-lock');
+      return;
     }
+    // A click on the backdrop lands on the dialog itself, which has no padding of its own
+    if (e.target.matches('.calc-sheet') || e.target.closest('[data-close]')) e.target.closest('.calc-sheet').close();
+  });
+  box.querySelectorAll('.calc-sheet').forEach(function (sheet) {
+    sheet.addEventListener('close', function () { document.body.classList.remove('menu-lock'); });
   });
   document.addEventListener('mw:lang', render);
   render();
