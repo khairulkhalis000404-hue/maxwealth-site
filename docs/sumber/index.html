@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/site.css?v=8d7caa9d">
+<link rel="stylesheet" href="../assets/site.css?v=7b2c6941">
 <script defer src="../assets/site.js?v=1334b940"></script>
 </head>
 <body>
@@ -114,17 +114,41 @@
   <div class="books">
     <a class="book" href="https://khairulkhalis.com/ebook/sebelum-anda-labur.pdf" target="_blank" rel="noopener">
       <div class="cover"><img src="../assets/cover-free.jpg" alt="Ebook Sebelum Anda Labur" loading="lazy" width="600" height="600"></div>
-      <span class="tag y" data-en="Free">Percuma</span><b>Sebelum Anda Labur</b><span data-en="Unit trusts in brief, and how to start the right way.">Unit trust secara ringkas dan cara mula dengan betul.</span>
+      <span class="tags"><span class="tag y" data-en="Free">Percuma</span></span><b>Sebelum Anda Labur</b><span data-en="Unit trusts in brief, and how to start the right way.">Unit trust secara ringkas dan cara mula dengan betul.</span>
+      <span class="foot"><span class="price"><b>RM0</b></span><span class="go" data-en="Download PDF →">Muat turun PDF →</span></span>
     </a>
-    <a class="book" href="https://khairulkhalis.com/" target="_blank" rel="noopener">
+    <a class="book paid" data-product="ut" href="https://wa.me/60194024401?text=EBOOK%20-%20Saya%20berminat%20dengan%20ebook%20Unit%20Trust%20Dari%20Zero" target="_blank" rel="noopener">
       <div class="cover"><img src="../assets/cover-paid.jpg" alt="Ebook Unit Trust Dari Zero" loading="lazy" width="600" height="600"></div>
-      <span class="tag" data-en="Full ebook">Ebook penuh</span><b>Unit Trust Dari Zero</b><span data-en="From “what is this?” to reading a fund fact sheet.">Dari “apa benda ni” sampai boleh baca fund fact sheet.</span>
+      <span class="tags"><span class="tag" data-en="Full ebook">Ebook penuh</span><span class="tag promo" data-en="Promo until 30 Nov">Promo hingga 30 Nov</span></span><b>Unit Trust Dari Zero</b><span data-en="From “what is this?” to reading a fund fact sheet.">Dari “apa benda ni” sampai boleh baca fund fact sheet.</span>
+      <span class="foot"><span class="price"><b>RM29</b><s>RM39</s></span><span class="go" data-en="Get it →">Dapatkan →</span></span>
     </a>
-    <a class="book" href="https://khairulkhalis.com/" target="_blank" rel="noopener">
+    <a class="book paid" data-product="urus" href="https://wa.me/60194024401?text=EBOOK%20-%20Saya%20berminat%20dengan%20ebook%20Urus%20Duit%20Dari%20Zero" target="_blank" rel="noopener">
       <div class="cover"><img src="../assets/cover-urus-duit.jpg" alt="Ebook Urus Duit Dari Zero" loading="lazy" width="600" height="600"></div>
-      <span class="tag" data-en="Full ebook">Ebook penuh</span><b>Urus Duit Dari Zero</b><span data-en="Take control of your money, get out of debt and start building your future.">Kawal duit, keluar dari hutang dan mula bina masa depan.</span>
+      <span class="tags"><span class="tag" data-en="Full ebook">Ebook penuh</span><span class="tag promo" data-en="Promo until 30 Nov">Promo hingga 30 Nov</span></span><b>Urus Duit Dari Zero</b><span data-en="Take control of your money, get out of debt and start building your future.">Kawal duit, keluar dari hutang dan mula bina masa depan.</span>
+      <span class="foot"><span class="price"><b>RM29</b><s>RM39</s></span><span class="go" data-en="Get it →">Dapatkan →</span></span>
+    </a>
+    <a class="book paid combo" data-product="combo" href="https://wa.me/60194024401?text=EBOOK%20-%20Saya%20berminat%20dengan%20ebook%20Urus%20Duit%20%2B%20Unit%20Trust%20Dari%20Zero" target="_blank" rel="noopener">
+      <div class="cover duo"><img src="../assets/cover-urus-duit.jpg" alt="" loading="lazy" width="600" height="600"><img src="../assets/cover-paid.jpg" alt="" loading="lazy" width="600" height="600"></div>
+      <span class="tags"><span class="tag" data-en="2-ebook combo">Kombo 2 ebook</span><span class="tag promo" data-en="Promo until 30 Nov">Promo hingga 30 Nov</span></span><b>Urus Duit + Unit Trust Dari Zero</b><span data-en="Both ebooks together, save &lt;b class=&#x27;save&#x27;&gt;RM9&lt;/b&gt;.">Dua-dua ebook sekali, jimat <b class="save">RM9</b>.</span>
+      <span class="foot"><span class="price"><b>RM49</b><s>RM69</s></span><span class="go" data-en="Get it →">Dapatkan →</span></span>
     </a>
   </div>
+  <dialog class="calc-sheet buy-sheet" id="buyEbook" aria-labelledby="buyTitle"><div class="calc-sheet-in">
+    <button type="button" class="calc-x" data-close aria-label="Tutup" data-en-aria-label="Close">&times;</button>
+    <h3 id="buyTitle" data-en="Get the ebook">Dapatkan ebook</h3>
+    <p class="calc-why"><b class="buy-name"></b> · <span class="buy-price"></span></p>
+    <a class="btn buy-pay" id="tngLink" target="_blank" rel="noopener"></a>
+    <ol class="buy-steps">
+      <li><span data-en="Pay exactly &lt;b class=&#x27;amt&#x27;&gt;&lt;/b&gt; with Touch ’n Go (you type in the amount)">Bayar tepat <b class="amt"></b> melalui Touch ’n Go (masukkan jumlah sendiri)</span></li>
+      <li><span data-en="In the &lt;b&gt;payment details&lt;/b&gt;, type &lt;b&gt;your phone number&lt;/b&gt; so we can match your payment">Dalam ruangan <b>butiran bayaran</b> (payment details), tulis <b>nombor telefon anda</b> supaya bayaran mudah disemak</span></li>
+      <li><span data-en="Take a screenshot of the receipt">Screenshot resit bayaran</span></li>
+      <li><span data-en="Tap &lt;b&gt;“I’ve paid”&lt;/b&gt; and send the receipt on WhatsApp">Tekan <b>“Saya dah bayar”</b> dan hantar resit melalui WhatsApp</span></li>
+      <li><span data-en="The ebook (PDF) is sent to you on WhatsApp">Ebook (PDF) dihantar kepada anda melalui WhatsApp</span></li>
+    </ol>
+    <a class="btn ghost buy-paid" id="paidBtn" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a8 8 0 0 1-4-3.5c-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4 3.4 3.4 0 0 0-1 2.5 5.9 5.9 0 0 0 1.2 3.1 13.4 13.4 0 0 0 5.2 4.6c1.9.8 2.7.9 3.6.7a3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.2-.3-.3-.6-.4zM12 21.8a9.8 9.8 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8zm8.4-18.2A11.8 11.8 0 0 0 1.8 17.9L.1 24l6.3-1.6A11.8 11.8 0 0 0 24 12.2a11.7 11.7 0 0 0-3.6-8.6z"/></svg><span data-en="I’ve paid, send receipt">Saya dah bayar, hantar resit</span></a>
+    <p class="calc-fine" data-en="Make sure you pay the exact amount. The ebook is a separate educational product and is not linked to, and does not require, any investment.">Pastikan jumlah bayaran tepat. Ebook ialah produk pendidikan berasingan, tidak berkaitan dengan dan tidak mewajibkan apa-apa pelaburan.</p>
+  </div></dialog>
+  <script defer src="../assets/ebook.js?v=565fd346"></script>
 </div></section>
 
 <section class="section tight"><div class="wrap">

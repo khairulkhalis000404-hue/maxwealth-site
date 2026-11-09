@@ -36,6 +36,7 @@ def file_version(name):
 CSS_V = file_version('site.css')
 JS_V = file_version('site.js')
 CALC_V = file_version('calc.js')
+EBOOK_V = file_version('ebook.js')
 
 
 def esc(s):
@@ -720,6 +721,15 @@ def build_careers():
 
 
 # ---------- Tools & Learning Materials ----------
+def paid_book(key, imgs, cover, tag_ms, tag_en, title, desc_ms, desc_en, price, normal):
+    msg = quote(f'EBOOK - Saya berminat dengan ebook {title}', safe='')
+    return f'''<a class="book paid{" combo" if key == "combo" else ""}" data-product="{key}" href="https://wa.me/{WA_NUMBER}?text={msg}" target="_blank" rel="noopener">
+      <div class="{cover}">{imgs}</div>
+      <span class="tags">{t("span", tag_ms, tag_en, 'class="tag"')}{t("span", "Promo hingga 30 Nov", "Promo until 30 Nov", 'class="tag promo"')}</span><b>{title}</b>{t("span", desc_ms, desc_en)}
+      <span class="foot"><span class="price"><b>RM{price}</b><s>RM{normal}</s></span>{t("span", "Dapatkan →", "Get it →", 'class="go"')}</span>
+    </a>'''
+
+
 def build_resources():
     guides = [
         ('ut', 'Daftar akaun Unit Trust', 'Register a Unit Trust account', 'panduan-daftar-akaun-unit-trust-bm.pdf', 'guide-register-unit-trust-account-en.pdf'),
@@ -820,17 +830,29 @@ def build_resources():
   <div class="books">
     <a class="book" href="{PERSONAL}/ebook/sebelum-anda-labur.pdf" target="_blank" rel="noopener">
       <div class="cover"><img src="/assets/cover-free.jpg" alt="Ebook Sebelum Anda Labur" loading="lazy" width="600" height="600"></div>
-      {t("span", "Percuma", "Free", 'class="tag y"')}<b>Sebelum Anda Labur</b>{t("span", "Unit trust secara ringkas dan cara mula dengan betul.", "Unit trusts in brief, and how to start the right way.")}
+      <span class="tags">{t("span", "Percuma", "Free", 'class="tag y"')}</span><b>Sebelum Anda Labur</b>{t("span", "Unit trust secara ringkas dan cara mula dengan betul.", "Unit trusts in brief, and how to start the right way.")}
+      <span class="foot"><span class="price"><b>RM0</b></span>{t("span", "Muat turun PDF →", "Download PDF →", 'class="go"')}</span>
     </a>
-    <a class="book" href="{PERSONAL}/" target="_blank" rel="noopener">
-      <div class="cover"><img src="/assets/cover-paid.jpg" alt="Ebook Unit Trust Dari Zero" loading="lazy" width="600" height="600"></div>
-      {t("span", "Ebook penuh", "Full ebook", 'class="tag"')}<b>Unit Trust Dari Zero</b>{t("span", "Dari “apa benda ni” sampai boleh baca fund fact sheet.", "From “what is this?” to reading a fund fact sheet.")}
-    </a>
-    <a class="book" href="{PERSONAL}/" target="_blank" rel="noopener">
-      <div class="cover"><img src="/assets/cover-urus-duit.jpg" alt="Ebook Urus Duit Dari Zero" loading="lazy" width="600" height="600"></div>
-      {t("span", "Ebook penuh", "Full ebook", 'class="tag"')}<b>Urus Duit Dari Zero</b>{t("span", "Kawal duit, keluar dari hutang dan mula bina masa depan.", "Take control of your money, get out of debt and start building your future.")}
-    </a>
+    {paid_book("ut", '<img src="/assets/cover-paid.jpg" alt="Ebook Unit Trust Dari Zero" loading="lazy" width="600" height="600">', "cover", "Ebook penuh", "Full ebook", "Unit Trust Dari Zero", "Dari “apa benda ni” sampai boleh baca fund fact sheet.", "From “what is this?” to reading a fund fact sheet.", "29", "39")}
+    {paid_book("urus", '<img src="/assets/cover-urus-duit.jpg" alt="Ebook Urus Duit Dari Zero" loading="lazy" width="600" height="600">', "cover", "Ebook penuh", "Full ebook", "Urus Duit Dari Zero", "Kawal duit, keluar dari hutang dan mula bina masa depan.", "Take control of your money, get out of debt and start building your future.", "29", "39")}
+    {paid_book("combo", '<img src="/assets/cover-urus-duit.jpg" alt="" loading="lazy" width="600" height="600"><img src="/assets/cover-paid.jpg" alt="" loading="lazy" width="600" height="600">', "cover duo", "Kombo 2 ebook", "2-ebook combo", "Urus Duit + Unit Trust Dari Zero", 'Dua-dua ebook sekali, jimat <b class="save">RM9</b>.', "Both ebooks together, save <b class='save'>RM9</b>.", "49", "69")}
   </div>
+  <dialog class="calc-sheet buy-sheet" id="buyEbook" aria-labelledby="buyTitle"><div class="calc-sheet-in">
+    <button type="button" class="calc-x" data-close aria-label="Tutup" data-en-aria-label="Close">&times;</button>
+    {t("h3", "Dapatkan ebook", "Get the ebook", 'id="buyTitle"')}
+    <p class="calc-why"><b class="buy-name"></b> · <span class="buy-price"></span></p>
+    <a class="btn buy-pay" id="tngLink" target="_blank" rel="noopener"></a>
+    <ol class="buy-steps">
+      <li>{t("span", 'Bayar tepat <b class="amt"></b> melalui Touch ’n Go (masukkan jumlah sendiri)', "Pay exactly <b class='amt'></b> with Touch ’n Go (you type in the amount)")}</li>
+      <li>{t("span", "Dalam ruangan <b>butiran bayaran</b> (payment details), tulis <b>nombor telefon anda</b> supaya bayaran mudah disemak", "In the <b>payment details</b>, type <b>your phone number</b> so we can match your payment")}</li>
+      <li>{t("span", "Screenshot resit bayaran", "Take a screenshot of the receipt")}</li>
+      <li>{t("span", "Tekan <b>“Saya dah bayar”</b> dan hantar resit melalui WhatsApp", "Tap <b>“I’ve paid”</b> and send the receipt on WhatsApp")}</li>
+      <li>{t("span", "Ebook (PDF) dihantar kepada anda melalui WhatsApp", "The ebook (PDF) is sent to you on WhatsApp")}</li>
+    </ol>
+    <a class="btn ghost buy-paid" id="paidBtn" target="_blank" rel="noopener">{I["wa"]}{t("span", "Saya dah bayar, hantar resit", "I’ve paid, send receipt")}</a>
+    {t("p", "Pastikan jumlah bayaran tepat. Ebook ialah produk pendidikan berasingan, tidak berkaitan dengan dan tidak mewajibkan apa-apa pelaburan.", "Make sure you pay the exact amount. The ebook is a separate educational product and is not linked to, and does not require, any investment.", 'class="calc-fine"')}
+  </div></dialog>
+  <script defer src="/assets/ebook.js?v={EBOOK_V}"></script>
 </div></section>
 
 <section class="section tight"><div class="wrap">

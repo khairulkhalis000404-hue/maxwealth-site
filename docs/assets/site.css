@@ -415,7 +415,8 @@ a.card:hover { border-color: var(--brand-2); }
 
 /* Ebooks */
 .books { display: grid; gap: 20px; grid-template-columns: 1fr; }
-@media (min-width: 720px) { .books { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 620px) { .books { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1000px) { .books { grid-template-columns: repeat(4, 1fr); } }
 .book { text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 14px; }
 .book .cover { border-radius: 14px; overflow: hidden; border: 1px solid var(--line); aspect-ratio: 1; background: var(--bg-alt); }
 .book .cover img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
@@ -617,3 +618,19 @@ a.card:hover { border-color: var(--brand-2); }
 .lang-pop-btns { display: grid; gap: 10px; margin-top: 24px; }
 .lang-pop-btns .btn { width: 100%; justify-content: center; }
 .lang-pop-btns .btn:focus-visible { outline: 2px solid var(--brand-2); outline-offset: 2px; }
+
+/* Ebook prices and purchase popup */
+.book .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag[hidden] { display: none; }
+.book .cover.duo { display: flex; }
+.book .cover.duo img { width: 50%; }
+.book .foot { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 10px; }
+.book .price { display: flex; align-items: baseline; gap: 6px; }
+.book .price b { font: 600 20px/1 "Fraunces", Georgia, serif; color: var(--heading); }
+.book .price s { font-size: 12.5px; font-weight: 600; color: var(--muted); }
+.book .go { font-size: 13px; font-weight: 700; color: var(--link); white-space: nowrap; }
+.buy-sheet .btn { width: 100%; justify-content: center; text-align: center; line-height: 1.3; margin-top: 16px; }
+.buy-sheet .buy-pay { background: #0055D4; color: #FFFFFF; }
+.buy-sheet .buy-paid { margin-top: 14px; }
+.buy-steps { display: grid; gap: 9px; margin: 16px 0 0; padding-left: 20px; font-size: 14px; line-height: 1.45; color: var(--text); }
+.buy-steps b { color: var(--heading); }
