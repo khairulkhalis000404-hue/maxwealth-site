@@ -54,7 +54,7 @@
   function canRemember() {
     try { localStorage.setItem(KEY + 'Test', '1'); localStorage.removeItem(KEY + 'Test'); return true; } catch (e) { return false; }
   }
-  if (getLang() === null && canRemember()) {
+  if (getLang() === null && canRemember() && !document.querySelector('.lp-hero')) {  // the ad landing page opens straight on the ebook
     var pop = document.createElement('div');
     pop.className = 'lang-pop';
     pop.setAttribute('role', 'dialog');

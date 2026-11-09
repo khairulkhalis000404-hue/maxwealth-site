@@ -647,3 +647,44 @@ a.card:hover { border-color: var(--brand-2); }
 .post .t { flex: 1; font-size: 15px; font-weight: 600; line-height: 1.4; color: var(--heading); }
 .post .read { font-size: 13px; font-weight: 700; color: var(--link); }
 @media (min-width: 760px) { .posts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 0; padding: 0; overflow: visible; } }
+
+/* ---------- Ebook landing page ---------- */
+.lp-hero { padding: clamp(24px, 6vw, 72px) 0 clamp(40px, 7vw, 80px); }
+.lp-grid { display: grid; gap: 20px 18px; grid-template-columns: 124px minmax(0, 1fr); grid-template-areas: "cover title" "copy copy"; align-items: center; }
+.lp-title { grid-area: title; min-width: 0; }
+.lp-title h1 { font-size: clamp(2rem, 8.6vw, 4rem); line-height: 1.05; margin-top: 8px; }
+.lp-cover { grid-area: cover; width: 100%; height: auto; border-radius: 8px; box-shadow: var(--shadow); }
+.lp-copy { grid-area: copy; display: grid; gap: 16px; justify-items: start; min-width: 0; }
+.lp-copy .to-ika { margin-top: 0; }
+.lp-copy .btn, .lp-band-buy .btn { width: 100%; justify-content: center; }
+.buy-offer { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.buy-offer .price { display: flex; align-items: baseline; gap: 8px; }
+.buy-offer .price b { font: 600 32px/1 "Fraunces", Georgia, serif; color: var(--heading); }
+.buy-offer .price s { font-size: 15px; font-weight: 600; color: var(--muted); }
+.buy-offer .tag.promo { align-self: center; background: var(--accent); color: var(--on-accent); }
+.lp-why { display: grid; gap: 28px; }
+.lp-why > * { min-width: 0; }
+.lp-why-body { display: grid; gap: 22px; }
+.lp-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+.lp-chips li { padding: 6px 13px; border: 1px solid var(--line-strong); border-radius: 999px; background: var(--surface); font-size: 14px; font-weight: 500; color: var(--heading); }
+.lp-paths { display: grid; gap: 16px; }
+.lp-letter { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--brand-soft); color: var(--emph); font-weight: 700; }
+.lp-author { display: flex; gap: 14px; align-items: center; margin-top: 24px; }
+.lp-author .avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; flex: none; }
+.lp-author div { min-width: 0; }
+.lp-author b, .lp-author span { display: block; }
+.lp-author b { color: var(--heading); font-weight: 600; }
+.lp-author span { font-size: 14px; line-height: 1.45; color: var(--muted); }
+.lp-band-buy { display: grid; gap: 16px; min-width: 240px; }
+.band .buy-offer .price b { color: #FFFFFF; }
+.band .buy-offer .price s { color: var(--band-muted); }
+@media (max-width: 359px) { .lp-band-buy { min-width: 0; } }
+@media (min-width: 620px) { .lp-paths { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 620px) { .lp-copy .btn { width: auto; min-width: 260px; } }
+@media (min-width: 860px) {
+  .lp-grid { grid-template-columns: minmax(0, 1fr) 340px; grid-template-areas: "title cover" "copy cover"; gap: 20px 72px; }
+  .lp-title { align-self: end; }
+  .lp-copy { align-self: start; }
+  .lp-why { grid-template-columns: 5fr 6fr; gap: 72px; align-items: start; }
+}
+@media (min-width: 1000px) { .lp-paths { grid-template-columns: repeat(4, minmax(0, 1fr)); } }

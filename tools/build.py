@@ -741,6 +741,25 @@ def paid_book(key, imgs, cover, tag_ms, tag_en, title, desc_ms, desc_en, price, 
     </a>'''
 
 
+def buy_sheet():
+    return f'''<dialog class="calc-sheet buy-sheet" id="buyEbook" aria-labelledby="buyTitle"><div class="calc-sheet-in">
+    <button type="button" class="calc-x" data-close aria-label="Tutup" data-en-aria-label="Close">&times;</button>
+    {t("h3", "Dapatkan ebook", "Get the ebook", 'id="buyTitle"')}
+    <p class="calc-why"><b class="buy-name"></b> · <span class="buy-price"></span></p>
+    <a class="btn buy-pay" id="tngLink" target="_blank" rel="noopener"></a>
+    <ol class="buy-steps">
+      <li>{t("span", 'Bayar tepat <b class="amt"></b> melalui Touch ’n Go (masukkan jumlah sendiri)', "Pay exactly <b class='amt'></b> with Touch ’n Go (you type in the amount)")}</li>
+      <li>{t("span", "Dalam ruangan <b>butiran bayaran</b> (payment details), tulis <b>nombor telefon anda</b> supaya bayaran mudah disemak", "In the <b>payment details</b>, type <b>your phone number</b> so we can match your payment")}</li>
+      <li>{t("span", "Screenshot resit bayaran", "Take a screenshot of the receipt")}</li>
+      <li>{t("span", "Tekan <b>“Saya dah bayar”</b> dan hantar resit melalui WhatsApp", "Tap <b>“I’ve paid”</b> and send the receipt on WhatsApp")}</li>
+      <li>{t("span", "Ebook (PDF) dihantar kepada anda melalui WhatsApp", "The ebook (PDF) is sent to you on WhatsApp")}</li>
+    </ol>
+    <a class="btn ghost buy-paid" id="paidBtn" target="_blank" rel="noopener">{I["wa"]}{t("span", "Saya dah bayar, hantar resit", "I’ve paid, send receipt")}</a>
+    {t("p", "Pastikan jumlah bayaran tepat. Ebook ialah produk pendidikan berasingan, tidak berkaitan dengan dan tidak mewajibkan apa-apa pelaburan.", "Make sure you pay the exact amount. The ebook is a separate educational product and is not linked to, and does not require, any investment.", 'class="calc-fine"')}
+  </div></dialog>
+  <script defer src="/assets/ebook.js?v={EBOOK_V}"></script>'''
+
+
 def build_resources():
     guides = [
         ('ut', 'Daftar akaun Unit Trust', 'Register a Unit Trust account', 'panduan-daftar-akaun-unit-trust-bm.pdf', 'guide-register-unit-trust-account-en.pdf'),
@@ -848,22 +867,7 @@ def build_resources():
     {paid_book("urus", '<img src="/assets/cover-urus-duit.jpg" alt="Ebook Urus Duit Dari Zero" loading="lazy" width="600" height="600">', "cover", "Ebook penuh", "Full ebook", "Urus Duit Dari Zero", "Kawal duit, keluar dari hutang dan mula bina masa depan.", "Take control of your money, get out of debt and start building your future.", "29", "39")}
     {paid_book("combo", '<img src="/assets/cover-urus-duit.jpg" alt="" loading="lazy" width="600" height="600"><img src="/assets/cover-paid.jpg" alt="" loading="lazy" width="600" height="600">', "cover duo", "Kombo 2 ebook", "2-ebook combo", "Urus Duit + Unit Trust Dari Zero", 'Dua-dua ebook sekali, jimat <b class="save">RM9</b>.', "Both ebooks together, save <b class='save'>RM9</b>.", "49", "69")}
   </div>
-  <dialog class="calc-sheet buy-sheet" id="buyEbook" aria-labelledby="buyTitle"><div class="calc-sheet-in">
-    <button type="button" class="calc-x" data-close aria-label="Tutup" data-en-aria-label="Close">&times;</button>
-    {t("h3", "Dapatkan ebook", "Get the ebook", 'id="buyTitle"')}
-    <p class="calc-why"><b class="buy-name"></b> · <span class="buy-price"></span></p>
-    <a class="btn buy-pay" id="tngLink" target="_blank" rel="noopener"></a>
-    <ol class="buy-steps">
-      <li>{t("span", 'Bayar tepat <b class="amt"></b> melalui Touch ’n Go (masukkan jumlah sendiri)', "Pay exactly <b class='amt'></b> with Touch ’n Go (you type in the amount)")}</li>
-      <li>{t("span", "Dalam ruangan <b>butiran bayaran</b> (payment details), tulis <b>nombor telefon anda</b> supaya bayaran mudah disemak", "In the <b>payment details</b>, type <b>your phone number</b> so we can match your payment")}</li>
-      <li>{t("span", "Screenshot resit bayaran", "Take a screenshot of the receipt")}</li>
-      <li>{t("span", "Tekan <b>“Saya dah bayar”</b> dan hantar resit melalui WhatsApp", "Tap <b>“I’ve paid”</b> and send the receipt on WhatsApp")}</li>
-      <li>{t("span", "Ebook (PDF) dihantar kepada anda melalui WhatsApp", "The ebook (PDF) is sent to you on WhatsApp")}</li>
-    </ol>
-    <a class="btn ghost buy-paid" id="paidBtn" target="_blank" rel="noopener">{I["wa"]}{t("span", "Saya dah bayar, hantar resit", "I’ve paid, send receipt")}</a>
-    {t("p", "Pastikan jumlah bayaran tepat. Ebook ialah produk pendidikan berasingan, tidak berkaitan dengan dan tidak mewajibkan apa-apa pelaburan.", "Make sure you pay the exact amount. The ebook is a separate educational product and is not linked to, and does not require, any investment.", 'class="calc-fine"')}
-  </div></dialog>
-  <script defer src="/assets/ebook.js?v={EBOOK_V}"></script>
+  {buy_sheet()}
 </div></section>
 
 <section class="section tight"><div class="wrap">
@@ -888,6 +892,110 @@ def build_resources():
          'Panduan buka akaun unit trust dan PRS (BM dan English), kalkulator dan ebook pendidikan kewangan daripada MaxWealth Consultancy.',
          'Guides to open unit trust and PRS accounts (BM and English), calculators and financial education ebooks from MaxWealth Consultancy.',
          body)
+
+
+# ---------- Ebook landing page (ads) ----------
+def buy_button(ms='Dapatkan ebook', en='Get the ebook'):
+    msg = quote('EBOOK - Saya berminat dengan ebook Urus Duit Dari Zero', safe='')
+    return f'<a class="btn" data-buy data-product="urus" href="https://wa.me/{WA_NUMBER}?text={msg}" target="_blank" rel="noopener">{t("span", ms, en)}</a>'
+
+
+def offer():
+    return f"""<div class="buy-offer" data-product="urus"><span class="price"><b>RM29</b><s>RM39</s></span>{t("span", "Promo hingga 30 Nov", "Promo until 30 Nov", 'class="tag promo"')}</div>"""
+
+
+def build_ebook_urus():
+    topics = ['KW$P &amp; Simpanan Asas', 'ASB vs ASBF', 'PTPTN', 'CCRIS &amp; CTOS', 'BNPL &amp; ansuran 0%',
+              'Pelepasan cukai LHDN', 'Zakat', 'Wasiat, hibah &amp; penama', 'Semakan scam']
+    topics_en = ['KW$P & Basic Savings', 'ASB vs ASBF', 'PTPTN', 'CCRIS & CTOS', 'BNPL & 0% instalments',
+                 'LHDN tax relief', 'Zakat', 'Wills, hibah & nominees', 'Scam checks']
+    chips = ''.join(t('li', a, b) for a, b in zip(topics, topics_en))
+    paths = [
+        ('A', 'Gaji Pertama', 'First Paycheck', 'Fresh graduate. Pelan 12 bulan pertama, kereta pertama dan kad kredit.',
+         'Fresh graduates. Your first 12 months, first car and credit cards.'),
+        ('B', 'Bina Keluarga', 'Building a Family', 'Umur 30–40. Kos kahwin, anak, rumah dan persaraan.',
+         'Ages 30–40. Wedding costs, children, a home and retirement.'),
+        ('C', 'Kemuncak Kerjaya', 'Career Peak', 'Umur 40–55. Generasi sandwich, bersedia untuk 55, wasiat dan hibah.',
+         'Ages 40–55. The sandwich generation, preparing for 55, wills and hibah.'),
+        ('D', 'Gaji Pencen Sendiri', 'Your Own Pension', '55 tahun ke atas. Cara bayar gaji kepada diri sendiri.',
+         '55 and above. How to pay yourself a salary.'),
+    ]
+    cards = ''.join(f"""<div class="card lp-path"><span class="lp-letter">{k}</span>{t("h3", h_ms, h_en)}{t("p", p_ms, p_en)}</div>"""
+                    for k, h_ms, h_en, p_ms, p_en in paths)
+    body = f"""<section class="lp-hero"><div class="wrap lp-grid">
+  <div class="lp-title">
+    {t("p", "Ebook · Edisi 2026", "Ebook · 2026 edition", 'class="eyebrow"')}
+    <h1>Urus Duit Dari Zero</h1>
+  </div>
+  <img class="lp-cover" src="/assets/cover-urus-duit.jpg" alt="Kulit ebook Urus Duit Dari Zero" data-en-alt="Cover of the Urus Duit Dari Zero ebook" width="582" height="827">
+  <div class="lp-copy">
+    {t("p", "Panduan langkah demi langkah untuk susun gaji, kawal hutang dan mula bina masa depan, ditulis untuk konteks Malaysia.", "A step-by-step guide to organising your salary, managing debt and starting to build your future, written for Malaysia.", 'class="lead"')}
+    {offer()}
+    {buy_button()}
+    {t("p", "PDF, 101 muka surat. Dihantar melalui WhatsApp selepas bayaran.", "PDF, 101 pages. Sent on WhatsApp after payment.", 'class="to-ika"')}
+  </div>
+</div></section>
+
+<section class="section alt"><div class="wrap lp-why">
+  <div>
+    {t("p", "Kenapa ebook ini", "Why this ebook", 'class="eyebrow"')}
+    {t("h2", "Banyak buku kewangan yang bagus. Tapi banyak yang ditulis untuk negara lain.", "There are many good money books. But many are written for other countries.")}
+  </div>
+  <div class="lp-why-body">
+    {t("p", "Banyak daripadanya bercerita tentang 401(k) dan Roth IRA. Di Malaysia, yang kita hadap ialah perkara lain. Ebook ini mengambil pelajaran daripada 10 buku terkenal, kemudian menyusunnya bersama pengalaman Khairul Khalis untuk keadaan kita di sini.", "Many of them talk about 401(k)s and Roth IRAs. In Malaysia, we deal with different things. This ebook takes lessons from 10 well-known books and sets them out, with Khairul Khalis's own experience, for life here.")}
+    <ul class="lp-chips">{chips}</ul>
+  </div>
+</div></section>
+
+<section class="section"><div class="wrap">
+  <div class="section-head">
+    {t("p", "4 laluan", "4 paths", 'class="eyebrow"')}
+    {t("h2", "Baca asas dulu, kemudian ikut fasa hidup anda.", "Read the basics, then follow your stage of life.")}
+  </div>
+  <div class="lp-paths">{cards}</div>
+</div></section>
+
+<section class="section alt"><div class="wrap lp-why">
+  <div>
+    {t("p", "Isi ebook", "What's inside", 'class="eyebrow"')}
+    {t("h2", "Dari faham angka sendiri sampai ada pelan 30 hari.", "From knowing your numbers to a 30-day plan.")}
+    <div class="lp-author">
+      <img class="avatar" src="/assets/photos/avatar-khairul.jpg" alt="" width="64" height="64" loading="lazy">
+      <div>
+        {t("span", "Ditulis oleh", "Written by", 'class="lp-by"')}
+        <b>Khairul Khalis</b>
+        <span>Founder, MaxWealth Consultancy</span>
+        {t("span", "Perunding unit trust (UTC) dan PRS berdaftar FIMM", "FIMM-registered unit trust (UTC) and PRS consultant")}
+      </div>
+    </div>
+  </div>
+  {ticks([
+      ("8 bab asas: bajet, dana kecemasan, hutang, perlindungan, persaraan dan cara mula melabur", "8 core chapters: budgeting, emergency funds, debt, protection, retirement and how to start investing"),
+      ("4 laluan ikut fasa hidup anda", "4 paths for your stage of life"),
+      ("Cukai, 12 kesilapan kewangan biasa dan tanda scam", "Tax, 12 common money mistakes and scam warning signs"),
+      ("Cara tambah pendapatan", "Ways to increase your income"),
+      ("Pelan tindakan 30 hari", "A 30-day action plan"),
+      ("6 lembaran kerja: nilai bersih, bajet, hutang, matlamat, perlindungan dan semakan berkala", "6 worksheets: net worth, budget, debt, goals, protection and regular reviews"),
+      ("Pendapat penulis dinyatakan dengan jelas", "The author's opinions are clearly marked"),
+  ])}
+</div></section>
+
+<section class="section"><div class="wrap"><div class="band">
+  <div>
+    {t("p", "Mula di sini", "Start here", 'class="eyebrow"')}
+    {t("h2", "Mula susun duit anda, dari zero.", "Start organising your money, from zero.")}
+    {t("p", "Ebook ialah produk pendidikan berasingan; membelinya tidak mewajibkan apa-apa pelaburan. Untuk pendidikan umum, bukan nasihat kewangan peribadi.", "The ebook is a separate educational product; buying it does not require any investment. For general education, not personal financial advice.")}
+  </div>
+  <div class="lp-band-buy">
+    {offer()}
+    {buy_button()}
+  </div>
+</div></div></section>
+{buy_sheet()}"""
+    page('/urus-duit/', 'Ebook Urus Duit Dari Zero', 'Urus Duit Dari Zero ebook',
+         'Ebook kewangan peribadi untuk konteks Malaysia: bajet, hutang, dana kecemasan, persaraan, dan 4 laluan ikut fasa hidup.',
+         'A personal finance ebook written for Malaysia: budgeting, debt, emergency funds, retirement, and 4 paths for your stage of life.',
+         body, priority='0.7')
 
 
 # ---------- FAQ ----------
@@ -1213,6 +1321,7 @@ if __name__ == '__main__':
     build_services()
     build_careers()
     build_resources()
+    build_ebook_urus()
     build_faq()
     build_contact()
     build_legal()

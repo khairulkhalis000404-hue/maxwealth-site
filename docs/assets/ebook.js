@@ -23,6 +23,11 @@
       if (tag) tag.hidden = promoOver;
       b.href = WA + encodeURIComponent((en ? 'EBOOK - I am interested in the ebook ' : 'EBOOK - Saya berminat dengan ebook ') + p.name + ' (RM' + now + ')');
     });
+    document.querySelectorAll('.buy-offer').forEach(function (o) {
+      var p = PRODUCTS[o.dataset.product], now = priceNow(o.dataset.product);
+      o.querySelector('.price').innerHTML = '<b>RM' + now + '</b>' + (promoOver ? '' : '<s>RM' + p.normal + '</s>');
+      o.querySelector('.tag.promo').hidden = promoOver;
+    });
     var save = document.querySelector('.book.combo .save');
     if (save) save.textContent = 'RM' + (priceNow('ut') + priceNow('urus') - priceNow('combo'));
     if (!sheet) return;
@@ -40,7 +45,7 @@
   }
 
   if (sheet && sheet.showModal) {
-    document.querySelectorAll('.book.paid').forEach(function (b) {
+    document.querySelectorAll('.book.paid, [data-buy]').forEach(function (b) {
       b.addEventListener('click', function (e) {
         e.preventDefault();
         buyKey = b.dataset.product;
