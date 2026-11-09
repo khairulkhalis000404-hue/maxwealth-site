@@ -34,12 +34,12 @@
     if (v >= 1e3) return 'RM' + Math.round(v / 1e3) + 'k';
     return 'RM' + Math.round(v);
   }
-  // Money paid in against 8% and 10% a year (plus 9% when it is the chosen rate)
+  // Money paid in against 8% and 10% a year, plus the rate the reader typed
   function growthChart(start, monthly, pct, years) {
     if (!years || (!start && !monthly)) return '';
     var en = isEn(), paid = [];
     for (var y = 0; y <= years; y++) paid.push(start + monthly * 12 * y);
-    var rates = pct === 8 || pct === 10 ? [8, 10] : [8, pct, 10];
+    var rates = (pct === 8 || pct === 10 ? [8, 10] : [8, 10, pct]).sort(function (a, b) { return a - b; });
     var lines = [{ vals: paid, color: 'rgba(255,255,255,.55)', dash: '4 4', label: en ? 'Your money in' : 'Wang anda masuk' }].concat(rates.map(function (r) {
       return { vals: growthPath(start, monthly, r, years), color: r === pct ? 'var(--accent)' : '#FFFFFF', dash: '', label: r + (en ? '% a year' : '% setahun') };
     }));

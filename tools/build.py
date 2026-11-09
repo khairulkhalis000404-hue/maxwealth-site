@@ -743,10 +743,7 @@ def build_resources():
         return f'<div class="field"{n}>{t("label", ms, en, lab)}<span class="inp">{left}{inner}{right}</span>{h}</div>'
 
     def crate(fid, need=''):
-        n = f' data-need="{need}"' if need else ''
-        opts = ''.join(f'<option value="{r}"{" selected" if r == 10 else ""}>{r}%</option>' for r in (8, 9, 10))
-        lab = f'for="{fid}"'
-        return f'<div class="field"{n}>{t("label", "Andaian pulangan setahun", "Assumed return per year", lab)}<select id="{fid}">{opts}</select></div>'
+        return cfield(fid, "Andaian pulangan setahun", "Assumed return per year", value='10', post='%', post_en='%', need=need)
 
     def cpanel(key, fields, extra=''):
         return f'''<div class="calc-panel" data-panel="{key}"{" hidden" if key != "ef" else ""}>
