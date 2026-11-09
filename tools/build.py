@@ -940,10 +940,10 @@ def build_contact():
         return t("p", ms, en, 'class="person-label"')
 
     khairul = f"""<p class="titles">{t("span", "Perunding unit trust (UTC) dan PRS berdaftar FIMM · F01065736", "FIMM-registered unit trust (UTC) and PRS consultant · F01065736")}</p>
-      {t("p", "Khairul mula dalam industri kewangan pada 2020 dan dalam unit trust sejak 2021. Beliau mengasaskan MaxWealth Consultancy dan kini membimbing pasukan serta berkongsi pendidikan kewangan melalui ebook, panduan dan media sosial.", "Khairul started in the finance industry in 2020 and in unit trusts in 2021. Khairul founded MaxWealth Consultancy and now coaches the team and shares financial education through ebooks, guides and social media.", 'class="muted"')}
+      {t("p", "Khairul Khalis mula dalam industri kewangan pada 2020 dan dalam unit trust sejak 2021. Beliau mengasaskan MaxWealth Consultancy dan kini membimbing pasukan serta berkongsi pendidikan kewangan melalui ebook, panduan dan media sosial.", "Khairul Khalis started in the finance industry in 2020 and in unit trusts in 2021. Khairul Khalis founded MaxWealth Consultancy and now coaches the team and shares financial education through ebooks, guides and social media.", 'class="muted"')}
       <div>{label("Servis", "Services")}{ticks([("Unit trust", "Unit trusts"), ("PRS", "PRS"), ("Semakan portfolio pelanggan", "Client portfolio reviews"), ("Pendidikan kewangan: ebook dan panduan", "Financial education: ebooks and guides")])}</div>
       <div>{STATS}</div>
-      <div>{label("Anugerah dan pengiktirafan", "Awards and recognition")}<ul class="rows">{arows}</ul>{t("p", "Anugerah Manulife Investments yang diterima oleh Khairul Khalis. Ia mencerminkan pencapaian peribadi beliau, bukan jaminan hasil untuk pelabur atau perunding lain.", "Manulife Investments awards received by Khairul Khalis. They reflect Khairul’s own results, not an indication of outcomes for any investor or consultant.", 'class="stats-note"')}</div>"""
+      <div>{label("Anugerah dan pengiktirafan", "Awards and recognition")}<ul class="rows">{arows}</ul>{t("p", "Anugerah Manulife Investments yang diterima oleh Khairul Khalis. Ia mencerminkan pencapaian peribadi beliau, bukan jaminan hasil untuk pelabur atau perunding lain.", "Manulife Investments awards received by Khairul Khalis. They reflect Khairul Khalis’s own results, not an indication of outcomes for any investor or consultant.", 'class="stats-note"')}</div>"""
 
     aznah_reg = '<p class="titles">' + t("span", f"Perunding unit trust dan PRS berdaftar FIMM · {AZNAH_FIMM}", f"FIMM-registered unit trust and PRS consultant · {AZNAH_FIMM}") + '</p>' if AZNAH_FIMM else ''
     # data-ika: Ika only covers unit trust and PRS (user, 9 Nov 2026); other topics go to Aznah
@@ -964,7 +964,7 @@ def build_contact():
         <button class="btn" type="submit">{I["wa"]}{t("span", "Buka WhatsApp", "Open WhatsApp")}</button>
       </form>"""
 
-    ika = f"""{t("p", "Admin dan pembantu Khairul untuk urusan unit trust dan PRS. Ika menjawab soalan asas dan mengatur masa untuk anda berbual dengan perunding.", "Admin and Khairul’s assistant for unit trust and PRS matters. Ika answers basic questions and arranges a time for you to talk to a consultant.", 'class="muted"')}
+    ika = f"""{t("p", "Admin untuk urusan unit trust dan PRS. Ika menjawab soalan asas dan mengatur masa untuk anda berbual dengan perunding.", "Admin for unit trust and PRS matters. Ika answers basic questions and arranges a time for you to talk to a consultant.", 'class="muted"')}
       <div>{label("Servis", "Services")}{ticks([("Soalan asas unit trust dan PRS", "Basic unit trust and PRS questions"), ("Aturkan temujanji dengan perunding", "Appointments with a consultant"), ("Bantuan urusan akaun", "Help with account matters")])}</div>
       <a class="btn" {wa(*WA_GENERAL)}>{I["wa"]}{t("span", "WhatsApp Ika", "WhatsApp Ika")}</a>"""
 
