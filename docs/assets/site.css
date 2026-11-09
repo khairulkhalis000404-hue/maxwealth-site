@@ -634,3 +634,16 @@ a.card:hover { border-color: var(--brand-2); }
 .buy-sheet .buy-paid { margin-top: 14px; }
 .buy-steps { display: grid; gap: 9px; margin: 16px 0 0; padding-left: 20px; font-size: 14px; line-height: 1.45; color: var(--text); }
 .buy-steps b { color: var(--heading); }
+
+/* Latest posts (home) */
+#latestPosts[hidden] { display: none; }
+.posts { display: flex; gap: 14px; margin: 0 calc(var(--gutter) * -1); padding: 2px var(--gutter) 10px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: var(--gutter); }
+.post { flex: 0 0 240px; display: flex; flex-direction: column; overflow: hidden; text-decoration: none; color: inherit; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; scroll-snap-align: start; }
+.post:hover { border-color: var(--brand-2); }
+.post .shot { aspect-ratio: 4 / 5; background: var(--bg-alt); }
+.post .shot img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.post-body { display: flex; flex: 1; flex-direction: column; gap: 8px; padding: 14px 16px 16px; }
+.post .meta { font-size: 12.5px; color: var(--muted); }
+.post .t { flex: 1; font-size: 15px; font-weight: 600; line-height: 1.4; color: var(--heading); }
+.post .read { font-size: 13px; font-weight: 700; color: var(--link); }
+@media (min-width: 760px) { .posts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 0; padding: 0; overflow: visible; } }

@@ -36,6 +36,7 @@ def file_version(name):
 CSS_V = file_version('site.css')
 JS_V = file_version('site.js')
 CALC_V = file_version('calc.js')
+POSTS_V = file_version('posts.js')
 EBOOK_V = file_version('ebook.js')
 
 
@@ -497,6 +498,16 @@ def build_home():
       {more("Lihat kerjaya", "See careers")}
     </a>
   </div>
+</div></section>
+
+<section class="section alt" id="latestPosts" hidden><div class="wrap">
+  <div class="section-head">
+    {t("p", "Post terkini", "Latest posts", 'class="eyebrow"')}
+    {t("h2", "Ilmu kewangan, terus dari kami.", "Money know-how, straight from us.")}
+  </div>
+  <div class="posts" id="postList"></div>
+  <p style="margin-top:28px"><a class="btn ghost" href="{CHANNEL}" target="_blank" rel="noopener">{t("span", "Ikuti Saluran WhatsApp", "Follow the WhatsApp Channel")}{I["out"]}</a></p>
+  <script defer src="/assets/posts.js?v={POSTS_V}"></script>
 </div></section>
 
 {band("Ada soalan? Mula dengan satu mesej.", "Have a question? Start with one message.", "Tiada komitmen. Ceritakan matlamat anda, dan kami terangkan pilihan yang ada dengan jelas.", "No commitment. Tell us your goals, and we will explain the options clearly.")}'''
