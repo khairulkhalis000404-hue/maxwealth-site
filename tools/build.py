@@ -755,8 +755,8 @@ def build_resources():
     <div class="calc-fields">{fields}</div>{extra}
     <div class="calc-result" id="{key}Result" aria-live="polite"></div>
     <p class="calc-fine" id="{key}Fine"></p>
-    <a class="btn ghost calc-cta" id="{key}Cta" target="_blank" rel="noopener">{I["wa"]}{t("span", "Bincang angka ini di WhatsApp", "Discuss these numbers on WhatsApp")}</a></div>
-  </div>'''
+    <a class="btn calc-cta" id="{key}Cta" target="_blank" rel="noopener">{I["wa"]}{t("span", "Bincang angka ini di WhatsApp", "Discuss these numbers on WhatsApp")}</a>
+  </div></dialog>'''
 
     calcs = [
         ('ef', 'Kalkulator dana kecemasan', 'Emergency fund calculator', 'Berapa perlu ada, dan berapa lama nak capai.', 'How much you need, and how long to get there.'),
