@@ -7,6 +7,18 @@
   function getLang() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
   function saveLang(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
 
+  // In-app browsers (TikTok, Instagram...) can't open WhatsApp or Touch 'n Go: name the app in the reminder before the BM/EN texts are read.
+  // ?inapp=1 forces the reminder for testing.
+  var UA = navigator.userAgent;
+  var INAPP = null;
+  [['TikTok', /musical_ly|Bytedance|TikTok/i], ['Instagram', /Instagram/i], ['Facebook', /FBAN|FBAV|FB_IAB/i], ['Threads', /Barcelona/i],
+   ['LinkedIn', /LinkedInApp/i], ['X', /Twitter/i]].forEach(function (a) { if (!INAPP && a[1].test(UA)) INAPP = a[0]; });
+  if (!INAPP && new URLSearchParams(location.search).get('inapp') === '1') INAPP = 'TikTok';
+  document.querySelectorAll('#inappSheet [data-en]').forEach(function (el) {
+    el.innerHTML = el.innerHTML.replace('{app}', INAPP || 'media sosial');
+    el.setAttribute('data-en', el.getAttribute('data-en').replace('{app}', INAPP || 'social media'));
+  });
+
   var textNodes = [];
   document.querySelectorAll('[data-en]').forEach(function (el) {
     textNodes.push({ el: el, ms: el.innerHTML, en: el.getAttribute('data-en') });
@@ -189,4 +201,74 @@
       if (w) w.opener = null; else location.href = url;
     });
   });
+
+  // In-app browsers: a slim bar on arrival (reading works fine in-app), and a full sheet only when a WhatsApp or Touch 'n Go link is
+  // tapped, since those rarely open inside these apps. One button per phone: Safari on iPhone (iOS 17+), Chrome on Android.
+  var inappSheet = document.getElementById('inappSheet');
+  var inappBar = document.getElementById('inappBar');
+  if (inappSheet && inappSheet.showModal && INAPP) {
+    var IOS = /iPhone|iPad|iPod/i.test(UA), ANDROID = /Android/i.test(UA);
+    var browserName = IOS ? 'Safari' : ANDROID ? 'Chrome' : '';
+    var openUrl = IOS ? 'x-safari-' + location.href
+      : ANDROID ? 'intent://' + location.host + location.pathname + location.search + '#Intent;scheme=https;package=com.android.chrome;end' : '';
+    var openBtn = document.getElementById('inappOpen');
+    var barOpen = document.getElementById('inappBarOpen');
+    var labelOpen = function () {
+      var en = root.lang === 'en';
+      if (browserName) openBtn.textContent = (en ? 'Open in ' : 'Buka dalam ') + browserName;
+      barOpen.textContent = browserName ? (en ? 'Open in ' : 'Buka dalam ') + browserName : (en ? 'How?' : 'Caranya');
+    };
+    if (openUrl) {
+      openBtn.href = openUrl;
+      barOpen.href = openUrl;
+      openBtn.hidden = false;
+      document.getElementById('inappCopy').classList.add('ghost');
+    } else {
+      barOpen.addEventListener('click', function (e) { e.preventDefault(); openSheet('Safari / Chrome'); });
+    }
+    labelOpen();
+    document.addEventListener('mw:lang', labelOpen);
+
+    var barClosed = function () { try { return sessionStorage.getItem('mwInappBar'); } catch (e) { return null; } };
+    if (inappBar && !barClosed()) {
+      inappBar.hidden = false;
+      document.body.classList.add('has-inapp-bar');
+    }
+    document.getElementById('inappBarX').addEventListener('click', function () {
+      inappBar.hidden = true;
+      document.body.classList.remove('has-inapp-bar');
+      try { sessionStorage.setItem('mwInappBar', '1'); } catch (e) {}
+    });
+
+    var openSheet = function (target) {
+      inappSheet.querySelectorAll('.lnk-app').forEach(function (x) { x.textContent = target; });
+      if (!inappSheet.open) inappSheet.showModal();
+    };
+    inappSheet.classList.add('link-mode');
+    document.getElementById('inappGo').addEventListener('click', function () { inappSheet.close(); });
+    inappSheet.addEventListener('click', function (e) { if (e.target === inappSheet) inappSheet.close(); });
+    document.getElementById('inappCopy').addEventListener('click', function () {
+      var btn = this, url = location.href;
+      var done = function () {
+        btn.textContent = root.lang === 'en' ? 'Link copied, paste it in Safari or Chrome' : 'Link disalin, tampal dalam Safari atau Chrome';
+      };
+      var fallback = function () {
+        var t = document.createElement('textarea');
+        t.value = url; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0';
+        inappSheet.appendChild(t); t.select();
+        try { document.execCommand('copy'); done(); } catch (e) {}
+        t.remove();
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, fallback); else fallback();
+    });
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href]');
+      if (!a || a.hasAttribute('data-skip-remind') || a.matches('[data-buy], .book.paid')) return;   // ebook buttons open the payment sheet first
+      if (!/(^|\.)(wa\.me|whatsapp\.com|tngdigital\.com\.my)$/.test(a.hostname)) return;
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('inappGo').href = a.href;
+      openSheet(/tngdigital/.test(a.hostname) ? 'Touch ’n Go' : 'WhatsApp');
+    }, true);
+  }
 })();

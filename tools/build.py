@@ -98,6 +98,7 @@ NAV = [
     ('/servis/', 'Servis', 'Services'),
     ('/kerjaya/', 'Kerjaya', 'Careers'),
     ('/sumber/', 'Tools &amp; Bahan Belajar', 'Tools & Learning Materials'),
+    ('/urus-duit/', 'Ebook', 'Ebook'),   # the ebook landing page, also where the TikTok ads point
     ('/faq/', 'FAQ', 'FAQ'),
     ('/hubungi/', 'Hubungi', 'Contact'),
 ]
@@ -251,7 +252,8 @@ def head(path, title_ms, title_en, desc_ms, desc_en):
 def header(path):
     def cur(p):
         return ' aria-current="page"' if p == path else ''
-    links = ''.join(f'<li><a href="{p}"{cur(p)}>{t("span", ms, en)}</a></li>' for p, ms, en in NAV)
+    hl = {'/urus-duit/': ' class="nav-hl"'}
+    links = ''.join(f'<li><a href="{p}"{hl.get(p, "")}{cur(p)}>{t("span", ms, en)}</a></li>' for p, ms, en in NAV)
     panel = ''.join(f'<li><a href="{p}"{cur(p)}>{t("span", ms, en)}{I["arrow"]}</a></li>' for p, ms, en in NAV)
     return f'''<body>
 <a class="skip" href="#main" data-en="Skip to content">Langkau ke kandungan</a>
@@ -322,6 +324,29 @@ def footer():
     </div>
   </div>
 </footer>
+<div class="inapp-bar" id="inappBar" hidden role="region" aria-label="Buka dalam browser" data-en-aria-label="Open in browser">
+  <span class="inapp-bar-t" data-en="Paying? Use your browser.">Nak bayar? Guna browser.</span>
+  <a class="btn sm" id="inappBarOpen" data-skip-remind data-en="Open">Buka</a>
+  <button type="button" class="inapp-bar-x" id="inappBarX" aria-label="Tutup" data-en-aria-label="Close">&times;</button>
+</div>
+<dialog class="calc-sheet inapp-sheet" id="inappSheet" aria-labelledby="inappTitle"><div class="calc-sheet-in">
+  <div class="inapp-pin" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg><span data-en="Tap here">Tekan sini</span></div>
+  <h3 id="inappTitle" class="gen" data-en="Open in your phone’s browser">Buka dalam browser telefon anda</h3>
+  <h3 class="lnk" data-en="Open in your browser first">Buka dalam browser dulu</h3>
+  <p class="calc-why gen" data-en="You’re viewing this inside the {{app}} app. Touch ’n Go payments and WhatsApp buttons work best in Safari or Chrome.">Anda sedang buka page ini dalam aplikasi {{app}}. Bayaran Touch ’n Go dan butang WhatsApp lebih lancar dalam Safari atau Chrome.</p>
+  <p class="calc-why lnk" data-en="This button opens <span class='lnk-app'>WhatsApp</span>. Inside the {{app}} app, such links often don’t open. Open this page in Safari or Chrome first, then tap the button again.">Butang ini akan buka <span class="lnk-app">WhatsApp</span>. Dalam aplikasi {{app}}, link macam ni selalunya tak terbuka. Buka page ini dalam Safari atau Chrome dulu, kemudian tekan semula butang tadi.</p>
+  <ol class="inapp-steps">
+    <li><span class="n">1</span><span data-en="Tap <b>⋯</b> at the top-right of your screen">Tekan <b>⋯</b> di penjuru kanan atas skrin</span></li>
+    <li><span class="n">2</span><span data-en="Choose <b>“Open in browser”</b>">Pilih <b>“Open in browser”</b> (Buka dalam pelayar)</span></li>
+    <li><span class="n">3</span><span data-en="Done! The page opens in Safari or Chrome">Siap! Page akan dibuka dalam Safari atau Chrome</span></li>
+  </ol>
+  <div class="inapp-btns">
+    <a class="btn" id="inappOpen" hidden></a>
+    <button type="button" class="btn" id="inappCopy" data-en="Or copy the link">Atau salin link</button>
+    <button type="button" class="btn ghost gen" id="inappStay" data-en="Continue here">Teruskan di sini</button>
+    <a class="btn ghost lnk" id="inappGo" data-skip-remind target="_blank" rel="noopener" data-en="Continue to <span class='lnk-app'>WhatsApp</span> anyway">Teruskan juga ke <span class="lnk-app">WhatsApp</span></a>
+  </div>
+</div></dialog>
 </body>
 </html>
 '''
@@ -871,6 +896,7 @@ def build_resources():
     {t("p", "Ebook", "Ebooks", 'class="eyebrow"')}
     {t("h2", "Ebook pendidikan kewangan.", "Financial education ebooks.")}
     {t("p", "Ditulis oleh Khairul Khalis. Ebook ialah produk pendidikan berasingan; membelinya tidak mewajibkan apa-apa pelaburan.", "Written by Khairul Khalis. The ebooks are a separate educational product; buying one does not require any investment.", 'class="lead"')}
+    <p class="more-link"><a href="/urus-duit/">{t("span", "Lihat isi penuh ebook Urus Duit Dari Zero →", "See what’s inside the Urus Duit Dari Zero ebook →")}</a></p>
   </div>
   <div class="books">
     {book_cards()}
