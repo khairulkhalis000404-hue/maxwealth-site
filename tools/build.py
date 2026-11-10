@@ -760,6 +760,21 @@ def buy_sheet():
   <script defer src="/assets/ebook.js?v={EBOOK_V}"></script>'''
 
 
+def book_cards(skip=()):
+    """The ebook cards (free, Unit Trust, Urus Duit, combo); /urus-duit/ skips its own book."""
+    cards = {
+        'free': f'''<a class="book" href="{PERSONAL}/ebook/sebelum-anda-labur.pdf" target="_blank" rel="noopener">
+      <div class="cover"><img src="/assets/cover-free.jpg" alt="Ebook Sebelum Anda Labur" loading="lazy" width="600" height="600"></div>
+      <span class="tags">{t("span", "Percuma", "Free", 'class="tag y"')}</span><b>Sebelum Anda Labur</b>{t("span", "Unit trust secara ringkas dan cara mula dengan betul.", "Unit trusts in brief, and how to start the right way.")}
+      <span class="foot"><span class="price"><b>RM0</b></span>{t("span", "Muat turun PDF →", "Download PDF →", 'class="go"')}</span>
+    </a>''',
+        'ut': paid_book("ut", '<img src="/assets/cover-paid.jpg" alt="Ebook Unit Trust Dari Zero" loading="lazy" width="600" height="600">', "cover", "Ebook penuh", "Full ebook", "Unit Trust Dari Zero", "Dari “apa benda ni” sampai boleh baca fund fact sheet.", "From “what is this?” to reading a fund fact sheet.", "29", "39"),
+        'urus': paid_book("urus", '<img src="/assets/cover-urus-duit.jpg" alt="Ebook Urus Duit Dari Zero" loading="lazy" width="600" height="600">', "cover", "Ebook penuh", "Full ebook", "Urus Duit Dari Zero", "Kawal duit, keluar dari hutang dan mula bina masa depan.", "Take control of your money, get out of debt and start building your future.", "29", "39"),
+        'combo': paid_book("combo", '<img src="/assets/cover-urus-duit.jpg" alt="" loading="lazy" width="600" height="600"><img src="/assets/cover-paid.jpg" alt="" loading="lazy" width="600" height="600">', "cover duo", "Kombo 2 ebook", "2-ebook combo", "Urus Duit + Unit Trust Dari Zero", 'Dua-dua ebook sekali, jimat <b class="save">RM9</b>.', "Both ebooks together, save <b class='save'>RM9</b>.", "49", "69"),
+    }
+    return '\n    '.join(v for k, v in cards.items() if k not in skip)
+
+
 def build_resources():
     guides = [
         ('ut', 'Daftar akaun Unit Trust', 'Register a Unit Trust account', 'panduan-daftar-akaun-unit-trust-bm.pdf', 'guide-register-unit-trust-account-en.pdf'),
@@ -858,14 +873,7 @@ def build_resources():
     {t("p", "Ditulis oleh Khairul Khalis. Ebook ialah produk pendidikan berasingan; membelinya tidak mewajibkan apa-apa pelaburan.", "Written by Khairul Khalis. The ebooks are a separate educational product; buying one does not require any investment.", 'class="lead"')}
   </div>
   <div class="books">
-    <a class="book" href="{PERSONAL}/ebook/sebelum-anda-labur.pdf" target="_blank" rel="noopener">
-      <div class="cover"><img src="/assets/cover-free.jpg" alt="Ebook Sebelum Anda Labur" loading="lazy" width="600" height="600"></div>
-      <span class="tags">{t("span", "Percuma", "Free", 'class="tag y"')}</span><b>Sebelum Anda Labur</b>{t("span", "Unit trust secara ringkas dan cara mula dengan betul.", "Unit trusts in brief, and how to start the right way.")}
-      <span class="foot"><span class="price"><b>RM0</b></span>{t("span", "Muat turun PDF →", "Download PDF →", 'class="go"')}</span>
-    </a>
-    {paid_book("ut", '<img src="/assets/cover-paid.jpg" alt="Ebook Unit Trust Dari Zero" loading="lazy" width="600" height="600">', "cover", "Ebook penuh", "Full ebook", "Unit Trust Dari Zero", "Dari “apa benda ni” sampai boleh baca fund fact sheet.", "From “what is this?” to reading a fund fact sheet.", "29", "39")}
-    {paid_book("urus", '<img src="/assets/cover-urus-duit.jpg" alt="Ebook Urus Duit Dari Zero" loading="lazy" width="600" height="600">', "cover", "Ebook penuh", "Full ebook", "Urus Duit Dari Zero", "Kawal duit, keluar dari hutang dan mula bina masa depan.", "Take control of your money, get out of debt and start building your future.", "29", "39")}
-    {paid_book("combo", '<img src="/assets/cover-urus-duit.jpg" alt="" loading="lazy" width="600" height="600"><img src="/assets/cover-paid.jpg" alt="" loading="lazy" width="600" height="600">', "cover duo", "Kombo 2 ebook", "2-ebook combo", "Urus Duit + Unit Trust Dari Zero", 'Dua-dua ebook sekali, jimat <b class="save">RM9</b>.', "Both ebooks together, save <b class='save'>RM9</b>.", "49", "69")}
+    {book_cards()}
   </div>
   {buy_sheet()}
 </div></section>
@@ -991,6 +999,17 @@ def build_ebook_urus():
     {buy_button()}
   </div>
 </div></div></section>
+
+<section class="section alt"><div class="wrap">
+  <div class="section-head">
+    {t("p", "Nak belajar lagi?", "Want to learn more?", 'class="eyebrow"')}
+    {t("h2", "Ebook lain untuk teruskan belajar.", "More ebooks to keep learning.")}
+    {t("p", "Ditulis oleh Khairul Khalis. Ebook ialah produk pendidikan berasingan; membelinya tidak mewajibkan apa-apa pelaburan.", "Written by Khairul Khalis. The ebooks are a separate educational product; buying one does not require any investment.", 'class="lead"')}
+  </div>
+  <div class="books lp-books">
+    {book_cards(skip=("urus",))}
+  </div>
+</div></section>
 {buy_sheet()}"""
     page('/urus-duit/', 'Ebook Urus Duit Dari Zero', 'Urus Duit Dari Zero ebook',
          'Ebook kewangan peribadi untuk konteks Malaysia: bajet, hutang, dana kecemasan, persaraan, dan 4 laluan ikut fasa hidup.',
