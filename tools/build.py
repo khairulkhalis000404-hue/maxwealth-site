@@ -950,7 +950,7 @@ def build_ebook_urus():
     {t("h2", "Banyak buku kewangan yang bagus. Tapi banyak yang ditulis untuk negara lain.", "There are many good money books. But many are written for other countries.")}
   </div>
   <div class="lp-why-body">
-    {t("p", "Banyak daripadanya bercerita tentang 401(k) dan Roth IRA. Di Malaysia, yang kita hadap ialah perkara lain. Ebook ini mengambil pelajaran daripada 10 buku terkenal, kemudian menyusunnya bersama pengalaman Khairul Khalis untuk keadaan kita di sini.", "Many of them talk about 401(k)s and Roth IRAs. In Malaysia, we deal with different things. This ebook takes lessons from 10 well-known books and sets them out, with Khairul Khalis's own experience, for life here.")}
+    {t("p", "Banyak daripadanya bercerita tentang 401(k) dan Roth IRA. Di Malaysia, yang kita hadap ialah perkara lain. Ebook ini mengambil pelajaran daripada 10 buku terkenal, kemudian menyusunnya bersama pengalaman saya untuk keadaan kita di sini.", "Many of them talk about 401(k)s and Roth IRAs. In Malaysia, we deal with different things. This ebook takes lessons from 10 well-known books and sets them out, with my own experience, for life here.")}
     <ul class="lp-chips">{chips}</ul>
   </div>
 </div></section>
