@@ -59,4 +59,18 @@
   }
   document.addEventListener('mw:lang', render);
   render();
+
+  // TikTok Pixel events (only when the pixel is on the page). No names, phones or emails are sent.
+  var track = function (evt, key) {
+    if (!window.ttq || !PRODUCTS[key]) return;
+    window.ttq.track(evt, { contents: [{ content_id: key, content_name: PRODUCTS[key].name, content_type: 'product' }], value: priceNow(key), currency: 'MYR' });
+  };
+  if (document.querySelector('.lp-hero')) track('ViewContent', 'urus');
+  document.addEventListener('click', function (e) {   // capture phase, so it still runs when the in-app reminder stops the click
+    var a = e.target.closest && e.target.closest('a');
+    if (!a) return;
+    if (a.matches('[data-buy], .book.paid')) track('InitiateCheckout', a.dataset.product);
+    else if (a.id === 'tngLink') track('AddPaymentInfo', buyKey);
+    else if (a.id === 'paidBtn') track('PlaceAnOrder', buyKey);
+  }, true);
 })();

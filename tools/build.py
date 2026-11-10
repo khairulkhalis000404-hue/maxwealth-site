@@ -25,6 +25,21 @@ CHANNEL = 'https://whatsapp.com/channel/0029Vb6tZx5ADTOEl9TRTX2B'
 AZNAH_WA = '601116442835'  # Aznah's form on /hubungi/; no other links on the profile
 AZNAH_FIMM = ''  # awaiting Aznah; the FIMM line on /hubungi/ only renders once this is filled
 EMAIL = 'khairulkhalis@manulifeinvestment.com.my'
+TIKTOK_PIXEL = 'DBPIPL3C77UASCMHD8IG'   # TikTok Pixel ID from Events Manager; empty = no pixel, and /privasi/ keeps saying "no tracking"
+
+
+def pixel_tag():
+    """TikTok Pixel base code (page views); ebook.js and site.js send the button events through window.ttq."""
+    if not TIKTOK_PIXEL:
+        return ''
+    return ('<script>!function(w,d,t){w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off",'
+            '"once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){'
+            't.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);'
+            'ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},'
+            'ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,'
+            'ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=d.createElement("script");n.type="text/javascript",n.async=!0,'
+            'n.src=r+"?sdkid="+e+"&lib="+t;e=d.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};'
+            f'ttq.load("{TIKTOK_PIXEL}");ttq.page();}}(window,document,"ttq");</script>\n')
 
 
 def file_version(name):
@@ -246,7 +261,7 @@ def head(path, title_ms, title_en, desc_ms, desc_en):
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css?v={CSS_V}">
 <script defer src="/assets/site.js?v={JS_V}"></script>
-</head>'''
+{pixel_tag()}</head>'''
 
 
 def header(path):
@@ -1216,6 +1231,14 @@ def legal_page(path, title_ms, title_en, desc_ms, desc_en, ms_html, en_html):
 
 
 def build_legal():
+    PIXEL_NOTE_MS = ('Laman ini menggunakan TikTok Pixel untuk mengukur prestasi iklan TikTok kami, contohnya lawatan halaman dan klik pada butang beli ebook. '
+                     'TikTok mungkin menerima maklumat seperti alamat IP, jenis peranti dan halaman yang dilawati, dan boleh menetapkan kuki. '
+                     'Kami tidak menghantar nama, nombor telefon atau emel anda kepada TikTok. Anda boleh menyekat kuki pihak ketiga dalam tetapan pelayar anda. '
+                     if TIKTOK_PIXEL else 'Laman ini tidak menggunakan kuki penjejakan atau analitik. ')
+    PIXEL_NOTE_EN = ('This site uses the TikTok Pixel to measure how our TikTok ads perform, for example page visits and clicks on the ebook buy button. '
+                     'TikTok may receive information such as your IP address, device type and the pages you visit, and may set cookies. '
+                     'We do not send your name, phone number or email to TikTok. You can block third-party cookies in your browser settings. '
+                     if TIKTOK_PIXEL else 'This site uses no tracking or analytics cookies. ')
     privacy_ms = f'''
 <p>Notis ini menerangkan bagaimana MaxWealth Consultancy (SSM {SSM}) (“kami”) mengumpul, menggunakan dan melindungi data peribadi anda, selaras dengan Akta Perlindungan Data Peribadi 2010 (PDPA) dan pindaannya. Notis ini disediakan dalam Bahasa Melayu dan English.</p>
 <h2>1. Data yang kami kumpul</h2>
@@ -1229,7 +1252,7 @@ def build_legal():
 <h2>4. Penyimpanan dan keselamatan</h2>
 <p>Kami menyimpan data hanya selama yang perlu untuk tujuan di atas atau seperti yang dikehendaki undang-undang, dan mengambil langkah munasabah untuk melindunginya daripada akses, pendedahan atau kehilangan tanpa kebenaran.</p>
 <h2>5. Kuki dan storan pelayar</h2>
-<p>Laman ini tidak menggunakan kuki penjejakan atau analitik. Pilihan bahasa anda (BM/EN) disimpan dalam storan tempatan pelayar anda sahaja. Fon laman dimuatkan daripada Google Fonts, yang menerima alamat IP pelayar anda untuk menghantar fail fon.</p>
+<p>{PIXEL_NOTE_MS}Pilihan bahasa anda (BM/EN) disimpan dalam storan tempatan pelayar anda sahaja. Fon laman dimuatkan daripada Google Fonts, yang menerima alamat IP pelayar anda untuk menghantar fail fon.</p>
 <h2>6. Hak anda</h2>
 <p>Anda berhak meminta akses kepada data peribadi anda, membetulkannya, menarik balik persetujuan, menghadkan pemprosesan, dan meminta pemindahan data seperti yang dibenarkan oleh PDPA. Hantar permintaan melalui saluran di bawah. Jika anda tidak memberikan data yang diperlukan, kami mungkin tidak dapat membantu permintaan anda.</p>
 <h2>7. Hubungi kami</h2>
@@ -1250,7 +1273,7 @@ def build_legal():
 <h2>4. Retention and security</h2>
 <p>We keep data only as long as needed for the purposes above or as required by law, and take reasonable steps to protect it from unauthorised access, disclosure or loss.</p>
 <h2>5. Cookies and browser storage</h2>
-<p>This site uses no tracking or analytics cookies. Your language choice (BM/EN) is kept in your browser’s local storage only. The site’s fonts load from Google Fonts, which receives your browser’s IP address to deliver the font files.</p>
+<p>{PIXEL_NOTE_EN}Your language choice (BM/EN) is kept in your browser’s local storage only. The site’s fonts load from Google Fonts, which receives your browser’s IP address to deliver the font files.</p>
 <h2>6. Your rights</h2>
 <p>You may ask to access your personal data, correct it, withdraw consent, limit processing, and request data portability as permitted by the PDPA. Send requests through the channels below. If you do not provide the data we need, we may not be able to help with your request.</p>
 <h2>7. Contact us</h2>
