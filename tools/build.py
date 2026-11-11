@@ -954,9 +954,9 @@ def offer():
 
 
 def build_ebook_urus():
-    topics = ['KW$P &amp; Simpanan Asas', 'ASB vs ASBF', 'PTPTN', 'CCRIS &amp; CTOS', 'BNPL &amp; ansuran 0%',
+    topics = ['Simpanan Persaraan (Akaun 1) &amp; Simpanan Asas', 'ASB vs ASBF', 'PTPTN', 'CCRIS &amp; CTOS', 'BNPL &amp; ansuran 0%',
               'Pelepasan cukai LHDN', 'Zakat', 'Wasiat, hibah &amp; penama', 'Semakan scam']
-    topics_en = ['KW$P & Basic Savings', 'ASB vs ASBF', 'PTPTN', 'CCRIS & CTOS', 'BNPL & 0% instalments',
+    topics_en = ['Retirement Savings (Account 1) & Basic Savings', 'ASB vs ASBF', 'PTPTN', 'CCRIS & CTOS', 'BNPL & 0% instalments',
                  'LHDN tax relief', 'Zakat', 'Wills, hibah & nominees', 'Scam checks']
     chips = ''.join(t('li', a, b) for a, b in zip(topics, topics_en))
     paths = [
