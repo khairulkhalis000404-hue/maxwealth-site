@@ -724,3 +724,10 @@ body.has-inapp-bar { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px
   .nav a { padding: 8px 9px; font-size: 14px; }
   .brand img { height: 54px; }
 }
+
+/* Contact: form first, other contact ways at the bottom */
+.contact-form-wrap { max-width: 640px; }
+@media (min-width: 900px) {
+  .contact-list.wide { grid-template-columns: repeat(2, 1fr); column-gap: 48px; }
+  .contact-list.wide li:nth-last-child(2):nth-child(odd) { border-bottom: 1px solid var(--line); }
+}

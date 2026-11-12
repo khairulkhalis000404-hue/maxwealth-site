@@ -1140,8 +1140,8 @@ def build_contact():
     ]
     arows = ''.join(f'<li>{t("b", a, b)}<span>{y}</span></li>' for a, b, y in awards)
     def person(avatar, name, ms, en, inner):
-        """Tap a row to see what this person handles; a shared details name keeps one open at a time."""
-        return (f'<details class="person" name="pasukan"><summary>{avatar_pic(avatar)}<span class="who"><b>{name}</b>{t("span", ms, en)}</span>'
+        """Tap a row to see what this person handles; each row opens on its own, so several can stay open."""
+        return (f'<details class="person"><summary>{avatar_pic(avatar)}<span class="who"><b>{name}</b>{t("span", ms, en)}</span>'
                 f'<span class="chev">{I["arrow"]}</span></summary><div class="person-body">{inner}</div></details>')
 
     def label(ms, en):
@@ -1177,15 +1177,7 @@ def build_contact():
       <a class="btn" {wa(*WA_GENERAL)}>{I["wa"]}{t("span", "WhatsApp Ika", "WhatsApp Ika")}</a>"""
 
     body = f'''{page_hero("Hubungi", "Contact", "Mula dengan satu mesej.", "Start with one message.", "Cara paling cepat ialah WhatsApp. Ika (Admin) akan membalas dan mengatur masa untuk anda berbual dengan perunding.", "WhatsApp is the fastest way. Ika (Admin) will reply and arrange a time for you to talk to a consultant.")}
-<section class="section"><div class="wrap contact-grid">
-  <div>
-    <ul class="contact-list">
-      <li><span class="ic-round">{I["wa"]}</span><div>{t("b", "WhatsApp (Ika, Admin)", "WhatsApp (Ika, Admin)")}<a {wa(*WA_GENERAL)}>+60 19-402 4401</a>{t("span", "Soalan, temujanji dan urusan akaun", "Questions, appointments and account matters")}</div></li>
-      <li><span class="ic-round">{I["mail"]}</span><div>{t("b", "Emel", "Email")}<a href="mailto:{EMAIL}">{EMAIL}</a>{t("span", "Khairul Khalis, Founder MaxWealth", "Khairul Khalis, Founder of MaxWealth")}</div></li>
-      <li><span class="ic-round">{I["user-plus"]}</span><div>{t("b", "Daftar akaun online", "Open an account online")}<a href="{REGISTER_URL}" target="_blank" rel="noopener" data-en="Manulife Investments registration">Pendaftaran Manulife Investments</a>{t("span", "Lebih kurang 10 minit", "About 10 minutes")}</div></li>
-      <li><span class="ic-round">{I["megaphone"]}</span><div>{t("b", "Saluran WhatsApp", "WhatsApp Channel")}<a href="{CHANNEL}" target="_blank" rel="noopener" data-en="Follow the channel">Ikuti saluran</a>{t("span", "Info pasaran dan tips", "Market updates and tips")}</div></li>
-    </ul>
-  </div>
+<section class="section"><div class="wrap contact-form-wrap">
   <form class="form" id="waForm" novalidate>
     {t("h2", "Tulis mesej anda", "Write your message")}
     {t("p", "Isi ringkas di bawah. Butang ini membuka WhatsApp dengan mesej siap ditulis kepada Ika (Admin); laman ini tidak menyimpan apa-apa.", "Fill in the short form below. The button opens WhatsApp with your message ready for Ika (Admin); this site does not store anything.", 'class="note"')}
@@ -1210,6 +1202,17 @@ def build_contact():
   <div class="callout" style="margin-top:40px">
     <div>{t("h3", "Semak perunding anda", "Check your consultant")}{t("p", 'Setiap perunding unit trust dan PRS mesti berdaftar dengan FIMM. Anda boleh semak status pendaftaran di <a href="https://www.fimm.com.my" target="_blank" rel="noopener">laman FIMM</a>.', 'Every unit trust and PRS consultant must be registered with FIMM. You can check registration status on the <a href="https://www.fimm.com.my" target="_blank" rel="noopener">FIMM website</a>.')}</div>
   </div>
+</div></section>
+<section class="section"><div class="wrap">
+  <div class="section-head">
+    {t("p", "Cara lain hubungi kami", "Other ways to reach us", 'class="eyebrow"')}
+  </div>
+  <ul class="contact-list wide">
+    <li><span class="ic-round">{I["wa"]}</span><div>{t("b", "WhatsApp (Ika, Admin)", "WhatsApp (Ika, Admin)")}<a {wa(*WA_GENERAL)}>+60 19-402 4401</a>{t("span", "Soalan, temujanji dan urusan akaun", "Questions, appointments and account matters")}</div></li>
+    <li><span class="ic-round">{I["mail"]}</span><div>{t("b", "Emel", "Email")}<a href="mailto:{EMAIL}">{EMAIL}</a>{t("span", "Khairul Khalis, Founder MaxWealth", "Khairul Khalis, Founder of MaxWealth")}</div></li>
+    <li><span class="ic-round">{I["user-plus"]}</span><div>{t("b", "Daftar akaun online", "Open an account online")}<a href="{REGISTER_URL}" target="_blank" rel="noopener" data-en="Manulife Investments registration">Pendaftaran Manulife Investments</a>{t("span", "Lebih kurang 10 minit", "About 10 minutes")}</div></li>
+    <li><span class="ic-round">{I["megaphone"]}</span><div>{t("b", "Saluran WhatsApp", "WhatsApp Channel")}<a href="{CHANNEL}" target="_blank" rel="noopener" data-en="Follow the channel">Ikuti saluran</a>{t("span", "Info pasaran dan tips", "Market updates and tips")}</div></li>
+  </ul>
 </div></section>'''
     page('/hubungi/', 'Hubungi', 'Contact',
          'Hubungi MaxWealth Consultancy melalui WhatsApp (Ika, Admin) di +60 19-402 4401 atau emel. Tanya tentang unit trust, PRS, semakan portfolio atau kerjaya.',
