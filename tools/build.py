@@ -266,7 +266,7 @@ def head(path, title_ms, title_en, desc_ms, desc_en):
 
 def header(path):
     def cur(p):
-        return ' aria-current="page"' if p == path else ''
+        return ' aria-current="page"' if p == path or (p != '/' and path.startswith(p)) else ''
     hl = {'/urus-duit/': ' class="nav-hl"'}
     links = ''.join(f'<li><a href="{p}"{hl.get(p, "")}{cur(p)}>{t("span", ms, en)}</a></li>' for p, ms, en in NAV)
     panel = ''.join(f'<li><a href="{p}"{cur(p)}>{t("span", ms, en)}{I["arrow"]}</a></li>' for p, ms, en in NAV)
@@ -452,19 +452,43 @@ SERVICES = [
 
 
 # ---------- Home ----------
+# Short home (12 Nov 2026): one message, one tool to try, proof right under the hero,
+# service names only (details live on /servis/), WhatsApp still only at the end of the page.
+TILE_NAMES = {'prs': ('PRS', 'PRS'), 'wasiat': ('Wasiat, hibah dan pusaka', 'Wills, hibah and estate')}
+
+
+def mini_calc():
+    return f'''<aside class="mini wide" id="kira" aria-label="Kalkulator ringkas" data-en-aria-label="Quick calculator">
+  {t("p", "Cuba dengan angka anda", "Try it with your numbers", 'class="eyebrow"')}
+  {t("h3", "Berhenti meneka dengan duit anda.", "Stop guessing with your money.")}
+  <div class="mini-fields">
+    <div>{t("label", "Permulaan (RM)", "Initial (RM)", 'for="miStart"')}<input id="miStart" type="number" inputmode="decimal" min="200" step="100" value="1000"></div>
+    <div>{t("label", "Bulanan (RM)", "Monthly (RM)", 'for="miMonthly"')}<input id="miMonthly" type="number" inputmode="decimal" min="0" step="50" value="100"></div>
+    <div>{t("label", "Tempoh (tahun)", "Years", 'for="miYears"')}<input id="miYears" type="number" inputmode="numeric" min="1" max="60" step="1" value="20"></div>
+    <div>{t("label", "Pulangan (%)", "Return (%)", 'for="miRate"')}<input id="miRate" type="number" inputmode="decimal" min="0" step="0.5" value="10"></div>
+  </div>
+  <div class="mini-out" id="miOut" aria-live="polite"></div>
+  <p class="mini-fine" id="miFine"></p>
+  <a class="text-link" href="/sumber/#kalkulator">{t("span", "Buka semua kalkulator", "Open all calculators")}{I["arrow"]}</a>
+</aside>'''
+
+
 def build_home():
-    cards = ''.join(f'''<a class="card" href="/servis/#{sid}">
-  <span class="ic-round">{I[ic]}</span>
-  {t("h3", tms, ten)}
-  {t("p", dms, den)}
-  {more("Ketahui lanjut", "Learn more")}
-</a>''' for sid, ic, tms, ten, dms, den in SERVICES)
+    tiles = ''.join(
+        f'<a class="tile" href="/servis/#{sid}"><span class="ic-round">{I[ic]}</span>'
+        f'{t("span", *TILE_NAMES.get(sid, (tms, ten)))}</a>'
+        for sid, ic, tms, ten, dms, den in SERVICES)
+
+    # The brand tagline (same words as the logo, kept in English in both languages) signs the page off above the closing band
+    tagline = '<p class="tagline"><b>Inspiring <em>Financial Excellence.</em></b></p>'
+    closing = band("Ada soalan? Mula dengan satu mesej.", "Have a question? Start with one message.", "Tiada komitmen.", "No commitment.").replace(
+        '<div class="wrap"><div class="band">', '<div class="wrap">' + tagline + '<div class="band">', 1)
+    assert tagline in closing
 
     body = f'''<section class="hero"><div class="wrap hero-grid">
   <div>
-    {t("p", "MaxWealth Consultancy", "MaxWealth Consultancy", 'class="eyebrow"')}
     {t("h1", 'Kewangan anda, <em class="hl">disusun dengan jelas.</em>', 'Your finances, <em class="hl">sorted out clearly.</em>')}
-    {t("p", "Kami bantu anda susun kewangan dan cari penyelesaian yang sesuai untuk masalah kewangan anda, dari pelaburan dan persaraan hingga perlindungan, hutang dan pusaka.", "We help you get your finances in order and find the right solutions to your money problems, from investing and retirement to protection, debt and estate matters.", 'class="lead"')}
+    {t("p", "Pelaburan, persaraan, perlindungan, hutang dan pusaka, di satu tempat.", "Investing, retirement, protection, debt and estate matters, in one place.", 'class="lead"')}
     <div class="btns">
       <a class="btn" href="/servis/">{t("span", "Lihat servis", "See services")}</a>
       <a class="btn ghost" href="/tentang/">{t("span", "Kenali kami", "About us")}</a>
@@ -473,11 +497,16 @@ def build_home():
   {fun_card()}
 </div></section>
 
-<div class="wrap strip"><ul>
-  <li><span class="ic-round">{I["shield"]}</span><div>{t("b", "Berdaftar FIMM", "FIMM-registered")}{t("span", "Perunding unit trust dan PRS berdaftar", "Registered unit trust and PRS consultants")}</div></li>
-  <li><span class="ic-round">{I["phone"]}</span><div>{t("b", "Akaun dibuka online", "Accounts opened online")}{t("span", "Lebih kurang 10 minit, dengan panduan langkah", "About 10 minutes, with step-by-step guides")}</div></li>
-  <li><span class="ic-round">{I["ut"]}</span><div>{t("b", "Mula dari RM100 sebulan", "From RM100 a month")}{t("span", "Pelaburan bulanan yang konsisten", "Consistent monthly investing")}</div></li>
-</ul></div>
+<div class="wrap proof">
+  <ul>
+    <li><b>FIMM</b>{t("span", "perunding unit trust dan PRS berdaftar", "registered unit trust and PRS consultants")}</li>
+    <li><b>6+</b>{t("span", "tahun dalam industri kewangan", "years in the finance industry")}</li>
+    <li><b>300+</b>{t("span", "pelabur dibantu", "investors served")}</li>
+    <li><b data-en="RM10m+">RM10 juta+</b>{t("span", "aset di bawah seliaan (AUM)", "assets under management (AUM)")}</li>
+  </ul>
+  <p class="proof-note">{t("span", "Angka peribadi Khairul Khalis, setakat 2026.", "Khairul Khalis's own figures, as of 2026.")} <a class="text-link" href="/hubungi/#pasukan">{t("span", "Kenali pasukan kami", "Meet our team")}{I["arrow"]}</a></p>
+  <p class="proofline">{I["globe"]}{t("span", "Pelaburan anda diurus oleh pengurus dana profesional dengan kepakaran pelaburan global.", "Your investments are managed by professional fund managers with global investment expertise.")}</p>
+</div>
 
 <section class="section"><div class="wrap">
   <div class="section-head">
@@ -485,19 +514,21 @@ def build_home():
     {t("h2", "Wang yang dibiarkan pun berubah nilainya.", "Money left alone still changes in value.")}
   </div>
   <div class="facts">
-    <div class="fact"><b>−45%</b>{t("p", "Dengan inflasi 3% setahun, RM1,000 hilang hampir separuh nilainya dalam 20 tahun, walaupun dibiarkan dalam akaun bank.", "With 3% inflation a year, RM1,000 loses almost half its value in 20 years, even when left in a bank account.")}{t("small", "Ilustrasi: RM1,000 ÷ 1.03²⁰ ≈ RM554.", "Illustration: RM1,000 ÷ 1.03²⁰ ≈ RM554.")}</div>
-    <div class="fact"><b>RM100</b>{t("p", "sebulan sudah cukup untuk mula. Yang penting ialah konsisten dan tempoh yang panjang.", "a month is enough to start. What matters is consistency and time.")}</div>
-    <div class="fact"><b>DCA</b>{t("p", "Jumlah tetap setiap bulan membeli lebih banyak unit bila harga rendah dan kurang bila harga tinggi, jadi kos purata lebih seimbang.", "A fixed amount every month buys more units when prices are low and fewer when they are high, which evens out your average cost.")}</div>
+    <div class="fact"><b>−45%</b>{t("p", "RM1,000 selepas 20 tahun inflasi 3%.", "RM1,000 after 20 years of 3% inflation.")}{t("small", "Ilustrasi: RM1,000 ÷ 1.03²⁰ ≈ RM554.", "Illustration: RM1,000 ÷ 1.03²⁰ ≈ RM554.")}</div>
+    <div class="fact"><b>RM100</b>{t("p", "sebulan sudah cukup untuk mula.", "a month is enough to start.")}</div>
+    <div class="fact"><b>RSP</b>{t("p", "Regular Savings Plan. DCA, DDA, DDI, panggil apa pun, asalkan duit anda terus bekerja untuk anda.", "Regular Savings Plan. DCA, DDA, DDI: call it what you like, as long as your money keeps working for you.")}<a class="text-link fact-link" href="/servis/cara-melabur/">{t("span", "Cara melabur", "Ways to invest")}{I["arrow"]}</a></div>
   </div>
+  {mini_calc()}
 </div></section>
 
 <section class="section alt"><div class="wrap">
   <div class="section-head">
     {t("p", "Servis", "Services", 'class="eyebrow"')}
-    {t("h2", "Apa yang kami bantu.", "How we can help.")}
-    {t("p", "Setiap servis bermula dengan perbualan ringkas tentang matlamat anda, dan penerangan yang jelas tentang risiko serta caj sebelum anda membuat keputusan.", "Every service starts with a short conversation about your goals, and a clear explanation of the risks and charges before you decide.", 'class="lead"')}
+    {t("h2", "Masalah kewangan? Kita susun satu-satu.", "Money problems? Let’s sort them out.")}
   </div>
-  <div class="grid c4">{cards}</div>
+  <div class="tiles">{tiles}</div>
+  {t("p", "Risiko dan caj diterangkan sebelum anda membuat keputusan. Takaful dan urusan pusaka dikendalikan oleh pihak yang berlesen atau berdaftar.", "Risks and charges are explained before you decide. Takaful and estate matters are handled by licensed or registered parties.", 'class="tiles-note"')}
+  <p style="margin-top:24px"><a class="btn ghost" href="/servis/">{t("span", "Lihat semua servis", "See all services")}</a></p>
 </div></section>
 
 <section class="section"><div class="wrap">
@@ -506,51 +537,28 @@ def build_home():
     {t("h2", "Empat langkah, tanpa tergesa-gesa.", "Four steps, no rush.")}
   </div>
   <ol class="steps row">
-    <li><div>{t("h3", "Berbual", "Talk")}{t("p", "Mesej Admin kami di WhatsApp. Kami aturkan perbualan atau temujanji ikut masa anda.", "Message our Admin on WhatsApp. We arrange a call or meeting at a time that suits you.")}</div></li>
-    <li><div>{t("h3", "Faham matlamat", "Understand your goals")}{t("p", "Kita lihat situasi, matlamat dan profil risiko anda.", "We look at your situation, goals and risk profile.")}</div></li>
-    <li><div>{t("h3", "Pilih penyelesaian", "Choose a solution")}{t("p", "Kami terangkan pilihan yang ada, caj dan risikonya. Keputusan tetap di tangan anda.", "We explain the options, their charges and risks. The decision stays with you.")}</div></li>
-    <li><div>{t("h3", "Semakan berkala", "Regular reviews")}{t("p", "Kami semak perkembangan anda dari semasa ke semasa dan kemas kini bila matlamat berubah.", "We review your progress from time to time and adjust when your goals change.")}</div></li>
+    <li><div>{t("h3", "Berbual", "Talk")}{t("p", "Mesej Admin kami di WhatsApp.", "Message our Admin on WhatsApp.")}</div></li>
+    <li><div>{t("h3", "Faham", "Understand")}{t("p", "Situasi, matlamat dan profil risiko anda.", "Your situation, goals and risk profile.")}</div></li>
+    <li><div>{t("h3", "Pilih", "Choose")}{t("p", "Pilihan, caj dan risiko diterangkan. Anda yang putuskan.", "Options, charges and risks explained. You decide.")}</div></li>
+    <li><div>{t("h3", "Semak", "Review")}{t("p", "Semakan berkala bila matlamat berubah.", "Regular check-ins as your goals change.")}</div></li>
   </ol>
 </div></section>
 
 <section class="section alt"><div class="wrap">
-  <div style="max-width:680px">
-    {t("p", "Pengasas MaxWealth", "MaxWealth founder", 'class="eyebrow"')}
-    <h2 class="profile-name">Khairul Khalis</h2>
-    <p class="titles"><b>Founder, MaxWealth Consultancy</b><br>{t("span", "Perunding unit trust (UTC) dan PRS berdaftar FIMM", "FIMM-registered unit trust (UTC) and PRS consultant")}</p>
-    {STATS}
-    <p style="margin-top:32px"><a class="text-link" href="/hubungi/#pasukan">{t("span", "Kenali pasukan kami", "Meet our team")}{I["arrow"]}</a></p>
-  </div>
-</div></section>
-
-<section class="section"><div class="wrap">
-  <div class="grid c2">
-    <a class="card" href="/sumber/">
-      <span class="ic-round">{I["doc"]}</span>
-      {t("h3", "Panduan, kalkulator dan ebook", "Guides, calculators and ebooks")}
-      {t("p", "Panduan langkah demi langkah untuk buka akaun, labur dan set pelan bulanan, dalam BM dan English.", "Step-by-step guides to open an account, invest and set up a monthly plan, in BM and English.")}
-      {more("Buka sumber", "Open resources")}
-    </a>
-    <a class="card" href="/kerjaya/">
-      <span class="ic-round">{I["people"]}</span>
-      {t("h3", "Berminat jadi perunding unit trust?", "Interested in becoming a unit trust consultant?")}
-      {t("p", "Ketahui proses peperiksaan dan pendaftaran FIMM, latihan, dan cara kerjaya ini berfungsi.", "Learn about the FIMM exam and registration, training, and how this career works.")}
-      {more("Lihat kerjaya", "See careers")}
-    </a>
-  </div>
-</div></section>
-
-<section class="section alt" id="latestPosts" hidden><div class="wrap">
   <div class="section-head">
-    {t("p", "Post terkini", "Latest posts", 'class="eyebrow"')}
-    {t("h2", "Ilmu kewangan, terus dari kami.", "Money know-how, straight from us.")}
+    {t("p", "Belajar", "Learn", 'class="eyebrow"')}
+    {t("h2", "Belajar dulu, labur kemudian.", "Learn first, invest later.")}
   </div>
-  <div class="posts" id="postList"></div>
-  <p style="margin-top:28px"><a class="btn ghost" href="{CHANNEL}" target="_blank" rel="noopener">{t("span", "Ikuti Saluran WhatsApp", "Follow the WhatsApp Channel")}{I["out"]}</a></p>
+  <div id="latestPosts" hidden><div class="posts" id="postList"></div></div>
+  <div class="btns" style="margin-top:28px">
+    <a class="btn" href="/sumber/">{t("span", "Buka tools dan panduan", "Open tools and guides")}</a>
+    <a class="btn ghost" href="{CHANNEL}" target="_blank" rel="noopener">{t("span", "Ikuti Channel WhatsApp", "Follow the WhatsApp Channel")}{I["out"]}</a>
+  </div>
   <script defer src="/assets/posts.js?v={POSTS_V}"></script>
 </div></section>
 
-{band("Ada soalan? Mula dengan satu mesej.", "Have a question? Start with one message.", "Tiada komitmen. Ceritakan matlamat anda, dan kami terangkan pilihan yang ada dengan jelas.", "No commitment. Tell us your goals, and we will explain the options clearly.")}'''
+{closing}
+<script defer src="/assets/mini.js?v={file_version('mini.js')}"></script>'''
     page('/', 'MaxWealth Consultancy · Penyelesaian kewangan anda', 'MaxWealth Consultancy · Solutions for your finances',
          'MaxWealth Consultancy bantu anda susun kewangan dan cari penyelesaian untuk masalah kewangan: unit trust, PRS, takaful, hutang, wasiat dan pendidikan kewangan.',
          'MaxWealth Consultancy helps you get your finances in order and find solutions to money problems: unit trusts, PRS, takaful, debt, wills and financial education.',
@@ -673,6 +681,7 @@ def build_services():
             ('PENDIDIKAN - Hai Ika, saya nak tahu tentang kelas atau webinar kewangan.', 'EDUCATION - Hi Ika, I would like to know about financial classes or webinars.')),
     }
     blocks = ''
+    ways_link = f'<a class="btn ghost" href="/servis/cara-melabur/">{t("span", "Cara melabur", "Ways to invest")}</a>'
     for sid, ic, tms, ten, dms, den in SERVICES:
         lead_ms, lead_en, items, msg = detail[sid]
         blocks += f'''<article class="service" id="{sid}">
@@ -681,7 +690,7 @@ def build_services():
     {t("p", lead_ms, lead_en)}
     {t("h3", "Apa yang anda dapat", "What you get")}
     {ticks(items)}
-    <div class="btns">{wa_btn("Tanya tentang ini", "Ask about this", msg)}</div>
+    <div class="btns">{wa_btn("Tanya tentang ini", "Ask about this", msg)}{ways_link if sid == "unit-trust" else ""}</div>
   </div>
 </article>'''
     body = f'''{page_hero("Servis", "Services", "Penyelesaian untuk masalah kewangan anda.", "Solutions to your money problems.", "Lapan servis, satu pendekatan: faham dulu situasi anda, kemudian baru cari penyelesaian.", "Eight services, one approach: understand your situation first, then find the solution.")}
@@ -714,6 +723,53 @@ def build_services():
          'Unit trust, PRS, takaful, urusan hutang, wasiat dan hibah, pelaburan korporat, semakan portfolio dan pendidikan kewangan bersama MaxWealth Consultancy.',
          'Unit trusts, PRS, takaful, debt guidance, wills and hibah, corporate investing, portfolio reviews and financial education with MaxWealth Consultancy.',
          body)
+
+
+# ---------- Ways to invest (small page under Services) ----------
+# Website wording rule: "Simpanan Persaraan (Akaun 1)" / "Retirement Savings (Account 1)", never the fund's name;
+# eligibility only, no return comparison. "Regular Savings Plan" is an official product name.
+WAYS = [
+    ('rsp', 'review', 'Regular Savings Plan (RSP)', 'Regular Savings Plan (RSP)',
+     'Jumlah tetap masuk setiap bulan, dari RM100. DCA, DDA, DDI, panggil apa pun, asalkan duit anda terus bekerja untuk anda.',
+     'A fixed amount goes in every month, from RM100. DCA, DDA, DDI: call it what you like, as long as your money keeps working for you.',
+     ('/sumber/#panduan', 'Lihat panduan RSP', 'See the RSP guide')),
+    ('akaun-1', 'prs', 'Pelaburan Simpanan Persaraan (Akaun 1)', 'Retirement Savings (Account 1) investment',
+     'Labur sebahagian Simpanan Persaraan (Akaun 1) anda, tertakluk kelayakan. Semak dulu jumlah yang boleh dilabur.',
+     'Invest part of your Retirement Savings (Account 1), subject to eligibility. Check first how much you can invest.',
+     ('/sumber/#kalkulator', 'Buka kalkulator kelayakan', 'Open the eligibility calculator')),
+    ('sekali', 'ut', 'Pelaburan sekali (lump sum)', 'One-time investment (lump sum)',
+     'Labur sekali gus bila ada wang terkumpul, contohnya bonus. Jumlah minimum bergantung pada dana.',
+     'Invest once when you have cash set aside, such as a bonus. The minimum depends on the fund.',
+     None),
+    ('korporat', 'corp', 'Pelaburan korporat', 'Corporate investment',
+     'Untuk lebihan tunai syarikat yang tidak diperlukan dalam masa terdekat, dalam akaun atas nama syarikat.',
+     'For company surplus cash that is not needed in the near term, in an account under the company’s name.',
+     ('/servis/#korporat', 'Ketahui lanjut', 'Learn more')),
+]
+
+
+def build_invest():
+    cards = ''
+    for wid, ic, tms, ten, dms, den, link in WAYS:
+        more_link = (f'<a class="text-link" href="{link[0]}">{t("span", link[1], link[2])}{I["arrow"]}</a>' if link else '')
+        cards += f'''<div class="card way" id="{wid}">
+  <span class="ic-round">{I[ic]}</span>
+  {t("h2", tms, ten)}
+  {t("p", dms, den)}
+  {more_link}
+</div>'''
+    back = f'<p style="margin-top:22px"><a class="text-link" href="/servis/">{t("span", "Semua servis", "All services")}{I["arrow"]}</a></p>'
+    body = f'''{page_hero("Servis · Cara melabur", "Services · Ways to invest", "Gaji dah masuk. Apa seterusnya?", "Salary’s in. Now what?", "Empat cara untuk mula melabur, ikut situasi anda.", "Four ways to start investing, depending on your situation.", back)}
+
+<section class="section tight" style="padding-top:clamp(28px,5vw,48px)"><div class="wrap">
+  <div class="grid c2">{cards}</div>
+</div></section>
+
+{band("Tak pasti cara mana yang sesuai?", "Not sure which way fits?", "Ceritakan situasi anda dalam satu mesej.", "Describe your situation in one message.", ('UNIT TRUST - Hai Ika, saya nak tahu lebih tentang pelaburan unit trust.', 'UNIT TRUST - Hi Ika, I would like to know more about unit trust investing.'))}'''
+    page('/servis/cara-melabur/', 'Cara melabur', 'Ways to invest',
+         'Empat cara melabur bersama MaxWealth Consultancy: Regular Savings Plan, pelaburan Simpanan Persaraan (Akaun 1), pelaburan sekali dan pelaburan korporat.',
+         'Four ways to invest with MaxWealth Consultancy: Regular Savings Plan, Retirement Savings (Account 1) investment, one-time investment and corporate investment.',
+         body, priority='0.7')
 
 
 # ---------- Careers ----------
@@ -1390,6 +1446,7 @@ if __name__ == '__main__':
     build_home()
     build_about()
     build_services()
+    build_invest()
     build_careers()
     build_resources()
     build_ebook_urus()

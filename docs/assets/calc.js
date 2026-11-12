@@ -40,7 +40,7 @@
     var en = isEn(), paid = [];
     for (var y = 0; y <= years; y++) paid.push(start + monthly * 12 * y);
     var rates = (pct === 8 || pct === 10 ? [8, 10] : [8, 10, pct]).sort(function (a, b) { return a - b; });
-    var lines = [{ vals: paid, color: 'rgba(255,255,255,.55)', dash: '4 4', label: en ? 'Your money in' : 'Wang anda masuk' }].concat(rates.map(function (r) {
+    var lines = [{ vals: paid, color: 'rgba(255,255,255,.55)', dash: '4 4', label: en ? 'Your capital' : 'Modal anda' }].concat(rates.map(function (r) {
       return { vals: growthPath(start, monthly, r, years), color: r === pct ? 'var(--accent)' : '#FFFFFF', dash: '', label: r === pct ? (en ? 'Your rate ' : 'Kadar anda ') + r + '%' : r + (en ? '% a year' : '% setahun') };
     }));
     var max = Math.max.apply(null, lines.map(function (l) { return l.vals[years]; })) || 1;
@@ -71,7 +71,7 @@
     var paid = start + monthly * 12 * years, paidPct = total > paid ? paid / total * 100 : 100;
     $('ccResult').innerHTML = bigOut(en ? 'Illustrated value after ' + years + ' years' : 'Nilai ilustrasi selepas ' + years + ' tahun', rm(total)) +
       '<div class="split"><span class="a" style="width:' + paidPct + '%"></span><span class="b" style="width:' + (100 - paidPct) + '%"></span></div>' +
-      '<dl>' + row('#FFFFFF', en ? 'Your money in' : 'Wang anda masuk', rm(paid)) + row('var(--accent)', en ? 'Growth' : 'Pertumbuhan', rm(Math.max(total - paid, 0))) + '</dl>' +
+      '<dl>' + row('#FFFFFF', en ? 'Your capital' : 'Modal anda', rm(paid)) + row('var(--accent)', en ? 'Growth' : 'Pertumbuhan', rm(Math.max(total - paid, 0))) + '</dl>' +
       minNote(monthly) + growthChart(start, monthly, pct, years);
     $('ccFine').textContent = fine(pct, ' Dikompaun setiap tahun, dan tambahan setahun dikira pada hujung tahun.', ' Compounded yearly, with each year’s top-ups counted at the end of that year.');
     setCta('ccCta',
@@ -139,7 +139,7 @@
     var annuity = function (m) { return r > 1e-12 ? (Math.pow(q, m) - 1) / r : m; };
     var run = function (a, b, m) { return { value: a * grow(m) + b * annuity(m), paid: a + b * m }; };
     var breakdown = function (x) {
-      return row('#FFFFFF', en ? 'Your money in' : 'Wang anda masuk', rm(x.paid)) + row('var(--accent)', en ? 'Growth' : 'Pertumbuhan', rm(Math.max(x.value - x.paid, 0)));
+      return row('#FFFFFF', en ? 'Your capital' : 'Modal anda', rm(x.paid)) + row('var(--accent)', en ? 'Growth' : 'Pertumbuhan', rm(Math.max(x.value - x.paid, 0)));
     };
     var yrs = en ? ' years' : ' tahun', perMonth = en ? ' / month' : ' / bulan';
     var big, rows = '', msg = '', low = 0;
