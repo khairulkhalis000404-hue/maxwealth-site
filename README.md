@@ -30,7 +30,7 @@ Live on **maxwealthconsultancy.com.my** since 10 Nov 2026. DNS is in Exabytes (c
 3. **Cloudflare, maxwealthconsultancy.com** (bought 7 Nov 2026 at Cloudflare Registrar): DNS → add `A` `@` → `192.0.2.1` (Proxied) and `CNAME` `www` → `maxwealthconsultancy.com` (Proxied); Rules → Redirect Rules → "Redirect to a different domain": hostname is maxwealthconsultancy.com or www.maxwealthconsultancy.com → dynamic `concat("https://maxwealthconsultancy.com.my", http.request.uri.path)`, 301, keep query string.
 
 ## Compliance choices
-- No Akaun 1 investment service in the services list. Never name KW$P/€PF in site copy: write "Simpanan Persaraan (Akaun 1)" / "Retirement Savings (Account 1)" (user, 11 Nov 2026).
+- No Akaun 1 investment service in the services list. Never name KW$P/€PF in site copy: write "Simpanan Persaraan (Akaun 1)" / "Retirement Savings (Account 1)" when it is about investing from it, and just "Simpanan Persaraan" / "Retirement Savings" for general retirement talk (user, 11 Nov 2026).
 - No Manulife or other institution logos; MaxWealth logo only.
 - Stats (6+ tahun, 300+ pelabur, RM10 juta+ AUM) labelled as Khairul's own figures.
 - Awards listed without the two ambiguous "iFunds (Account)" lines; awards not used on the Kerjaya page.
