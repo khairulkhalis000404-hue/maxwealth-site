@@ -17,7 +17,7 @@
       '<div class="mini-bar" aria-hidden="true"><i style="width:' + paidPct + '%"></i></div>' +
       '<span>' + (en ? 'Your capital: ' : 'Modal anda: ') + rm(paid) + '</span>' +
       (start > 0 && start < 200
-        ? '<p class="mini-warn">' + (en ? 'The minimum initial investment is RM200.' : 'Minimum pelaburan permulaan ialah RM200.') + '</p>'
+        ? '<p class="mini-warn">' + (en ? 'The minimum initial investment is RM200 for individuals.' : 'Minimum pelaburan permulaan ialah RM200 bagi individu.') + '</p>'
         : '') +
       (monthly > 0 && monthly < 100
         ? '<p class="mini-warn">' + (en ? 'The minimum monthly investment with us is RM100.' : 'Minimum pelaburan bulanan dengan kami ialah RM100.') + '</p>'

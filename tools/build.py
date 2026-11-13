@@ -738,12 +738,12 @@ WAYS = [
      'Invest part of your Retirement Savings (Account 1), subject to eligibility. Check first how much you can invest.',
      ('/sumber/#kalkulator', 'Buka kalkulator kelayakan', 'Open the eligibility calculator')),
     ('sekali', 'ut', 'Pelaburan sekali (lump sum)', 'One-time investment (lump sum)',
-     'Labur sekali gus bila ada wang terkumpul, contohnya bonus. Minimum RM200.',
-     'Invest once when you have cash set aside, such as a bonus. The minimum is RM200.',
+     'Labur sekali gus bila ada wang terkumpul, contohnya bonus. Minimum RM200 bagi individu.',
+     'Invest once when you have cash set aside, such as a bonus. The minimum is RM200 for individuals.',
      None),
     ('korporat', 'corp', 'Pelaburan korporat', 'Corporate investment',
-     'Untuk lebihan tunai syarikat yang tidak diperlukan dalam masa terdekat, dalam akaun atas nama syarikat.',
-     'For company surplus cash that is not needed in the near term, in an account under the company’s name.',
+     'Untuk lebihan tunai syarikat yang tidak diperlukan dalam masa terdekat, dalam akaun atas nama syarikat. Jumlah minimum bergantung pada dana dan jenis syarikat.',
+     'For company surplus cash that is not needed in the near term, in an account under the company’s name. The minimum depends on the fund and the type of company.',
      ('/servis/#korporat', 'Ketahui lanjut', 'Learn more')),
 ]
 
@@ -1133,8 +1133,8 @@ def build_faq():
         ]),
         ('Bermula', 'Getting started', [
             ('Berapa minimum untuk mula?', 'What is the minimum to start?',
-             'Melalui pelan pelaburan bulanan, anda boleh mula dari RM100 sebulan. Untuk pelaburan sekali (lump sum), minimumnya RM200.',
-             'Through a monthly investment plan you can start from RM100 a month. For a one-time (lump sum) investment, the minimum is RM200.'),
+             'Melalui pelan pelaburan bulanan, anda boleh mula dari RM100 sebulan. Untuk pelaburan sekali (lump sum), minimumnya RM200 bagi individu. Bagi syarikat, jumlah minimum bergantung pada dana dan jenis syarikat.',
+             'Through a monthly investment plan you can start from RM100 a month. For a one-time (lump sum) investment, the minimum is RM200 for individuals. For companies, the minimum depends on the fund and the type of company.'),
             ('Bagaimana nak buka akaun?', 'How do I open an account?',
              'Akaun dibuka online melalui Manulife Investments dalam lebih kurang 10 minit. Anda perlukan MyKad, akaun bank atas nama sendiri, emel dan nombor telefon. Panduan bergambar ada di halaman <a href="/sumber/#panduan">Tools &amp; Bahan Belajar</a>.',
              'Accounts are opened online through Manulife Investments in about 10 minutes. You need your MyKad, a bank account in your own name, an email address and a phone number. Illustrated guides are on the <a href="/sumber/#panduan">Tools & Learning Materials</a> page.'),
