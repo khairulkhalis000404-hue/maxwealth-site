@@ -57,6 +57,19 @@
       if (e.target === sheet || e.target.closest('[data-close]')) sheet.close();
     });
   }
+  // Sample pages on /urus-duit/: tap a page to see it full size, tap again to close
+  var zoom = document.getElementById('lpZoom');
+  if (zoom && zoom.showModal) {
+    document.querySelectorAll('.lp-page').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var im = b.querySelector('img'), z = zoom.querySelector('img');
+        z.src = im.currentSrc || im.src;
+        z.alt = im.alt;
+        zoom.showModal();
+      });
+    });
+    zoom.addEventListener('click', function () { zoom.close(); });
+  }
   document.addEventListener('mw:lang', render);
   render();
 

@@ -1027,6 +1027,16 @@ def build_ebook_urus():
     ]
     cards = ''.join(f"""<div class="card lp-path"><span class="lp-letter">{k}</span>{t("h3", h_ms, h_en)}{t("p", p_ms, p_en)}</div>"""
                     for k, h_ms, h_en, p_ms, p_en in paths)
+    samples = [
+        (1, 'Tabung tahunan: Raya, roadtax', 'Yearly fund: Raya, road tax'),
+        (2, 'CCRIS &amp; CTOS: rekod kredit anda', 'CCRIS & CTOS: your credit record'),
+        (3, 'Ujian 3 soalan kesan scam', 'A 3-question scam test'),
+    ]
+    pages = ''.join(
+        f"""<button type="button" class="lp-page" aria-label="Besarkan: {cap_ms}" data-en-aria-label="Enlarge: {esc(cap_en)}">"""
+        f"""<img src="/assets/urus-sample-{n}.jpg" data-en-src="/assets/urus-sample-{n}-en.jpg" alt="Contoh muka surat: {cap_ms}" data-en-alt="Sample page: {esc(cap_en)}" width="759" height="1075" loading="lazy">"""
+        f"""{t("span", cap_ms, cap_en)}</button>"""
+        for n, cap_ms, cap_en in samples)
     body = f"""<section class="lp-hero"><div class="wrap lp-grid">
   <div class="lp-title">
     {t("p", "Ebook · Edisi 2026", "Ebook · 2026 edition", 'class="eyebrow"')}
@@ -1040,6 +1050,16 @@ def build_ebook_urus():
     {t("p", "PDF, 101 muka surat. Dihantar melalui WhatsApp selepas bayaran.", "PDF, 101 pages. Sent on WhatsApp after payment.", 'class="to-ika"')}
   </div>
 </div></section>
+
+<section class="section"><div class="wrap">
+  <div class="section-head">
+    {t("p", "Intai isi", "Look inside", 'class="eyebrow"')}
+    {t("h2", "Tengok dulu sebelum beli.", "See it before you buy.")}
+    {t("p", "3 daripada 101 muka surat. Tekan untuk besarkan.", "3 of 101 pages. Tap to enlarge.")}
+  </div>
+  <div class="lp-pages">{pages}</div>
+</div></section>
+<dialog class="lp-zoom" id="lpZoom" aria-label="Contoh muka surat" data-en-aria-label="Sample page"><img alt=""></dialog>
 
 <section class="section alt"><div class="wrap lp-why">
   <div>

@@ -667,6 +667,16 @@ a.card:hover { border-color: var(--brand-2); }
 .lp-why-body { display: grid; gap: 22px; }
 .lp-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
 .lp-chips li { padding: 6px 13px; border: 1px solid var(--line-strong); border-radius: 999px; background: var(--surface); font-size: 14px; font-weight: 500; color: var(--heading); }
+/* sample pages on /urus-duit/: swipe row on phones, three columns from 760px; tap opens the page full size */
+.lp-pages { display: flex; gap: 14px; margin: 0 calc(var(--gutter) * -1); padding: 2px var(--gutter) 12px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: var(--gutter); }
+.lp-page { flex: 0 0 min(66vw, 250px); display: grid; gap: 10px; align-content: start; padding: 0; border: 0; background: none; font: inherit; color: inherit; text-align: left; cursor: zoom-in; scroll-snap-align: start; }
+.lp-page img { width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line-strong); background: #fff; box-shadow: var(--shadow); }
+.lp-page span { font-size: 14px; font-weight: 500; line-height: 1.35; color: var(--heading); }
+.lp-page:focus-visible { outline: 2px solid var(--brand-2); outline-offset: 4px; border-radius: 12px; }
+@media (min-width: 760px) { .lp-pages { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; max-width: 880px; margin: 0; padding: 0; overflow: visible; } }
+.lp-zoom { margin: auto; padding: 0; border: 0; border-radius: 12px; background: #fff; width: min(760px, calc(100vw - 24px)); max-height: calc(100vh - 24px); max-height: calc(100dvh - 24px); overflow: auto; }
+.lp-zoom::backdrop { background: rgba(10, 25, 45, .8); }
+.lp-zoom img { display: block; width: 100%; height: auto; cursor: zoom-out; }
 .lp-paths { display: grid; gap: 16px; }
 .lp-letter { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--brand-soft); color: var(--emph); font-weight: 700; }
 .lp-author { display: flex; gap: 14px; align-items: center; margin-top: 24px; }
