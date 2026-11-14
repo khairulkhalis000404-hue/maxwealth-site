@@ -115,6 +115,33 @@
     window.matchMedia('(min-width: 1000px)').addEventListener('change', function (m) { if (m.matches) setMenu(false); });
   }
 
+  // Servis menu: the header button opens the list of service pages (tap/click; hover also opens it on desktop mice).
+  // Closes on a click outside, Escape, or when another one opens.
+  var subBtns = document.querySelectorAll('.sub-btn');
+  function setSub(btn, open) {
+    btn.setAttribute('aria-expanded', String(open));
+    document.getElementById(btn.getAttribute('aria-controls')).hidden = !open;
+  }
+  subBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var open = btn.getAttribute('aria-expanded') !== 'true';
+      subBtns.forEach(function (b) { if (b !== btn) setSub(b, false); });
+      setSub(btn, open);
+    });
+    var li = btn.parentNode, timer;
+    if (btn.closest('.nav') && window.matchMedia('(hover: hover)').matches) {
+      li.addEventListener('mouseenter', function () { clearTimeout(timer); setSub(btn, true); });
+      li.addEventListener('mouseleave', function () { timer = setTimeout(function () { setSub(btn, false); }, 180); });
+    }
+  });
+  document.addEventListener('click', function (e) {
+    subBtns.forEach(function (b) { if (b.closest('.nav') && !b.parentNode.contains(e.target)) setSub(b, false); });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    subBtns.forEach(function (b) { if (b.getAttribute('aria-expanded') === 'true') { setSub(b, false); if (b.closest('.nav')) b.focus(); } });
+  });
+
   // Header hides after scrolling down a fair way (past ~320px) and reappears on scroll up, at the top,
   // or when keyboard focus moves into it. Small jitters (<8px) are ignored; never hides with the menu open.
   if (header) {
