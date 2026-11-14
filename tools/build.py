@@ -743,19 +743,19 @@ WAYS = [
     ('rsp', 'review', 'Regular Savings Plan (RSP)', 'Regular Savings Plan (RSP)',
      'Jumlah tetap masuk setiap bulan, dari RM100. DCA, DDA, DDI, panggil apa pun, asalkan duit anda terus bekerja untuk anda.',
      'A fixed amount goes in every month, from RM100. DCA, DDA, DDI: call it what you like, as long as your money keeps working for you.',
-     ('/sumber/#panduan', 'Lihat panduan RSP', 'See the RSP guide')),
+     ('/servis/rsp/', 'Lihat RSP', 'See RSP')),
     ('akaun-1', 'prs', 'Pelaburan Simpanan Persaraan (Akaun 1)', 'Retirement Savings (Account 1) investment',
      'Labur sebahagian Simpanan Persaraan (Akaun 1) anda, tertakluk kelayakan. Semak dulu jumlah yang boleh dilabur.',
      'Invest part of your Retirement Savings (Account 1), subject to eligibility. Check first how much you can invest.',
-     ('/sumber/#kalkulator', 'Buka kalkulator kelayakan', 'Open the eligibility calculator')),
+     ('/servis/akaun-1/', 'Semak kelayakan', 'Check eligibility')),
     ('sekali', 'ut', 'Pelaburan sekali (lump sum)', 'One-time investment (lump sum)',
      'Labur sekali gus bila ada wang terkumpul, contohnya bonus. Minimum RM200 bagi individu.',
      'Invest once when you have cash set aside, such as a bonus. The minimum is RM200 for individuals.',
-     None),
+     ('/servis/pelaburan-sekali/', 'Lihat pelaburan sekali', 'See lump sum')),
     ('korporat', 'corp', 'Pelaburan korporat', 'Corporate investment',
      'Untuk lebihan tunai syarikat yang tidak diperlukan dalam masa terdekat, dalam akaun atas nama syarikat. Jumlah minimum bergantung pada dana dan jenis syarikat.',
      'For company surplus cash that is not needed in the near term, in an account under the company’s name. The minimum depends on the fund and the type of company.',
-     ('/servis/#korporat', 'Ketahui lanjut', 'Learn more')),
+     ('/servis/korporat/', 'Lihat pelaburan korporat', 'See corporate investing')),
 ]
 
 
@@ -882,58 +882,363 @@ def book_cards(skip=()):
     return '\n    '.join(v for k, v in cards.items() if k not in skip)
 
 
-def build_resources():
-    guides = [
-        ('ut', 'Daftar akaun Unit Trust', 'Register a Unit Trust account', 'panduan-daftar-akaun-unit-trust-bm.pdf', 'guide-register-unit-trust-account-en.pdf'),
-        ('prs', 'Daftar akaun PRS', 'Register a PRS account', 'panduan-daftar-akaun-prs-bm.pdf', 'guide-register-prs-account-en.pdf'),
-        ('people', 'Buka akaun Unit Trust bersama', 'Open a joint Unit Trust account', 'panduan-buka-akaun-unit-trust-bersama-bm.pdf', 'guide-open-joint-unit-trust-account-en.pdf'),
-        ('arrow', 'Cara labur dalam dana', 'How to invest in a fund', 'panduan-cara-labur-dana-bm.pdf', 'guide-how-to-invest-in-a-fund-en.pdf'),
-        ('review', 'Set pelan pelaburan bulanan (RSP)', 'Set up a monthly plan (RSP)', 'panduan-set-rsp-bulanan-bm.pdf', 'guide-set-up-monthly-rsp-en.pdf'),
-        ('globe', 'Cara tukar dana', 'How to switch funds', 'panduan-cara-tukar-dana-bm.pdf', 'guide-how-to-switch-funds-en.pdf'),
-    ]
-    grows = ''.join(f'''<div class="guide"><span class="ic-round">{I[ic]}</span>
-  <span class="txt">{t("b", ms, en)}{t("span", "PDF, BM dan English", "PDF, BM and English")}</span>
-  <span class="pdf"><a href="{PERSONAL}/guides/{bm}" target="_blank" rel="noopener">BM</a><a href="{PERSONAL}/guides/{eng}" target="_blank" rel="noopener">EN</a></span>
-</div>''' for ic, ms, en, bm, eng in guides)
-    def cfield(fid, ms, en, value='', pre='', post='', post_en='', need='', hint=False):
-        inner = f'<input id="{fid}" type="number" inputmode="decimal" min="0" step="any" value="{value}">'
-        left = f'<i>{pre}</i>' if pre else ''
-        right = t('i', post, post_en) if post else ''
-        n = f' data-need="{need}"' if need else ''
-        h = f'<small class="calc-hint" id="{fid}Hint"></small>' if hint else ''
-        lab = f'for="{fid}"'
-        return f'<div class="field"{n}>{t("label", ms, en, lab)}<span class="inp">{left}{inner}{right}</span>{h}</div>'
+# ---------- Calculators (shared by /sumber/ sheets and the inline pages) ----------
+def cfield(fid, ms, en, value='', pre='', post='', post_en='', need='', hint=False):
+    inner = f'<input id="{fid}" type="number" inputmode="decimal" min="0" step="any" value="{value}">'
+    left = f'<i>{pre}</i>' if pre else ''
+    right = t('i', post, post_en) if post else ''
+    n = f' data-need="{need}"' if need else ''
+    h = f'<small class="calc-hint" id="{fid}Hint"></small>' if hint else ''
+    lab = f'for="{fid}"'
+    return f'<div class="field"{n}>{t("label", ms, en, lab)}<span class="inp">{left}{inner}{right}</span>{h}</div>'
 
-    def crate(fid, need=''):
-        return cfield(fid, "Pulangan setahun", "Return per year", value='10', post='%', post_en='%', need=need)
+def crate(fid, need=''):
+    return cfield(fid, "Pulangan setahun", "Return per year", value='10', post='%', post_en='%', need=need)
 
-    def cpanel(key, fields, extra=''):
-        title, title_en = heads[key]
-        why, why_en = whys[key]
-        return f'''<dialog class="calc-sheet" data-panel="{key}" aria-labelledby="{key}Title"><div class="calc-sheet-in">
-    <button type="button" class="calc-x" data-close aria-label="Tutup" data-en-aria-label="Close">&times;</button>
-    {t("h3", title, title_en, f'id="{key}Title"')}
-    {t("p", why, why_en, 'class="calc-why"')}
-    <div class="calc-fields">{fields}</div>{extra}
-    <div class="calc-result" id="{key}Result" aria-live="polite"></div>
-    <p class="calc-fine" id="{key}Fine"></p>
-    <a class="btn calc-cta" id="{key}Cta" target="_blank" rel="noopener">{I["wa"]}{t("span", "Bincang angka ini di WhatsApp", "Discuss these numbers on WhatsApp")}</a>
+def cpanel(key, fields, extra='', inline=False, title=None, why=None):
+    """A calculator: a tap-to-open sheet on /sumber/, or an open card (inline=True) whose numbers go into the page's #lead form."""
+    title, title_en = title or CALC_HEADS[key]
+    why, why_en = why or CALC_WHYS[key]
+    if inline:
+        return f'''<div class="calc-card" data-panel="{key}">
+  {t("h3", title, title_en)}
+  {t("p", why, why_en, 'class="calc-why"')}
+  <div class="calc-fields">{fields}</div>{extra}
+  <div class="calc-result" id="{key}Result" aria-live="polite"></div>
+  <p class="calc-fine" id="{key}Fine"></p>
+</div>'''
+    return f'''<dialog class="calc-sheet" data-panel="{key}" aria-labelledby="{key}Title"><div class="calc-sheet-in">
+<button type="button" class="calc-x" data-close aria-label="Tutup" data-en-aria-label="Close">&times;</button>
+{t("h3", title, title_en, f'id="{key}Title"')}
+{t("p", why, why_en, 'class="calc-why"')}
+<div class="calc-fields">{fields}</div>{extra}
+<div class="calc-result" id="{key}Result" aria-live="polite"></div>
+<p class="calc-fine" id="{key}Fine"></p>
+<a class="btn calc-cta" id="{key}Cta" target="_blank" rel="noopener">{I["wa"]}{t("span", "Bincang angka ini di WhatsApp", "Discuss these numbers on WhatsApp")}</a>
   </div></dialog>'''
 
-    calcs = [
-        ('ef', 'Kalkulator dana kecemasan', 'Emergency fund calculator', 'Berapa perlu ada, dan berapa lama nak capai.', 'How much you need, and how long to get there.'),
-        ('cc', 'Kalkulator faedah kompaun', 'Compound interest calculator', 'Lihat bagaimana pelaburan berkala boleh berkembang.', 'See how regular investing could grow.'),
-        ('ep', 'Kalkulator Akaun Persaraan (Akaun 1)', 'Retirement Account (Account 1) calculator', 'Berapa dari Akaun Persaraan yang boleh dilabur.', 'How much of your Retirement Account you can invest.'),
-        ('tv', 'Kalkulator TVM (nilai masa wang)', 'TVM calculator (time value of money)', 'Kira sasaran, jumlah bulanan, jumlah sekali atau tempoh.', 'Work out a target, monthly amount, lump sum or time needed.'),
-    ]
-    heads = {k: (a.split(' (')[0], b.split(' (')[0]) for k, a, b, c, d in calcs}
-    whys = {
-        'ef': ('Sasarkan 3 hingga 6 bulan gaji. Lagi besar komitmen anda, lagi dekat dengan 6 bulan.', 'Aim for 3 to 6 months of your salary. The bigger your commitments, the closer to 6 months.'),
-        'cc': ('Taip nombor anda. Keputusan dikira terus.', 'Type your numbers. Results update as you type.'),
-        'ep': ('30% daripada jumlah dalam Akaun Persaraan yang melebihi Simpanan Asas mengikut umur anda. Semak baki dalam i-Akaun.', '30% of the amount in your Retirement Account above the Basic Savings for your age. Check your balance in i-Akaun.'),
-        'tv': ('Pilih apa yang nak dikira, kemudian isi yang lain.', 'Choose what to work out, then fill in the rest.'),
-    }
-    ctabs = ''.join(f'<button type="button" class="calc-tab" data-calc="{k}"><span class="ic-round">{I["calc"]}</span><span class="txt">{t("b", a, b)}{t("small", c, d)}</span>{I["arrow"]}</button>' for k, a, b, c, d in calcs)
+CALCS = [
+    ('ef', 'Kalkulator dana kecemasan', 'Emergency fund calculator', 'Berapa perlu ada, dan berapa lama nak capai.', 'How much you need, and how long to get there.'),
+    ('cc', 'Kalkulator faedah kompaun', 'Compound interest calculator', 'Lihat bagaimana pelaburan berkala boleh berkembang.', 'See how regular investing could grow.'),
+    ('ep', 'Kalkulator Akaun Persaraan (Akaun 1)', 'Retirement Account (Account 1) calculator', 'Berapa dari Akaun Persaraan yang boleh dilabur.', 'How much of your Retirement Account you can invest.'),
+    ('tv', 'Kalkulator TVM (nilai masa wang)', 'TVM calculator (time value of money)', 'Kira sasaran, jumlah bulanan, jumlah sekali atau tempoh.', 'Work out a target, monthly amount, lump sum or time needed.'),
+]
+CALC_HEADS = {k: (a.split(' (')[0], b.split(' (')[0]) for k, a, b, c, d in CALCS}
+CALC_WHYS = {
+    'ef': ('Sasarkan 3 hingga 6 bulan gaji. Lagi besar komitmen anda, lagi dekat dengan 6 bulan.', 'Aim for 3 to 6 months of your salary. The bigger your commitments, the closer to 6 months.'),
+    'cc': ('Taip nombor anda. Keputusan dikira terus.', 'Type your numbers. Results update as you type.'),
+    'ep': ('30% daripada jumlah dalam Akaun Persaraan yang melebihi Simpanan Asas mengikut umur anda. Semak baki dalam i-Akaun.', '30% of the amount in your Retirement Account above the Basic Savings for your age. Check your balance in i-Akaun.'),
+    'tv': ('Pilih apa yang nak dikira, kemudian isi yang lain.', 'Choose what to work out, then fill in the rest.'),
+}
+
+GUIDES = {   # PDFs live on khairulkhalis.com/guides/
+    'register': ('ut', 'Daftar akaun Unit Trust', 'Register a Unit Trust account', 'panduan-daftar-akaun-unit-trust-bm.pdf', 'guide-register-unit-trust-account-en.pdf'),
+    'prs': ('prs', 'Daftar akaun PRS', 'Register a PRS account', 'panduan-daftar-akaun-prs-bm.pdf', 'guide-register-prs-account-en.pdf'),
+    'joint': ('people', 'Buka akaun Unit Trust bersama', 'Open a joint Unit Trust account', 'panduan-buka-akaun-unit-trust-bersama-bm.pdf', 'guide-open-joint-unit-trust-account-en.pdf'),
+    'invest': ('arrow', 'Cara labur dalam dana', 'How to invest in a fund', 'panduan-cara-labur-dana-bm.pdf', 'guide-how-to-invest-in-a-fund-en.pdf'),
+    'rsp': ('review', 'Set pelan pelaburan bulanan (RSP)', 'Set up a monthly plan (RSP)', 'panduan-set-rsp-bulanan-bm.pdf', 'guide-set-up-monthly-rsp-en.pdf'),
+    'switch': ('globe', 'Cara tukar dana', 'How to switch funds', 'panduan-cara-tukar-dana-bm.pdf', 'guide-how-to-switch-funds-en.pdf'),
+}
+
+
+def guide_rows(keys):
+    return ''.join(f'''<div class="guide"><span class="ic-round">{I[ic]}</span>
+  <span class="txt">{t("b", ms, en)}{t("span", "PDF, BM dan English", "PDF, BM and English")}</span>
+  <span class="pdf"><a href="{PERSONAL}/guides/{bm}" target="_blank" rel="noopener">BM</a><a href="{PERSONAL}/guides/{eng}" target="_blank" rel="noopener">EN</a></span>
+</div>''' for ic, ms, en, bm, eng in (GUIDES[k] for k in keys))
+
+
+def cc_fields(start, start_lbl, monthly, monthly_lbl, years=10):
+    return (cfield('ccStart', *start_lbl, value=str(start), pre='RM')
+            + cfield('ccMonthly', *monthly_lbl, value=str(monthly), pre='RM')
+            + crate('ccRate')
+            + cfield('ccYears', 'Tempoh', 'Years', str(years), '', 'tahun', 'years'))
+
+
+def ep_fields():
+    return (cfield('epAge', 'Umur anda', 'Your age', '30', '', 'tahun', 'years')
+            + cfield('epBal', 'Baki Akaun Persaraan', 'Retirement Account balance', '50000', 'RM'))
+
+
+def lead_form(key, topic_ms, topic_en, company=False, wide=False):
+    """Name (+ company) form under inline calculators; calc.js writes every number on the page into the WhatsApp message to Ika."""
+    co_for = 'for="leadCo"'
+    co = (f'<div class="field">{t("label", "Nama syarikat (pilihan)", "Company name (optional)", co_for)}'
+          '<input id="leadCo" name="company" type="text" autocomplete="organization" placeholder="Sdn. Bhd." data-en-placeholder="Sdn. Bhd."></div>') if company else ''
+    return f'''<form class="form lead{' wide' if wide else ''}" id="lead" data-key="{key}" novalidate>
+  {t("h3", "Nak bincang angka ini?", "Want to talk these numbers through?")}
+  {t("p", "Isi nama anda. Butang di bawah buka WhatsApp dengan angka di atas, siap untuk Ika (Admin).", "Add your name. The button opens WhatsApp with the numbers above, ready for Ika (Admin).", 'class="note"')}
+  {t("span", topic_ms, topic_en, 'data-topic hidden')}
+  <div class="field">{t("label", "Nama", "Name", 'for="leadName"')}<input id="leadName" name="name" type="text" autocomplete="name" required placeholder="Nama anda" data-en-placeholder="Your name"></div>
+  {co}{t("p", "Isi nama anda dulu.", "Please add your name first.", 'class="lead-need" role="alert"')}
+  <a class="btn" id="leadCta" href="https://wa.me/{WA_NUMBER}" target="_blank" rel="noopener">{I["wa"]}{t("span", "Hantar ke WhatsApp", "Send on WhatsApp")}</a>
+  {t("p", "Laman ini tidak menyimpan apa-apa yang anda taip.", "This site does not store anything you type.", 'class="note"')}
+</form>'''
+
+
+# ---------- Ways to invest: one page each (RSP, lump sum, Akaun 1, corporate) ----------
+# Short copy (user, 12 Nov 2026: too many sentences), visuals carry the meaning. Akaun 1: eligibility only, no growth
+# illustration on that money and no return comparison (compliance rules). Lump-sum RM200 = individuals only.
+WAY_PAGES = {
+    'rsp': ('/servis/rsp/', 'review', 'Regular Savings Plan (RSP)', 'Regular Savings Plan (RSP)', 'Labur sikit, setiap bulan.', 'A little, every month.'),
+    'sekali': ('/servis/pelaburan-sekali/', 'ut', 'Pelaburan sekali (lump sum)', 'One-time investment (lump sum)', 'Ada wang terkumpul? Labur sekali gus.', 'Cash set aside? Invest it in one go.'),
+    'akaun-1': ('/servis/akaun-1/', 'prs', 'Pelaburan Simpanan Persaraan (Akaun 1)', 'Retirement Savings (Account 1) investment', 'Semak kelayakan dulu.', 'Check your eligibility first.'),
+    'korporat': ('/servis/korporat/', 'corp', 'Pelaburan korporat', 'Corporate investment', 'Untuk lebihan tunai syarikat.', 'For company surplus cash.'),
+}
+
+
+def art(kind):
+    """Hero illustrations: flat shapes in the brand tokens (no text except numbers), so they work in both themes and languages."""
+    bg = '<rect class="as" width="400" height="320" rx="28"/>'
+    if kind == 'rsp':   # 12 monthly top-ups: blue = money put in, yellow = illustrated growth on top
+        bars = ''
+        for i in range(12):
+            c, g = 13 * (i + 1), round(0.9 * i ** 1.8)
+            x = 52 + i * 26
+            bars += f'<rect class="a2" x="{x}" y="{272 - c}" width="16" height="{c}" rx="3"/><rect class="ay" x="{x}" y="{272 - c - g}" width="16" height="{g}" rx="3"/>'
+        return (f'<svg viewBox="0 0 400 320" class="art">{bg}<line class="al" x1="40" y1="276" x2="360" y2="276"/>{bars}'
+                '<rect class="aw" x="44" y="40" width="132" height="44" rx="22"/><text x="110" y="69" text-anchor="middle">+RM100</text></svg>')
+    if kind == 'sekali':   # one stack that doubles
+        def stack(cx, n, base):
+            return ''.join(f'<ellipse class="a2 coin" cx="{cx}" cy="{base - k * 15}" rx="42" ry="12"/>' for k in range(n)) + \
+                f'<ellipse class="ay coin" cx="{cx}" cy="{base - n * 15}" rx="42" ry="12"/>'
+        return (f'<svg viewBox="0 0 400 320" class="art">{bg}{stack(100, 4, 262)}{stack(300, 10, 262)}'
+                '<path class="al dash" d="M120 168 C 170 96, 220 84, 262 92" fill="none"/><path class="al" d="M250 82 L264 92 L250 104" fill="none"/>'
+                '<circle class="a1" cx="196" cy="214" r="34"/><text class="on-dark" x="196" y="224" text-anchor="middle">×2</text></svg>')
+    if kind == 'akaun-1':   # a jar: Basic Savings at the bottom, the amount above it, 30% of that highlighted
+        return (f'<svg viewBox="0 0 400 320" class="art">{bg}'
+                '<rect class="aw al" x="130" y="34" width="140" height="252" rx="22"/>'
+                '<rect class="a1" x="138" y="152" width="124" height="126" rx="14"/>'
+                '<rect class="a2" x="138" y="76" width="124" height="80" rx="14"/>'
+                '<rect class="ay" x="138" y="76" width="124" height="26" rx="12"/>'
+                '<path class="al" d="M284 76 h14 v26 h-14" fill="none"/><text x="306" y="96">30%</text>'
+                '<path class="al" d="M116 156 h-14 v122 h14" fill="none"/></svg>')
+    # corporate: a building, its day-to-day cash kept aside, the surplus stacked and growing
+    win = ''.join(f'<rect class="aw" x="{x}" y="{y}" width="18" height="18" rx="3"/>' for y in (96, 130, 164, 198) for x in (74, 108, 142))
+    return (f'<svg viewBox="0 0 400 320" class="art">{bg}<line class="al" x1="40" y1="276" x2="360" y2="276"/>'
+            f'<rect class="a1" x="60" y="72" width="114" height="204" rx="8"/>{win}<rect class="aw" x="104" y="236" width="26" height="40" rx="3"/>'
+            '<rect class="a2" x="206" y="214" width="52" height="62" rx="8"/><rect class="a2" x="282" y="150" width="52" height="126" rx="8"/>'
+            '<rect class="ay" x="282" y="112" width="52" height="40" rx="8"/><path class="al" d="M268 120 l40 -48 M296 72 h12 v12" fill="none"/></svg>')
+
+
+def way_hero(key, lead_ms, lead_en):
+    path, ic, tms, ten, h_ms, h_en = WAY_PAGES[key]
+    return f'''<section class="page-hero way-hero"><div class="wrap way-hero-in">
+  <div>
+    <p class="eyebrow">{t("span", "Cara melabur · " + tms, "Ways to invest · " + ten)}</p>
+    {t("h1", h_ms, h_en)}
+    {t("p", lead_ms, lead_en, 'class="lead"')}
+    <div class="btns" style="margin-top:28px"><a class="btn" href="#kira">{I["calc"]}{t("span", "Kira sekarang", "Do the sums")}</a><a class="btn ghost" href="/servis/cara-melabur/">{t("span", "Semua cara melabur", "All ways to invest")}</a></div>
+  </div>
+  <div class="way-art" aria-hidden="true">{art(key)}</div>
+</div></section>'''
+
+
+def way_facts(items):
+    return '<div class="facts">' + ''.join(
+        f'<div class="fact">{t("b", b[0], b[1]) if isinstance(b, tuple) else f"<b>{b}</b>"}{t("p", ms, en)}</div>' for b, ms, en in items) + '</div>'
+
+
+def way_steps(items):
+    return '<ol class="steps">' + ''.join(f'<li><div>{t("h3", a, b)}{t("p", c, d)}</div></li>' for a, b, c, d in items) + '</ol>'
+
+
+def way_others(key):
+    rows = ''.join(f'<a class="calc-tab way-link" href="{p}"><span class="ic-round">{I[ic]}</span><span class="txt">{t("b", tms, ten)}{t("small", hms, hen)}</span>{I["arrow"]}</a>'
+                   for k, (p, ic, tms, ten, hms, hen) in WAY_PAGES.items() if k != key)
+    return f'''<section class="section tight"><div class="wrap">
+  <div class="section-head">{t("p", "Cara lain melabur", "Other ways to invest", 'class="eyebrow"')}</div>
+  <div class="calc-tabs">{rows}</div>
+</div></section>'''
+
+
+def way_page(key, lead, facts, explain, steps, calc, more, desc):
+    """Hero, 3 facts, a visual explainer beside the steps, the calculator with the name form, guides/checklist, other ways."""
+    path, ic, tms, ten, h_ms, h_en = WAY_PAGES[key]
+    calc_html, lead_html = calc
+    more_head, more_body = more
+    body = f'''{way_hero(key, *lead)}
+
+<section class="section"><div class="wrap">
+  {way_facts(facts)}
+</div></section>
+
+<section class="section alt"><div class="wrap split" style="align-items:start">
+  <div>{t("p", "Cara ia berfungsi", "How it works", 'class="eyebrow"')}{explain}</div>
+  <div>{t("p", "Langkah", "Steps", 'class="eyebrow"')}{way_steps(steps)}</div>
+</div></section>
+
+<section class="section" id="kira"><div class="wrap">
+  <div class="section-head">{t("p", "Kalkulator", "Calculator", 'class="eyebrow"')}{t("h2", "Kira dengan angka anda.", "Try your own numbers.")}</div>
+  <div class="calc calc-board" id="calc">
+    {calc_html}
+    {lead_html}
+  </div>
+  <script defer src="/assets/calc.js?v={CALC_V}"></script>
+</div></section>
+
+<section class="section alt"><div class="wrap split" style="align-items:start">
+  <div>{t("p", more_head[0], more_head[1], 'class="eyebrow"')}{t("h2", more_head[2], more_head[3])}</div>
+  <div>{more_body}</div>
+</div></section>
+
+{way_others(key)}
+
+<section class="section tight"><div class="wrap">
+  {t("p", "Pelaburan melibatkan risiko. Harga unit dan agihan (jika ada) boleh naik dan turun. Sila baca prospektus dan Product Highlights Sheet sebelum melabur.", "Investing involves risk. Unit prices and distributions (if any) may go down as well as up. Please read the prospectus and Product Highlights Sheet before investing.", 'class="stats-note"')}
+</div></section>'''
+    page(path, tms, ten, desc[0], desc[1], body)
+
+
+def legend(rows):
+    return '<dl class="vlegend">' + ''.join(f'<div><dt><i class="{c}"></i>{t("span", a, b)}</dt>{t("dd", c2, d2) if c2 else ""}</div>' for c, a, b, c2, d2 in rows) + '</dl>'
+
+
+def build_way_rsp():
+    cols = ''.join(f'''<div class="dca-col"><span class="dca-bar" style="--h:{u / 125 * 100:.0f}%"><b>{u}</b></span>{t("small", f"Bulan {m}", f"Month {m}")}<span class="dca-price">RM{p:.2f}</span></div>'''
+                   for m, p, u in ((1, 1.00, 100), (2, 0.80, 125), (3, 1.25, 80)))
+    explain = f'''{t("h2", "Harga turun, unit bertambah.", "Lower price, more units.")}
+  <div class="explain">
+    {t("p", "RM100 setiap bulan, harga seunit berubah:", "RM100 every month, the unit price changes:", 'class="explain-head"')}
+    <div class="dca">{cols}</div>
+    {t("p", "Tinggi bar = unit dibeli", "Bar height = units bought", 'class="explain-key"')}
+    <dl class="vlegend sum"><div><dt>{t("span", "Jumlah dilabur", "Total invested")}</dt><dd>RM300</dd></div><div><dt>{t("span", "Unit terkumpul", "Units held")}</dt><dd>305</dd></div><div><dt>{t("span", "Kos purata seunit", "Average cost per unit")}</dt><dd>RM0.98</dd></div><div><dt>{t("span", "Harga purata", "Average price")}</dt><dd>RM1.02</dd></div></dl>
+  </div>
+  {t("p", "Harga contoh sahaja. Purata kos ringgit (DCA) tidak menjamin keuntungan atau mengelak kerugian.", "Example prices only. Ringgit cost averaging (DCA) does not guarantee a profit or prevent a loss.", 'class="calc-fine"')}'''
+    way_page('rsp',
+             ('Jumlah tetap setiap bulan, dari RM100. Tak perlu tunggu ada duit besar.', 'A fixed amount every month, from RM100. No need to wait for a big sum.'),
+             [('RM100', 'minimum sebulan.', 'minimum a month.'),
+              ('DCA', 'lebih banyak unit bila harga turun.', 'more units when prices fall.'),
+              (('12×', '12×'), 'setahun, tanpa perlu teka masa pasaran.', 'a year, with no need to time the market.')],
+             explain,
+             [('Buka akaun', 'Open an account', 'Online, lebih kurang 10 minit.', 'Online, about 10 minutes.'),
+              ('Pilih dana', 'Choose a fund', 'Bersama perunding, ikut profil risiko anda.', 'With a consultant, to match your risk profile.'),
+              ('Set RSP', 'Set up the RSP', 'Tetapkan jumlah bulanan anda.', 'Set your monthly amount.'),
+              ('Semak setiap tahun', 'Review yearly', 'Naikkan jumlah bila gaji naik.', 'Raise it when your pay goes up.')],
+             (cpanel('cc', cc_fields(0, ('Jumlah permulaan (pilihan)', 'Starting amount (optional)'), 200, ('Labur setiap bulan', 'Invest every month')),
+                     inline=True, title=('Kalkulator RSP', 'RSP calculator'), why=('Lihat ilustrasi pelaburan bulanan anda.', 'See an illustration of your monthly investing.')),
+              lead_form('UNIT TRUST', 'Regular Savings Plan (RSP)', 'Regular Savings Plan (RSP)')),
+             (('Panduan', 'Guides', 'Mula sendiri, langkah demi langkah.', 'Start on your own, step by step.'), guide_rows(['register', 'invest', 'rsp'])),
+             ('Regular Savings Plan (RSP): labur jumlah tetap setiap bulan dari RM100, dengan kalkulator dan panduan.',
+              'Regular Savings Plan (RSP): invest a fixed amount every month from RM100, with a calculator and guides.'))
+
+
+def build_way_lump():
+    bars = ''.join(f'''<div class="r72-row">{t("span", f"{r}% setahun", f"{r}% a year", 'class="r72-lbl"')}<span class="r72-bar" style="--w:{y / 9 * 100:.0f}%"></span>{t("b", f"≈ {y:g} tahun", f"≈ {y:g} years")}</div>'''
+                   for r, y in ((8, 9), (10, 7.2)))
+    explain = f'''{t("h2", "Peraturan 72.", "The rule of 72.")}
+  <div class="explain">
+    {t("p", "72 ÷ kadar pulangan setahun ≈ tahun untuk wang berganda.", "72 ÷ yearly return ≈ years for money to double.", 'class="explain-head"')}
+    <div class="r72-pair"><span>RM5,000</span>{I["arrow"]}<span>RM10,000</span></div>
+    <div class="r72">{bars}</div>
+  </div>
+  {t("p", "Ilustrasi andaian 8% dan 10% setahun, bukan unjuran pulangan. Pulangan sebenar berubah-ubah dan tidak dijamin.", "Illustration assuming 8% and 10% a year, not a projection of returns. Actual returns vary and are not guaranteed.", 'class="calc-fine"')}'''
+    way_page('sekali',
+             ('Contohnya bonus atau wang terkumpul. Minimum RM200 bagi individu.', 'For example a bonus or money set aside. The minimum is RM200 for individuals.'),
+             [('RM200', 'minimum bagi individu.', 'minimum for individuals.'),
+              ('72', '÷ kadar pulangan ≈ tahun untuk berganda.', '÷ yearly return ≈ years to double.'),
+              (('+RSP', '+RSP'), 'boleh digabung dengan pelaburan bulanan.', 'can be combined with monthly investing.')],
+             explain,
+             [('Buka akaun', 'Open an account', 'Online, lebih kurang 10 minit.', 'Online, about 10 minutes.'),
+              ('Tetapkan tempoh', 'Set the time frame', 'Guna wang yang tak diperlukan dalam masa terdekat.', 'Use money you won’t need soon.'),
+              ('Labur sekali gus', 'Invest in one go', 'Bersama perunding, ikut profil risiko anda.', 'With a consultant, to match your risk profile.'),
+              ('Tambah bila ada', 'Top up any time', 'Labur lagi, atau mula RSP bulanan.', 'Add more, or start a monthly RSP.')],
+             (cpanel('cc', cc_fields(5000, ('Jumlah sekali gus', 'Lump sum'), 0, ('Tambahan bulanan (pilihan)', 'Monthly top-up (optional)')),
+                     inline=True, title=('Kalkulator pelaburan sekali', 'Lump-sum calculator'), why=('Lihat ilustrasi pertumbuhan wang yang dilabur sekali.', 'See an illustration of money invested once.')),
+              lead_form('UNIT TRUST', 'Pelaburan sekali (lump sum)', 'One-time investment (lump sum)')),
+             (('Panduan', 'Guides', 'Mula sendiri, langkah demi langkah.', 'Start on your own, step by step.'), guide_rows(['register', 'joint', 'invest'])),
+             ('Pelaburan sekali (lump sum) dalam unit trust, minimum RM200 bagi individu, dengan kalkulator dan panduan.',
+              'One-time (lump-sum) unit trust investment, minimum RM200 for individuals, with a calculator and guides.'))
+
+
+def build_way_akaun1():
+    explain = f'''{t("h2", "Hanya lebihan yang dikira.", "Only the amount above counts.")}
+  <div class="explain">
+    {t("p", "Baki Akaun Persaraan anda:", "Your Retirement Account balance:", 'class="explain-head"')}
+    <div class="vbar"><span class="a1" style="flex:55"></span><span class="a2" style="flex:31.5"></span><span class="ay" style="flex:13.5"></span></div>
+    {legend([("a1", "Simpanan Asas ikut umur", "Basic Savings for your age", "", ""),
+             ("a2", "Lebihan di atas Simpanan Asas", "Amount above Basic Savings", "", ""),
+             ("ay", "30% daripada lebihan itu boleh dilabur", "30% of that amount can be invested", "", "")])}
+  </div>
+  {t("p", "Gambaran sahaja, bukan skala sebenar. Semak jumlah layak sebenar dalam i-Akaun.", "A sketch, not to scale. Check your exact eligible amount in i-Akaun.", 'class="calc-fine"')}'''
+    more = ticks([("MyKad", "MyKad"), ("Baki Akaun Persaraan terkini (semak di i-Akaun)", "Your latest Retirement Account balance (check in i-Akaun)"),
+                  ("Soalan anda tentang dana dan risiko", "Your questions about funds and risk")])
+    way_page('akaun-1',
+             ('Sebahagian Simpanan Persaraan (Akaun 1) boleh dilabur, tertakluk kelayakan. Kira jumlah anda dalam satu minit.',
+              'Part of your Retirement Savings (Account 1) can be invested, subject to eligibility. Work out your amount in a minute.'),
+             [('30%', 'daripada jumlah yang melebihi Simpanan Asas.', 'of the amount above Basic Savings.'),
+              ('RM1,000', 'pelaburan minimum.', 'minimum investment.'),
+              (('&lt; 55', '&lt; 55'), 'tahun: had umur untuk layak.', 'years old: the age limit to qualify.')],
+             explain,
+             [('Semak baki', 'Check your balance', 'Lihat Akaun Persaraan dalam i-Akaun.', 'See your Retirement Account in i-Akaun.'),
+              ('Kira kelayakan', 'Work out eligibility', 'Guna kalkulator di bawah.', 'Use the calculator below.'),
+              ('Bincang', 'Talk it through', 'Perunding terangkan dana, caj dan risiko.', 'A consultant explains funds, charges and risks.'),
+              ('Permohonan', 'Apply', 'Perunding bantu urus permohonan anda.', 'A consultant helps with your application.')],
+             (cpanel('ep', ep_fields(), inline=True, title=('Kalkulator kelayakan', 'Eligibility calculator')),
+              lead_form('UNIT TRUST', 'Pelaburan Simpanan Persaraan (Akaun 1)', 'Retirement Savings (Account 1) investment')),
+             (('Sebelum berbincang', 'Before we talk', 'Sediakan yang ini.', 'Have these ready.'), more),
+             ('Semak berapa Simpanan Persaraan (Akaun 1) anda yang layak dilabur, dengan kalkulator kelayakan.',
+              'Check how much of your Retirement Savings (Account 1) you can invest, with an eligibility calculator.'))
+
+
+def build_way_corporate():
+    explain = f'''{t("h2", "Asingkan dulu, baru labur.", "Set it aside first, then invest.")}
+  <div class="explain">
+    {t("p", "Tunai syarikat anda:", "Your company’s cash:", 'class="explain-head"')}
+    <div class="vbar"><span class="a1" style="flex:30"></span><span class="a2" style="flex:25"></span><span class="ay" style="flex:45"></span></div>
+    {legend([("a1", "Tunai operasi harian", "Day-to-day operating cash", "Kekal di bank", "Stays in the bank"),
+             ("a2", "Rizab kecemasan syarikat", "Company emergency reserve", "Mudah dikeluarkan", "Easy to withdraw"),
+             ("ay", "Lebihan yang tidak diperlukan dalam masa terdekat", "Surplus not needed in the near term", "Boleh dipertimbang untuk dilabur", "Can be considered for investing")])}
+  </div>
+  {t("p", "Gambaran sahaja. Bahagian setiap syarikat berbeza.", "A sketch only. Every company’s split is different.", 'class="calc-fine"')}'''
+    more = ticks([("Dokumen pendaftaran SSM syarikat", "Company registration documents (SSM)"),
+                  ("Perlembagaan syarikat, jika ada", "Company constitution, if any"),
+                  ("Resolusi lembaga pengarah untuk melabur dan melantik penandatangan", "Board resolution to invest and appoint signatories"),
+                  ("Salinan MyKad pengarah dan penandatangan", "MyKad copies of directors and signatories")]) + \
+        t("p", "Senarai penuh bergantung pada jenis syarikat, dan disahkan semasa perbincangan.", "The full list depends on the type of company and is confirmed when we talk.", 'class="stats-note"')
+    way_page('korporat',
+             ('Akaun atas nama syarikat, untuk tunai yang tidak diperlukan dalam masa terdekat.', 'An account in the company’s name, for cash not needed in the near term.'),
+             [('−45%', 'nilai RM1,000 selepas 20 tahun inflasi 3%.', 'the value of RM1,000 after 20 years of 3% inflation.'),
+              (('Syariah', 'Shariah'), 'pilihan dana patuh Syariah ada.', 'compliant fund options are available.'),
+              (('Ikut dana', 'Per fund'), 'jumlah minimum bergantung pada dana dan jenis syarikat.', 'the minimum depends on the fund and the type of company.')],
+             explain,
+             [('Bincang keperluan', 'Discuss your needs', 'Jumlah, tempoh dan keperluan Syariah.', 'Amount, time frame and Shariah needs.'),
+              ('Kelulusan pengarah', 'Board approval', 'Resolusi lembaga pengarah.', 'A board resolution.'),
+              ('Dokumen syarikat', 'Company documents', 'SSM, pengarah dan penandatangan.', 'SSM, directors and signatories.'),
+              ('Buka akaun dan labur', 'Open and invest', 'Akaun atas nama syarikat.', 'An account in the company’s name.')],
+             (cpanel('cc', cc_fields(50000, ('Lebihan tunai dilabur', 'Surplus cash invested'), 0, ('Tambahan bulanan (pilihan)', 'Monthly top-up (optional)'), 5),
+                     inline=True, title=('Kalkulator lebihan tunai', 'Surplus cash calculator'), why=('Lihat ilustrasi lebihan tunai syarikat yang dilabur.', 'See an illustration of invested company surplus cash.')),
+              lead_form('KORPORAT', 'Pelaburan korporat', 'Corporate investment', company=True)),
+             (('Dokumen', 'Documents', 'Yang biasanya diperlukan.', 'What is usually needed.'), more),
+             ('Pelaburan korporat untuk lebihan tunai syarikat: cara ia berfungsi, dokumen yang diperlukan dan kalkulator.',
+              'Corporate investing for company surplus cash: how it works, documents needed and a calculator.'))
+
+
+def build_calc_link():
+    """/kalkulator/: one link to share. Both calculators open on arrival, then name -> WhatsApp to Ika with all the numbers.
+    The two calculators stay independent (never feed the eligible amount into the growth illustration)."""
+    body = f'''<section class="page-hero compact"><div class="wrap">
+  {t("p", "Kalkulator", "Calculators", 'class="eyebrow"')}
+  {t("h1", "Kira dulu, kemudian bincang.", "Do the sums, then let’s talk.")}
+  {t("p", "Taip nombor anda. Keputusan dikira terus.", "Type your numbers. Results update as you go.", 'class="lead"')}
+</div></section>
+
+<section class="section tight" style="padding-top:clamp(24px,4vw,40px)"><div class="wrap">
+  <div class="calc calc-board" id="calc">
+    {cpanel('ep', ep_fields(), inline=True, title=('Kalkulator Simpanan Persaraan (Akaun 1)', 'Retirement Savings (Account 1) calculator'))}
+    {cpanel('cc', cc_fields(1000, ('Jumlah permulaan', 'Starting amount'), 200, ('Tambahan bulanan', 'Monthly top-up')), inline=True)}
+    {lead_form('UNIT TRUST', 'Kalkulator', 'Calculators', wide=True)}
+  </div>
+  <script defer src="/assets/calc.js?v={CALC_V}"></script>
+</div></section>'''
+    page('/kalkulator/', 'Kalkulator', 'Calculators',
+         'Semak kelayakan Simpanan Persaraan (Akaun 1) dan lihat ilustrasi pelaburan bulanan, kemudian bincang di WhatsApp.',
+         'Check your Retirement Savings (Account 1) eligibility and see an illustration of monthly investing, then talk it through on WhatsApp.',
+         body, priority='0.6')
+
+def build_resources():
+    grows = guide_rows(['register', 'prs', 'joint', 'invest', 'rsp', 'switch'])
+    ctabs = ''.join(f'<button type="button" class="calc-tab" data-calc="{k}"><span class="ic-round">{I["calc"]}</span><span class="txt">{t("b", a, b)}{t("small", c, d)}</span>{I["arrow"]}</button>' for k, a, b, c, d in CALCS)
     tvsegs = ''.join(f'<button type="button" data-tvm="{k}" aria-pressed="{"true" if k == "fv" else "false"}"{t_attr}>{ms}</button>' for k, ms, t_attr in (
         ('fv', 'Nilai akhir', ' data-en="Final value"'), ('pmt', 'Pelaburan bulanan', ' data-en="Monthly investment"'),
         ('pv', 'Jumlah sekali', ' data-en="Lump sum"'), ('n', 'Tempoh', ' data-en="Time needed"')))
@@ -1484,6 +1789,11 @@ if __name__ == '__main__':
     build_about()
     build_services()
     build_invest()
+    build_way_rsp()
+    build_way_lump()
+    build_way_akaun1()
+    build_way_corporate()
+    build_calc_link()
     build_careers()
     build_resources()
     build_ebook_urus()
