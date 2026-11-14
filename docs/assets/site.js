@@ -229,51 +229,48 @@
     });
   });
 
-  // In-app browsers: a slim bar on arrival (reading works fine in-app), and a full sheet only when a WhatsApp or Touch 'n Go link is
-  // tapped, since those rarely open inside these apps. One button per phone: Safari on iPhone (iOS 17+), Chrome on Android.
+  // In-app browsers, same as khairulkhalis.com (user, 14 Nov 2026: the bottom bar was not friendly): the full "open in your browser"
+  // sheet once per visit on arrival (after the language popup), and again whenever a WhatsApp or Touch 'n Go link is tapped,
+  // since those rarely open inside these apps. One button per phone: Safari on iPhone (iOS 17+), Chrome on Android.
   var inappSheet = document.getElementById('inappSheet');
-  var inappBar = document.getElementById('inappBar');
   if (inappSheet && inappSheet.showModal && INAPP) {
     var IOS = /iPhone|iPad|iPod/i.test(UA), ANDROID = /Android/i.test(UA);
     var browserName = IOS ? 'Safari' : ANDROID ? 'Chrome' : '';
     var openUrl = IOS ? 'x-safari-' + location.href
       : ANDROID ? 'intent://' + location.host + location.pathname + location.search + '#Intent;scheme=https;package=com.android.chrome;end' : '';
     var openBtn = document.getElementById('inappOpen');
-    var barOpen = document.getElementById('inappBarOpen');
     var labelOpen = function () {
-      var en = root.lang === 'en';
-      if (browserName) openBtn.textContent = (en ? 'Open in ' : 'Buka dalam ') + browserName;
-      barOpen.textContent = browserName ? (en ? 'Open in ' : 'Buka dalam ') + browserName : (en ? 'How?' : 'Caranya');
+      if (browserName) openBtn.textContent = (root.lang === 'en' ? 'Open in ' : 'Buka dalam ') + browserName;
     };
     if (openUrl) {
       openBtn.href = openUrl;
-      barOpen.href = openUrl;
       openBtn.hidden = false;
       document.getElementById('inappCopy').classList.add('ghost');
-    } else {
-      barOpen.addEventListener('click', function (e) { e.preventDefault(); openSheet('Safari / Chrome'); });
     }
     labelOpen();
     document.addEventListener('mw:lang', labelOpen);
 
-    var barClosed = function () { try { return sessionStorage.getItem('mwInappBar'); } catch (e) { return null; } };
-    if (inappBar && !barClosed()) {
-      inappBar.hidden = false;
-      document.body.classList.add('has-inapp-bar');
-    }
-    document.getElementById('inappBarX').addEventListener('click', function () {
-      inappBar.hidden = true;
-      document.body.classList.remove('has-inapp-bar');
-      try { sessionStorage.setItem('mwInappBar', '1'); } catch (e) {}
-    });
-
-    var openSheet = function (target) {
+    var openSheet = function (target) {   // link mode: a WhatsApp / Touch 'n Go button was tapped
+      inappSheet.classList.add('link-mode');
       inappSheet.querySelectorAll('.lnk-app').forEach(function (x) { x.textContent = target; });
       if (!inappSheet.open) inappSheet.showModal();
     };
-    inappSheet.classList.add('link-mode');
+    inappSheet.addEventListener('close', function () { try { sessionStorage.setItem('mwInappSeen', '1'); } catch (e) {} });
     document.getElementById('inappGo').addEventListener('click', function () { inappSheet.close(); });
+    document.getElementById('inappStay').addEventListener('click', function () { inappSheet.close(); });
     inappSheet.addEventListener('click', function (e) { if (e.target === inappSheet) inappSheet.close(); });
+
+    // On arrival, once per visit: wait for the first-visit language popup to be answered, then show the general sheet
+    var seen = null;
+    try { seen = sessionStorage.getItem('mwInappSeen'); } catch (e) {}
+    if (!seen) {
+      var showGeneral = function () {
+        if (document.querySelector('.lang-pop')) { setTimeout(showGeneral, 300); return; }
+        inappSheet.classList.remove('link-mode');
+        if (!inappSheet.open) inappSheet.showModal();
+      };
+      setTimeout(showGeneral, 350);
+    }
     document.getElementById('inappCopy').addEventListener('click', function () {
       var btn = this, url = location.href;
       var done = function () {

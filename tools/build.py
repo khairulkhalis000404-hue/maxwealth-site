@@ -369,11 +369,6 @@ def footer():
     </div>
   </div>
 </footer>
-<div class="inapp-bar" id="inappBar" hidden role="region" aria-label="Buka dalam browser" data-en-aria-label="Open in browser">
-  <span class="inapp-bar-t" data-en="Paying? Use your browser.">Nak bayar? Guna browser.</span>
-  <a class="btn sm" id="inappBarOpen" data-skip-remind data-en="Open">Buka</a>
-  <button type="button" class="inapp-bar-x" id="inappBarX" aria-label="Tutup" data-en-aria-label="Close">&times;</button>
-</div>
 <dialog class="calc-sheet inapp-sheet" id="inappSheet" aria-labelledby="inappTitle"><div class="calc-sheet-in">
   <div class="inapp-pin" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg><span data-en="Tap here">Tekan sini</span></div>
   <h3 id="inappTitle" class="gen" data-en="Open in your phone’s browser">Buka dalam browser telefon anda</h3>
@@ -1165,7 +1160,7 @@ def build_way_rsp():
     {t("p", "RM100 setiap bulan, harga seunit berubah:", "RM100 every month, the unit price changes:", 'class="explain-head"')}
     <div class="dca">{cols}</div>
     {t("p", "Tinggi bar = unit dibeli", "Bar height = units bought", 'class="explain-key"')}
-    <dl class="vlegend sum"><div><dt>{t("span", "Jumlah dilabur", "Total invested")}</dt><dd>RM300</dd></div><div><dt>{t("span", "Unit terkumpul", "Units held")}</dt><dd>305</dd></div><div><dt>{t("span", "Kos purata seunit", "Average cost per unit")}</dt><dd>RM0.98</dd></div><div><dt>{t("span", "Harga purata", "Average price")}</dt><dd>RM1.02</dd></div></dl>
+    <dl class="vlegend sum"><div><dt>{t("span", "Jumlah dilabur", "Total invested")}</dt><dd>RM300</dd></div><div><dt>{t("span", "Unit terkumpul", "Units held")}</dt><dd>305</dd></div><div><dt>{t("span", "Kos purata seunit", "Average cost per unit")}</dt><dd>RM0.98</dd></div></dl>
   </div>
   {t("p", "Harga contoh sahaja. Purata kos ringgit (DCA) tidak menjamin keuntungan atau mengelak kerugian.", "Example prices only. Ringgit cost averaging (DCA) does not guarantee a profit or prevent a loss.", 'class="calc-fine"')}'''
     way_page('rsp',
