@@ -1074,13 +1074,6 @@ def art(kind):
             bars += f'<rect class="a2" x="{x}" y="{272 - c}" width="16" height="{c}" rx="3"/><rect class="ay" x="{x}" y="{272 - c - g}" width="16" height="{g}" rx="3"/>'
         return (f'<svg viewBox="0 0 400 320" class="art">{bg}<line class="al" x1="40" y1="276" x2="360" y2="276"/>{bars}'
                 '<rect class="aw" x="44" y="40" width="132" height="44" rx="22"/><text x="110" y="69" text-anchor="middle">+RM100</text></svg>')
-    if kind == 'sekali':   # one stack that doubles
-        def stack(cx, n, base):
-            return ''.join(f'<ellipse class="a2 coin" cx="{cx}" cy="{base - k * 15}" rx="42" ry="12"/>' for k in range(n)) + \
-                f'<ellipse class="ay coin" cx="{cx}" cy="{base - n * 15}" rx="42" ry="12"/>'
-        return (f'<svg viewBox="0 0 400 320" class="art">{bg}{stack(100, 4, 262)}{stack(300, 10, 262)}'
-                '<path class="al dash" d="M120 168 C 170 96, 220 84, 262 92" fill="none"/><path class="al" d="M250 82 L264 92 L250 104" fill="none"/>'
-                '<circle class="a1" cx="196" cy="214" r="34"/><text class="on-dark" x="196" y="224" text-anchor="middle">×2</text></svg>')
     # corporate: a building, its day-to-day cash kept aside, the surplus stacked and growing
     win = ''.join(f'<rect class="aw" x="{x}" y="{y}" width="18" height="18" rx="3"/>' for y in (96, 130, 164, 198) for x in (74, 108, 142))
     return (f'<svg viewBox="0 0 400 320" class="art">{bg}<line class="al" x1="40" y1="276" x2="360" y2="276"/>'
@@ -1089,16 +1082,20 @@ def art(kind):
             '<rect class="ay" x="282" y="112" width="52" height="40" rx="8"/><path class="al" d="M268 120 l40 -48 M296 72 h12 v12" fill="none"/></svg>')
 
 
+NO_HERO_ART = ('sekali', 'akaun-1')   # user removed these pictures (14 Nov 2026)
+
+
 def way_hero(key, lead_ms, lead_en):
     path, ic, tms, ten, h_ms, h_en = WAY_PAGES[key]
-    return f'''<section class="page-hero way-hero"><div class="wrap way-hero-in">
+    pic = '' if key in NO_HERO_ART else art(key)
+    return f'''<section class="page-hero way-hero"><div class="wrap{' way-hero-in' if pic else ''}">
   <div>
     <p class="eyebrow">{t("span", "Servis · " + tms, "Services · " + ten)}</p>
     {t("h1", h_ms, h_en)}
     {t("p", lead_ms, lead_en, 'class="lead"')}
     <div class="btns" style="margin-top:28px"><a class="btn" href="#kira">{I["calc"]}{t("span", "Kira sekarang", "Do the sums")}</a><a class="btn ghost" href="/servis/">{t("span", "Semua servis", "All services")}</a></div>
   </div>
-  <div class="way-art" aria-hidden="true">{art(key)}</div>
+  {f'<div class="way-art" aria-hidden="true">{pic}</div>' if pic else ''}
 </div></section>'''
 
 
