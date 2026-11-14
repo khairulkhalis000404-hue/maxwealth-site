@@ -959,3 +959,7 @@ a.card:hover { border-color: var(--brand-2); }
 .df-panel .calc-result dl { margin-top: 12px; }
 .df-submit { width: 100%; justify-content: center; margin-top: 22px; min-height: 54px; font-size: 16px; }
 .df-privacy { margin-top: 14px; text-align: center; font-size: 12px; line-height: 1.6; color: var(--muted); }
+
+/* Number fields: no up/down arrows (user, 14 Nov 2026: not practical); people type the number, phones show the number pad */
+input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; appearance: none; margin: 0; }
