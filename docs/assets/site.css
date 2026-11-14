@@ -885,8 +885,11 @@ body.has-inapp-bar { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px
 
 /* Servis menu: lists the service pages. Desktop = dropdown under the header link; phone menu = opens in place.
    Header stays white in both themes, so the dropdown uses the header colours. */
+/* same box as the other header links (.nav a): font, size and line height match so the row lines up */
 .sub-btn { display: flex; align-items: center; gap: 4px; padding: 8px 10px 8px 12px; border: 0; border-radius: 999px; background: none; cursor: pointer;
-  font: 500 15px/1.2 inherit; font-family: inherit; color: var(--header-muted); white-space: nowrap; }
+  font-family: inherit; font-size: 15px; font-weight: 500; line-height: inherit; color: var(--header-muted); white-space: nowrap; }
+.nav ul { align-items: center; }
+@media (min-width: 1000px) and (max-width: 1279px) { .nav .sub-btn { padding: 8px 7px 8px 9px; font-size: 14px; } }
 .sub-btn svg { width: 16px; height: 16px; transition: transform .2s ease; }
 .sub-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
 .sub-btn:hover, .sub-btn[aria-expanded="true"] { color: #124674; background: rgba(38,150,205,.08); }
@@ -923,3 +926,5 @@ body.has-inapp-bar { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px
 .menu-panel .sub-list small { color: var(--muted); }
 .menu-panel .sub-list a[aria-current="page"] { background: var(--brand-soft); }
 .menu-panel .sub-list .sub-all a { justify-content: space-between; border-top: 1px solid var(--line); color: var(--link); font-size: 15px; }
+.page-hero.calc-top { padding-bottom: clamp(32px, 5vw, 56px); }
+.page-hero.calc-top .lead { margin-bottom: clamp(24px, 4vw, 36px); }

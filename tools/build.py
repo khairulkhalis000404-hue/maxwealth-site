@@ -988,14 +988,6 @@ def art(kind):
         return (f'<svg viewBox="0 0 400 320" class="art">{bg}{stack(100, 4, 262)}{stack(300, 10, 262)}'
                 '<path class="al dash" d="M120 168 C 170 96, 220 84, 262 92" fill="none"/><path class="al" d="M250 82 L264 92 L250 104" fill="none"/>'
                 '<circle class="a1" cx="196" cy="214" r="34"/><text class="on-dark" x="196" y="224" text-anchor="middle">×2</text></svg>')
-    if kind == 'akaun-1':   # a jar: Basic Savings at the bottom, the amount above it, 30% of that highlighted
-        return (f'<svg viewBox="0 0 400 320" class="art">{bg}'
-                '<rect class="aw al" x="130" y="34" width="140" height="252" rx="22"/>'
-                '<rect class="a1" x="138" y="152" width="124" height="126" rx="14"/>'
-                '<rect class="a2" x="138" y="76" width="124" height="80" rx="14"/>'
-                '<rect class="ay" x="138" y="76" width="124" height="26" rx="12"/>'
-                '<path class="al" d="M284 76 h14 v26 h-14" fill="none"/><text x="306" y="96">30%</text>'
-                '<path class="al" d="M116 156 h-14 v122 h14" fill="none"/></svg>')
     # corporate: a building, its day-to-day cash kept aside, the surplus stacked and growing
     win = ''.join(f'<rect class="aw" x="{x}" y="{y}" width="18" height="18" rx="3"/>' for y in (96, 130, 164, 198) for x in (74, 108, 142))
     return (f'<svg viewBox="0 0 400 320" class="art">{bg}<line class="al" x1="40" y1="276" x2="360" y2="276"/>'
@@ -1026,12 +1018,32 @@ def way_steps(items):
     return '<ol class="steps">' + ''.join(f'<li><div>{t("h3", a, b)}{t("p", c, d)}</div></li>' for a, b, c, d in items) + '</ol>'
 
 
-def way_page(key, lead, facts, explain, steps, calc, more, desc):
-    """Hero, 3 facts, a visual explainer beside the steps, the calculator with the name form, guides/checklist."""
+def way_page(key, lead, facts, explain, steps, calc, more, desc, calc_top=False):
+    """Hero, 3 facts, a visual explainer beside the steps, the calculator with the name form, guides/checklist.
+    calc_top: no hero picture; the calculator sits right under the heading so it is the first thing seen (Akaun 1, user 14 Nov 2026)."""
     path, ic, tms, ten, h_ms, h_en = WAY_PAGES[key]
     calc_html, lead_html = calc
     more_head, more_body = more
-    body = f'''{way_hero(key, *lead)}
+    board = f'''<div class="calc calc-board" id="calc">
+    {calc_html}
+    {lead_html}
+  </div>
+  <script defer src="/assets/calc.js?v={CALC_V}"></script>'''
+    if calc_top:
+        top = f'''<section class="page-hero way-hero calc-top" id="kira"><div class="wrap">
+  <p class="eyebrow">{t("span", "Servis · " + tms, "Services · " + ten)}</p>
+  {t("h1", h_ms, h_en)}
+  {t("p", lead[0], lead[1], 'class="lead"')}
+  {board}
+</div></section>'''
+        calc_section = ''
+    else:
+        top = way_hero(key, *lead)
+        calc_section = f'''<section class="section" id="kira"><div class="wrap">
+  <div class="section-head">{t("p", "Kalkulator", "Calculator", 'class="eyebrow"')}{t("h2", "Kira dengan angka anda.", "Try your own numbers.")}</div>
+  {board}
+</div></section>'''
+    body = f'''{top}
 
 <section class="section"><div class="wrap">
   {way_facts(facts)}
@@ -1042,14 +1054,7 @@ def way_page(key, lead, facts, explain, steps, calc, more, desc):
   <div>{t("p", "Langkah", "Steps", 'class="eyebrow"')}{way_steps(steps)}</div>
 </div></section>
 
-<section class="section" id="kira"><div class="wrap">
-  <div class="section-head">{t("p", "Kalkulator", "Calculator", 'class="eyebrow"')}{t("h2", "Kira dengan angka anda.", "Try your own numbers.")}</div>
-  <div class="calc calc-board" id="calc">
-    {calc_html}
-    {lead_html}
-  </div>
-  <script defer src="/assets/calc.js?v={CALC_V}"></script>
-</div></section>
+{calc_section}
 
 <section class="section alt"><div class="wrap split" style="align-items:start">
   <div>{t("p", more_head[0], more_head[1], 'class="eyebrow"')}{t("h2", more_head[2], more_head[3])}</div>
@@ -1151,7 +1156,8 @@ def build_way_akaun1():
               lead_form('UNIT TRUST', 'Pelaburan Simpanan Persaraan (Akaun 1)', 'Retirement Savings (Account 1) investment')),
              (('Sebelum berbincang', 'Before we talk', 'Sediakan yang ini.', 'Have these ready.'), more),
              ('Semak berapa Simpanan Persaraan (Akaun 1) anda yang layak dilabur, dengan kalkulator kelayakan.',
-              'Check how much of your Retirement Savings (Account 1) you can invest, with an eligibility calculator.'))
+              'Check how much of your Retirement Savings (Account 1) you can invest, with an eligibility calculator.'),
+             calc_top=True)
 
 
 def build_way_corporate():
