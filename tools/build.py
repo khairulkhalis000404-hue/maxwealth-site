@@ -64,6 +64,7 @@ JS_V = file_version('site.js')
 CALC_V = file_version('calc.js')
 POSTS_V = file_version('posts.js')
 EBOOK_V = file_version('ebook.js')
+DAFTAR_V = file_version('daftar.js')
 
 
 def esc(s):
@@ -897,7 +898,7 @@ def cpanel(key, fields, extra='', inline=False, title=None, why=None):
 <div class="calc-fields">{fields}</div>{extra}
 <div class="calc-result" id="{key}Result" aria-live="polite"></div>
 <p class="calc-fine" id="{key}Fine"></p>
-<a class="btn calc-cta" id="{key}Cta" target="_blank" rel="noopener">{I["wa"]}{t("span", "Bincang angka ini di WhatsApp", "Discuss these numbers on WhatsApp")}</a>
+<a class="btn calc-cta" id="{key}Cta" href="/daftar/">{I["wa"]}{t("span", "Bincang angka ini di WhatsApp", "Discuss these numbers on WhatsApp")}</a>
   </div></dialog>'''
 
 CALCS = [
@@ -943,20 +944,104 @@ def ep_fields():
             + cfield('epBal', 'Baki Akaun Persaraan', 'Retirement Account balance', '50000', 'RM'))
 
 
-def lead_form(key, topic_ms, topic_en, company=False):
-    """Name (+ company) form under inline calculators; calc.js writes every number on the page into the WhatsApp message to Ika."""
-    co_for = 'for="leadCo"'
-    co = (f'<div class="field">{t("label", "Nama syarikat (pilihan)", "Company name (optional)", co_for)}'
-          '<input id="leadCo" name="company" type="text" autocomplete="organization" placeholder="Sdn. Bhd." data-en-placeholder="Sdn. Bhd."></div>') if company else ''
-    return f'''<form class="form lead" id="lead" data-key="{key}" novalidate>
+def build_daftar():
+    """/daftar/: the MaxWealth copy of khairulkhalis.com/hubungi/. Every calculator button lands here with its numbers
+    (?pick=&age=&bal=&lump=&monthly=&rate=&years=); the visitor adds their details and daftar.js writes one WhatsApp
+    message to Ika with all of it (user, 14 Nov 2026: calculators must send the client's details, like khairulkhalis.com)."""
+    tick = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" '
+            'stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>')
+    choices = [
+        ('lump', 'Pelaburan sekali (lump sum)', 'One-time investment (lump sum)', 'Minimum RM200 bagi individu', 'Minimum RM200 for individuals'),
+        ('monthly', 'Regular Savings Plan (RSP)', 'Regular Savings Plan (RSP)', 'Potongan bulanan dari akaun bank, dari RM100', 'Monthly deduction from your bank account, from RM100'),
+        ('epf', 'Pelaburan Simpanan Persaraan (Akaun 1)', 'Retirement Savings (Account 1) investment', 'Tertakluk kelayakan', 'Subject to eligibility'),
+        ('corp', 'Pelaburan korporat', 'Corporate investment', 'Dari akaun semasa syarikat', 'From your company’s current account'),
+        ('prs', 'Pelaburan PRS', 'PRS investment', 'Sekali atau bulanan', 'One-time or monthly'),
+    ]
+    chips = ''.join(
+        f'<label class="df-choice"><input type="checkbox" name="pick" value="{v}"><span class="df-box">{tick}</span>'
+        f'<span>{t("b", a, b)}{t("span", c, d, "class=\"d\"")}</span></label>'
+        for v, a, b, c, d in choices)
+
+    def fld(field, ms, en, inner, err_ms='', err_en='', full=False, hidden=False):
+        err = t('span', err_ms, err_en, 'class="df-err" hidden') if err_ms else ''
+        return (f'<label class="df-f{" full" if full else ""}" data-field="{field}"{" hidden" if hidden else ""}>'
+                f'{t("span", ms, en)}<span class="df-inp">{inner}</span>{err}</label>')
+
+    def num_in(i, ph='', extra=''):
+        return f'<input id="{i}" type="number" inputmode="decimal" min="0" step="any" placeholder="{ph}"{extra}>'
+
+    years_i = t('i', 'tahun', 'years')
+    body = f'''<section class="page-hero df-hero"><div class="wrap df-wrap">
+  {t("p", "Daftar &amp; rancang", "Register &amp; plan", 'class="eyebrow"')}
+  {t("h1", "Daftar &amp; rancang pelaburan", "Register &amp; plan your investment")}
+  {t("p", "Isi borang ini dan tekan hantar. WhatsApp akan terbuka dengan maklumat anda siap ditulis untuk Ika (Admin), supaya kami boleh bantu dengan lebih cepat.", "Fill this in and tap send. WhatsApp opens with your details already written for Ika (Admin), so we can help you faster.", 'class="lead"')}
+</div></section>
+
+<section class="section tight df-section"><div class="wrap df-wrap">
+  <form id="daftar" class="df" novalidate>
+    <div class="df-card">
+      <h2><span class="n">1</span>{t("span", "Maklumat anda", "About you")}</h2>
+      <div class="df-grid">
+        {fld("name", "Nama penuh", "Full name", '<input id="dfName" type="text" autocomplete="name" required>', "Sila isi nama anda", "Please enter your name", full=True)}
+        {fld("age", "Umur", "Age", '<input id="dfAge" type="number" inputmode="numeric" min="18" max="100" step="1" required>' + years_i, "Umur 18 tahun ke atas", "Age 18 and above")}
+        {fld("city", "Lokasi", "Location", '<input id="dfCity" type="text" placeholder="Shah Alam" required>', "Sila isi lokasi", "Please enter your location")}
+        {fld("phone", "No. telefon", "Phone number", '<i>+60</i><input id="dfPhone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="12-345 6789" required>', "Sila isi nombor telefon Malaysia yang sah", "Please enter a valid Malaysian number", full=True)}
+        {fld("company", "Nama syarikat", "Company name", '<input id="dfCo" type="text" autocomplete="organization" placeholder="Sdn. Bhd.">', full=True, hidden=True)}
+      </div>
+    </div>
+
+    <div class="df-card" data-field="choices">
+      <h2><span class="n">2</span>{t("span", "Apa yang anda cari?", "What are you looking for?")}</h2>
+      <div class="df-choices">{chips}</div>
+      {t("p", "Pilih sekurang-kurangnya satu", "Choose at least one", 'class="df-err" hidden')}
+
+      <div class="df-panel" id="dfEpBox" hidden>
+        {t("h3", "Berapa yang boleh dilabur?", "How much can you invest?")}
+        {t("p", "30% daripada jumlah dalam Akaun Persaraan yang melebihi Simpanan Asas mengikut umur anda (jadual 2026).", "30% of the amount in your Retirement Account above the Basic Savings for your age (2026 table).", 'class="why"')}
+        <label class="df-f">{t("span", "Baki Akaun Persaraan", "Retirement Account balance")}<span class="df-inp"><i>RM</i>{num_in("dfBal", "50000")}</span>{t("small", "Semak dalam i-Akaun. Umur diambil dari bahagian 1.", "Check it in i-Akaun. Age is taken from section 1.")}</label>
+        <div class="calc-result" id="dfEpResult" aria-live="polite"></div>
+      </div>
+
+      <div class="df-panel" id="dfGrowBox" hidden>
+        {t("h3", "Berapa boleh berkembang?", "How much could it grow?")}
+        {t("p", "Taip jumlah anda. Keputusan dikira terus.", "Type your amounts. Results update as you type.", 'class="why"')}
+        <div class="df-grid">
+          <label class="df-f" id="dfLumpField">{t("span", "Jumlah sekali", "One-time amount")}<span class="df-inp"><i>RM</i>{num_in("dfLump", "10000")}</span></label>
+          <label class="df-f" id="dfMonthlyField">{t("span", "Jumlah bulanan", "Monthly amount")}<span class="df-inp"><i>RM</i>{num_in("dfMonthly", "200")}</span></label>
+          <label class="df-f">{t("span", "Pulangan setahun", "Return per year")}<span class="df-inp">{num_in("dfRate", "", ' value="10" max="50"')}<i>%</i></span></label>
+          <label class="df-f">{t("span", "Tempoh", "How long")}<span class="df-inp"><input id="dfYears" type="number" inputmode="numeric" min="1" max="60" step="1" value="10">{years_i}</span></label>
+        </div>
+        <div class="calc-result" id="dfGrowResult" aria-live="polite"></div>
+        <p class="calc-fine" id="dfGrowFine"></p>
+      </div>
+    </div>
+
+    <div class="df-card">
+      <h2><span class="n">3</span>{t("span", "Ada soalan lain? (pilihan)", "Anything else? (optional)")}</h2>
+      <label class="df-f"><span class="df-inp"><textarea id="dfNote" rows="3"></textarea></span></label>
+    </div>
+
+    <button type="submit" class="btn df-submit">{I["wa"]}{t("span", "Hantar melalui WhatsApp", "Send on WhatsApp")}</button>
+    <a id="dfGo" href="https://wa.me/{WA_NUMBER}" target="_blank" rel="noopener" hidden></a>
+    {t("p", "Sila semak ruangan yang bertanda merah.", "Please check the fields marked in red.", 'class="df-form-err" id="dfErr" hidden')}
+    {t("p", "Maklumat anda hanya dihantar kepada Ika (Admin) melalui WhatsApp bila anda tekan hantar. Tiada apa-apa disimpan di laman ini.", "Your details are only sent to Ika (Admin) on WhatsApp when you tap send. Nothing is stored on this website.", 'class="df-privacy"')}
+  </form>
+  <script defer src="/assets/daftar.js?v={DAFTAR_V}"></script>
+</div></section>'''
+    page('/daftar/', 'Daftar dan rancang pelaburan', 'Register and plan your investment',
+         'Daftar dan rancang pelaburan unit trust, PRS atau Simpanan Persaraan (Akaun 1) bersama MaxWealth Consultancy melalui WhatsApp.',
+         'Register and plan a unit trust, PRS or Retirement Savings (Account 1) investment with MaxWealth Consultancy on WhatsApp.',
+         body, priority='0.6')
+
+
+def lead_form(pick):
+    """Card beside an inline calculator: one button to /daftar/ (calc.js adds the numbers), where the visitor adds name,
+    age, location and phone before WhatsApp opens. Same flow as khairulkhalis.com (user, 14 Nov 2026)."""
+    return f'''<div class="form lead">
   {t("h3", "Nak bincang angka ini?", "Want to talk these numbers through?")}
-  {t("p", "Isi nama anda. Butang di bawah buka WhatsApp dengan angka di atas, siap untuk Ika (Admin).", "Add your name. The button opens WhatsApp with the numbers above, ready for Ika (Admin).", 'class="note"')}
-  {t("span", topic_ms, topic_en, 'data-topic hidden')}
-  <div class="field">{t("label", "Nama", "Name", 'for="leadName"')}<input id="leadName" name="name" type="text" autocomplete="name" required placeholder="Nama anda" data-en-placeholder="Your name"></div>
-  {co}{t("p", "Isi nama anda dulu.", "Please add your name first.", 'class="lead-need" role="alert"')}
-  <a class="btn" id="leadCta" href="https://wa.me/{WA_NUMBER}" target="_blank" rel="noopener">{I["wa"]}{t("span", "Hantar ke WhatsApp", "Send on WhatsApp")}</a>
-  {t("p", "Laman ini tidak menyimpan apa-apa yang anda taip.", "This site does not store anything you type.", 'class="note"')}
-</form>'''
+  {t("p", "Angka anda dibawa ke borang ringkas. Isi nama, umur, lokasi dan telefon, kemudian WhatsApp terbuka dengan semua maklumat siap ditulis untuk Ika (Admin).", "Your numbers go into a short form. Add your name, age, location and phone, then WhatsApp opens with everything written for Ika (Admin).", 'class="note"')}
+  <a class="btn calc-cta" id="formCta" data-pick="{pick}" href="/daftar/?pick={pick}">{I["wa"]}{t("span", "Bincang angka ini di WhatsApp", "Discuss these numbers on WhatsApp")}</a>
+</div>'''
 
 
 # ---------- Service pages under the Servis menu: RSP, lump sum, Akaun 1, corporate ----------
@@ -1095,7 +1180,7 @@ def build_way_rsp():
               ('Semak setiap tahun', 'Review yearly', 'Naikkan jumlah bila gaji naik.', 'Raise it when your pay goes up.')],
              (cpanel('cc', cc_fields(0, ('Jumlah permulaan (pilihan)', 'Starting amount (optional)'), 200, ('Labur setiap bulan', 'Invest every month')),
                      inline=True, title=('Kalkulator RSP', 'RSP calculator'), why=('Lihat ilustrasi pelaburan bulanan anda.', 'See an illustration of your monthly investing.')),
-              lead_form('UNIT TRUST', 'Regular Savings Plan (RSP)', 'Regular Savings Plan (RSP)')),
+              lead_form('monthly')),
              (('Panduan', 'Guides', 'Mula sendiri, langkah demi langkah.', 'Start on your own, step by step.'), guide_rows(['register', 'invest', 'rsp'])),
              ('Regular Savings Plan (RSP): labur jumlah tetap setiap bulan dari RM100, dengan kalkulator dan panduan.',
               'Regular Savings Plan (RSP): invest a fixed amount every month from RM100, with a calculator and guides.'))
@@ -1123,7 +1208,7 @@ def build_way_lump():
               ('Tambah bila ada', 'Top up any time', 'Labur lagi, atau mula RSP bulanan.', 'Add more, or start a monthly RSP.')],
              (cpanel('cc', cc_fields(5000, ('Jumlah sekali gus', 'Lump sum'), 0, ('Tambahan bulanan (pilihan)', 'Monthly top-up (optional)')),
                      inline=True, title=('Kalkulator pelaburan sekali', 'Lump-sum calculator'), why=('Lihat ilustrasi pertumbuhan wang yang dilabur sekali.', 'See an illustration of money invested once.')),
-              lead_form('UNIT TRUST', 'Pelaburan sekali (lump sum)', 'One-time investment (lump sum)')),
+              lead_form('lump')),
              (('Panduan', 'Guides', 'Mula sendiri, langkah demi langkah.', 'Start on your own, step by step.'), guide_rows(['register', 'joint', 'invest'])),
              ('Pelaburan sekali (lump sum) dalam unit trust, minimum RM200 bagi individu, dengan kalkulator dan panduan.',
               'One-time (lump-sum) unit trust investment, minimum RM200 for individuals, with a calculator and guides.'))
@@ -1153,7 +1238,7 @@ def build_way_akaun1():
               ('Bincang', 'Talk it through', 'Perunding terangkan dana, caj dan risiko.', 'A consultant explains funds, charges and risks.'),
               ('Permohonan', 'Apply', 'Perunding bantu urus permohonan anda.', 'A consultant helps with your application.')],
              (cpanel('ep', ep_fields(), inline=True, title=('Kalkulator kelayakan', 'Eligibility calculator')),
-              lead_form('UNIT TRUST', 'Pelaburan Simpanan Persaraan (Akaun 1)', 'Retirement Savings (Account 1) investment')),
+              lead_form('epf')),
              (('Sebelum berbincang', 'Before we talk', 'Sediakan yang ini.', 'Have these ready.'), more),
              ('Semak berapa Simpanan Persaraan (Akaun 1) anda yang layak dilabur, dengan kalkulator kelayakan.',
               'Check how much of your Retirement Savings (Account 1) you can invest, with an eligibility calculator.'),
@@ -1187,7 +1272,7 @@ def build_way_corporate():
               ('Buka akaun dan labur', 'Open and invest', 'Akaun atas nama syarikat.', 'An account in the company’s name.')],
              (cpanel('cc', cc_fields(50000, ('Lebihan tunai dilabur', 'Surplus cash invested'), 0, ('Tambahan bulanan (pilihan)', 'Monthly top-up (optional)'), 5),
                      inline=True, title=('Kalkulator lebihan tunai', 'Surplus cash calculator'), why=('Lihat ilustrasi lebihan tunai syarikat yang dilabur.', 'See an illustration of invested company surplus cash.')),
-              lead_form('KORPORAT', 'Pelaburan korporat', 'Corporate investment', company=True)),
+              lead_form('corp')),
              (('Dokumen', 'Documents', 'Yang biasanya diperlukan.', 'What is usually needed.'), more),
              ('Pelaburan korporat untuk lebihan tunai syarikat: cara ia berfungsi, dokumen yang diperlukan dan kalkulator.',
               'Corporate investing for company surplus cash: how it works, documents needed and a calculator.'))
@@ -1752,6 +1837,7 @@ if __name__ == '__main__':
     build_way_corporate()
     build_careers()
     build_resources()
+    build_daftar()
     build_ebook_urus()
     build_faq()
     build_contact()

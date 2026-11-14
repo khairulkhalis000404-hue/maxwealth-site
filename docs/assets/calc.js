@@ -1,10 +1,10 @@
 // MaxWealth Consultancy calculators: emergency fund, compound growth, TVM, Akaun Persaraan eligibility. Runs in the browser;
-// nothing is stored or sent. /sumber/ has all four as tap-to-open sheets; the service pages under /servis/ show
-// one inline (.calc-card) with a name form (#lead) that sends the numbers on the page to Ika on WhatsApp.
+// nothing is stored or sent. /sumber/ has all four as tap-to-open sheets; the service pages under /servis/ show one inline
+// (.calc-card). Every "Discuss on WhatsApp" button goes to /daftar/ with the numbers, where the visitor adds name, age,
+// location and phone before WhatsApp opens (same flow as khairulkhalis.com, user 14 Nov 2026).
 (function () {
   var box = document.getElementById('calc');
   if (!box) return;
-  var WA = 'https://wa.me/60194024401?text=';
   var $ = function (id) { return document.getElementById(id); };
   var has = function (id) { return !!$(id); };
   var isEn = function () { return document.documentElement.lang === 'en'; };
@@ -16,7 +16,25 @@
   var unit = function (v, one, many, ms) { return v + (isEn() ? (v === 1 ? one : many) : ms); };
   var bigOut = function (label, value) { return '<div class="big"><small>' + label + '</small><b>' + value + '</b></div>'; };
   var note = function (text, warn) { return '<p class="msg' + (warn ? ' warn' : '') + '">' + text + '</p>'; };
-  var setCta = function (id, ms, en) { if ($(id)) $(id).href = WA + encodeURIComponent(isEn() ? en : ms); };
+  // Point a calculator's button (and the side card's #formCta on the service pages) at /daftar/ with its numbers.
+  // The side card's data-pick (monthly, lump, epf, corp) sets the service; amounts the visitor typed add the matching ones.
+  var toForm = function (id, d) {
+    var q = function (o) {
+      return Object.keys(o).filter(function (k) { return o[k]; }).map(function (k) { return k + '=' + encodeURIComponent(o[k]); }).join('&');
+    };
+    [$(id), $('formCta')].forEach(function (a) {
+      if (!a) return;
+      var pick = (a.dataset.pick || d.pick || '').split(',').filter(Boolean);
+      if (pick.indexOf('corp') === -1 && pick.indexOf('epf') === -1) {
+        if (d.lump && pick.indexOf('lump') === -1) pick.push('lump');
+        if (d.monthly && pick.indexOf('monthly') === -1) pick.push('monthly');
+      }
+      var o = {}; for (var k in d) o[k] = d[k];
+      o.pick = pick.join(',');
+      ['lump', 'monthly', 'bal'].forEach(function (k) { if (o[k]) o[k] = Math.round(o[k]); });
+      a.href = '/daftar/' + (q(o) ? '?' + q(o) : '');
+    });
+  };
   var minNote = function (v) {
     return v > 0 && v < 100 ? note(isEn() ? 'The minimum monthly investment with us is RM100.' : 'Minimum pelaburan bulanan dengan kami ialah RM100.', true) : '';
   };
@@ -77,9 +95,7 @@
       '<dl>' + row('#FFFFFF', en ? 'Your capital' : 'Modal anda', rm(paid)) + row('var(--accent)', en ? 'Growth' : 'Pertumbuhan', rm(Math.max(total - paid, 0))) + '</dl>' +
       minNote(monthly) + growthChart(start, monthly, pct, years);
     $('ccFine').textContent = fine(pct, ' Dikompaun setiap tahun, dan tambahan setahun dikira pada hujung tahun.', ' Compounded yearly, with each year’s top-ups counted at the end of that year.');
-    setCta('ccCta',
-      'UNIT TRUST - Hai Ika, saya baru guna kalkulator di website dan nak bincang.\nJumlah permulaan: ' + rm(start) + '\nTambahan bulanan: ' + rm(monthly) + '\nTempoh: ' + years + ' tahun',
-      'UNIT TRUST - Hi Ika, I used the calculator on the website and would like to discuss.\nStarting amount: ' + rm(start) + '\nMonthly top-up: ' + rm(monthly) + '\nYears: ' + years);
+    toForm('ccCta', { pick: '', lump: start, monthly: monthly, rate: pct, years: years });
   }
 
   // Emergency fund, the user's method: 3 months of salary (minimum) to 6 months (maximum), with an ideal of essential
@@ -124,9 +140,7 @@
     $('efFine').textContent = en
       ? 'General guide only. Keep this fund somewhere with a fixed value that you can withdraw quickly. ASB is open to Bumiputera only.'
       : 'Panduan umum sahaja. Simpan dana ini di tempat yang nilainya tetap dan mudah dikeluarkan. ASB hanya untuk Bumiputera.';
-    setCta('efCta',
-      'Hai Ika, saya baru kira dana kecemasan di website dan nak tahu lebih lanjut.',
-      'Hi Ika, I worked out my emergency fund on the website and would like to know more.');
+    toForm('efCta', {});
   }
 
   // TVM, monthly compounding, investing at the end of each month: FV = PV*g + PMT*(g-1)/r with g = (1+r)^n
@@ -145,7 +159,7 @@
       return row('#FFFFFF', en ? 'Your capital' : 'Modal anda', rm(x.paid)) + row('var(--accent)', en ? 'Growth' : 'Pertumbuhan', rm(Math.max(x.value - x.paid, 0)));
     };
     var yrs = en ? ' years' : ' tahun', perMonth = en ? ' / month' : ' / bulan';
-    var big, rows = '', msg = '', low = 0;
+    var big, rows = '', msg = '', low = 0, out = { lump: pv, monthly: pmt, years: years };
     if (tvmMode === 'fv') {
       var a = run(pv, pmt, n);
       big = bigOut(en ? 'Illustrated value after ' + years + yrs : 'Nilai ilustrasi selepas ' + years + yrs, rm(a.value));
@@ -155,12 +169,12 @@
       var needed = n ? (fv - pv * grow(n)) / annuity(n) : 0;
       big = bigOut(en ? 'Invest every month for ' + years + yrs : 'Labur setiap bulan selama ' + years + yrs, rm(Math.max(needed, 0)) + perMonth);
       if (needed <= 0) msg = en ? 'In this illustration, your lump sum alone reaches the target.' : 'Dalam ilustrasi ini, jumlah sekali anda sahaja sudah mencapai sasaran.';
-      else { rows = breakdown(run(pv, needed, n)); low = needed; }
+      else { rows = breakdown(run(pv, needed, n)); low = needed; out.monthly = needed; }
     } else if (tvmMode === 'pv') {
       var needPv = n ? (fv - pmt * annuity(n)) / grow(n) : 0;
       big = bigOut(en ? 'Invest now, once' : 'Labur sekarang, sekali', rm(Math.max(needPv, 0)));
       if (needPv <= 0) msg = en ? 'In this illustration, your monthly investment alone reaches the target.' : 'Dalam ilustrasi ini, pelaburan bulanan anda sahaja sudah mencapai sasaran.';
-      else rows = breakdown(run(needPv, pmt, n));
+      else { rows = breakdown(run(needPv, pmt, n)); out.lump = needPv; }
       low = pmt;
     } else {
       var months = null;
@@ -174,13 +188,12 @@
       big = bigOut(en ? 'Time to reach your target' : 'Masa untuk capai sasaran', span);
       if (months === null) msg = en ? 'Enter a lump sum or a monthly investment.' : 'Isi jumlah sekali atau pelaburan bulanan.';
       else if (months <= 1200) rows = breakdown(run(pv, pmt, months));
+      if (months) out.years = Math.ceil(months / 12);
       low = pmt;
     }
     $('tvResult').innerHTML = big + (rows ? '<dl>' + rows + '</dl>' : '') + (msg ? note(msg) : '') + minNote(low);
     $('tvFine').textContent = fine(pct);
-    setCta('tvCta',
-      'UNIT TRUST - Hai Ika, saya baru guna kalkulator TVM di website dan nak bincang.\nSasaran: ' + rm(fv) + '\nJumlah sekali: ' + rm(pv) + '\nBulanan: ' + rm(pmt) + '\nTempoh: ' + years + ' tahun',
-      'UNIT TRUST - Hi Ika, I used the TVM calculator on the website and would like to discuss.\nTarget: ' + rm(fv) + '\nLump sum: ' + rm(pv) + '\nMonthly: ' + rm(pmt) + '\nYears: ' + years);
+    toForm('tvCta', { pick: '', lump: Math.max(out.lump, 0), monthly: Math.max(out.monthly, 0), rate: pct, years: out.years });
   }
 
   // €PF Basic Savings in Akaun Persaraan by age, effective 1 Jan 2026 (ages 18 to 55)
@@ -188,10 +201,8 @@
     38100, 42400, 47000, 51900, 57000, 62400, 68100, 74000, 80200, 86700, 93600, 100000, 108000, 115000, 124000,
     132000, 141000, 150000, 160000, 170000, 181000, 192000, 203000];
 
-  var epEligible = null;
   function renderEp() {
     var en = isEn(), age = Math.floor(num('epAge')), bal = num('epBal'), html, eligible = null;
-    epEligible = null;
     if (age < 18) {
       html = note(en ? 'Enter an age of 18 or above.' : 'Masukkan umur 18 tahun ke atas.', true);
     } else if (age >= 55) {
@@ -201,7 +212,6 @@
     } else {
       var basic = BASIC[age - 18], excess = Math.max(bal - basic, 0), can = excess * 0.3, ok = can >= 1000;
       eligible = ok ? can : 0;
-      epEligible = eligible;
       var msg = ok
         ? (en ? 'You are eligible. The minimum investment is RM1,000.' : 'Anda layak. Pelaburan minimum ialah RM1,000.')
         : excess <= 0
@@ -218,46 +228,7 @@
     $('epFine').textContent = en
       ? 'Based on the Basic Savings table effective 1 January 2026. Minimum investment RM1,000; you must be below 55. Check your exact eligible amount in i-Akaun. Investing involves risk.'
       : 'Berdasarkan jadual Simpanan Asas berkuat kuasa 1 Januari 2026. Pelaburan minimum RM1,000; anda mesti berumur bawah 55 tahun. Semak jumlah layak sebenar dalam i-Akaun. Pelaburan melibatkan risiko.';
-    setCta('epCta',
-      'Hai Ika, saya baru guna kalkulator Akaun Persaraan di website dan nak bincang.\nUmur: ' + age + '\nBaki Akaun Persaraan: ' + rm(bal) + (eligible === null ? '' : '\nAnggaran boleh dilabur: ' + rm(eligible)),
-      'Hi Ika, I used the Retirement Account calculator on the website and would like to discuss.\nAge: ' + age + '\nRetirement Account balance: ' + rm(bal) + (eligible === null ? '' : '\nEstimated amount I can invest: ' + rm(eligible)));
-  }
-
-  // Name form under inline calculators: one WhatsApp message to Ika with the visitor's name and every number on the page.
-  // Field labels are read from the page, so the message follows the language toggle and each page's own wording.
-  var lead = $('lead'), leadCta = $('leadCta');
-  function renderLead() {
-    if (!lead) return;
-    var en = isEn(), name = lead.elements.name.value.trim(), co = lead.elements.company ? lead.elements.company.value.trim() : '';
-    var lines = [(lead.dataset.key ? lead.dataset.key + ' - ' : '') + (en ? 'Hi Ika' : 'Hai Ika') + (name ? (en ? ', I’m ' : ', saya ') + name + '.' : '.') +
-      (en ? ' I used the calculator on the website and would like to discuss.' : ' Saya baru guna kalkulator di website dan nak bincang.')];
-    if (co) lines.push((en ? 'Company: ' : 'Syarikat: ') + co);
-    var topic = lead.querySelector('[data-topic]');
-    if (topic) lines.push((en ? 'Topic: ' : 'Topik: ') + topic.textContent.trim());
-    box.querySelectorAll('.calc-card').forEach(function (card) {
-      lines.push('', card.querySelector('h3').textContent.trim());
-      card.querySelectorAll('.calc-fields .field').forEach(function (f) {
-        var input = f.querySelector('input'), v = parseFloat(input.value);
-        if (f.hidden || !isFinite(v)) return;
-        var pre = f.querySelector('.inp > i:first-child'), post = f.querySelector('.inp > i:last-child:not(:first-child)');
-        var val = pre ? rm(v) : v + (post ? (post.textContent === '%' ? '%' : ' ' + post.textContent) : '');
-        lines.push(f.querySelector('label').textContent.trim() + ': ' + val);
-      });
-      if (card.dataset.panel === 'ep' && epEligible !== null) lines.push((en ? 'Estimated amount I can invest: ' : 'Anggaran boleh dilabur: ') + rm(epEligible));
-    });
-    leadCta.href = WA + encodeURIComponent(lines.join('\n'));
-  }
-  if (lead) {
-    // Runs before site.js's in-app sheet (document capture), so an empty name stops the click there
-    window.addEventListener('click', function (e) {
-      if (!e.target.closest || !e.target.closest('#leadCta') || lead.elements.name.value.trim()) return;
-      e.preventDefault();
-      e.stopPropagation();
-      lead.classList.add('need-name');
-      lead.elements.name.focus();
-    }, true);
-    lead.addEventListener('submit', function (e) { e.preventDefault(); leadCta.click(); });
-    lead.elements.name.addEventListener('input', function () { lead.classList.remove('need-name'); });
+    toForm('epCta', { pick: 'epf', age: age, bal: bal });
   }
 
   function render() {
@@ -265,7 +236,6 @@
     if (has('ccResult')) renderCompound();
     if (has('tvResult')) renderTvm();
     if (has('epResult')) renderEp();
-    renderLead();
   }
 
   box.addEventListener('input', function (e) {
