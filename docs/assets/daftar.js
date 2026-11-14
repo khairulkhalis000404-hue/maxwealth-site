@@ -17,6 +17,15 @@
     38100, 42400, 47000, 51900, 57000, 62400, 68100, 74000, 80200, 86700, 93600, 100000, 108000, 115000, 124000,
     132000, 141000, 150000, 160000, 170000, 181000, 192000, 203000];
 
+  // Calculator-first pages (Servis) have a second age box in the eligibility panel; both stay in step
+  var epAge = $('dfEpAge');
+  if (epAge) {
+    epAge.addEventListener('input', function () { $('dfAge').value = epAge.value; });
+    $('dfAge').addEventListener('input', function () { epAge.value = $('dfAge').value; });
+  }
+  // "I'm not sure how much to invest yet": hides the amount calculators and says so in the message
+  var unsure = function () { return !!($('dfUnsure') && $('dfUnsure').checked); };
+
   function epCalc() {
     var age = Math.floor(num('dfAge')), bal = num('dfBal');
     if (!age || !bal) return { ready: false };
@@ -36,15 +45,17 @@
 
   function update() {
     var p = picks(), en = isEn();
-    $('dfEpBox').hidden = !has(p, 'epf');
-    $('dfGrowBox').hidden = !(has(p, 'lump') || has(p, 'monthly') || has(p, 'prs') || has(p, 'corp'));
+    $('dfEpBox').hidden = unsure() || !has(p, 'epf');
+    $('dfGrowBox').hidden = unsure() || !(has(p, 'lump') || has(p, 'monthly') || has(p, 'prs') || has(p, 'corp'));
     $('dfLumpField').hidden = !(has(p, 'lump') || has(p, 'prs') || has(p, 'corp'));
     $('dfMonthlyField').hidden = !(has(p, 'monthly') || has(p, 'prs') || has(p, 'corp'));
     form.querySelector('[data-field="company"]').hidden = !has(p, 'corp');
 
     var e = epCalc(), out;
     if (!e.ready) {
-      out = '<p class="msg">' + (en ? 'Enter your age (section 1) and your Retirement Account balance.' : 'Isi umur (bahagian 1) dan baki Akaun Persaraan anda.') + '</p>';
+      out = '<p class="msg">' + (epAge
+        ? (en ? 'Enter your age and your Retirement Account balance.' : 'Isi umur dan baki Akaun Persaraan anda.')
+        : (en ? 'Enter your age (section 1) and your Retirement Account balance.' : 'Isi umur (bahagian 1) dan baki Akaun Persaraan anda.')) + '</p>';
     } else if (e.note === 'young') {
       out = '<p class="msg warn">' + (en ? 'Available from age 18.' : 'Untuk umur 18 tahun ke atas.') + '</p>';
     } else if (e.note === 'over55') {
@@ -130,13 +141,15 @@
     if (has(p, 'corp') && co) L.push((en ? 'Company: ' : 'Syarikat: ') + co);
     L.push((en ? 'Looking for: ' : 'Pilihan: ') + p.map(function (k) { return names[k]; }).join(', '));
     var g = growCalc(p);
-    if (g.paid) {
+    if (unsure()) {
+      L.push(en ? 'Amount: not sure yet, please help me work it out' : 'Jumlah: belum pasti, mohon bantu kira');
+    } else if (g.paid) {
       if (g.lump) L.push((en ? 'One-time amount: ' : 'Jumlah sekali: ') + rm(g.lump));
       if (g.monthly) L.push((en ? 'Monthly amount: ' : 'Jumlah bulanan: ') + rm(g.monthly));
       L.push((en ? 'Period: ' : 'Tempoh: ') + g.years + (en ? ' years' : ' tahun'));
       L.push((en ? 'Illustration at ' : 'Ilustrasi pada ') + g.rate + '%' + (en ? ' a year: ' : ' setahun: ') + rm(g.total));
     }
-    if (has(p, 'epf')) {
+    if (has(p, 'epf') && !unsure()) {
       var e = epCalc();
       if (e.ready) {
         L.push((en ? 'Retirement Account balance: ' : 'Baki Akaun Persaraan: ') + rm(e.bal));
@@ -169,6 +182,7 @@
     var val = parseFloat(qs.get(m[0]));
     if (isFinite(val) && val > 0) $(m[1]).value = val;
   });
+  if (epAge && $('dfAge').value) epAge.value = $('dfAge').value;
   document.addEventListener('mw:lang', update);
   new MutationObserver(update).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
   update();
