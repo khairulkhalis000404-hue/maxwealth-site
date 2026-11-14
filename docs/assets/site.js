@@ -272,10 +272,12 @@
     }, true);
   }
 
-  // TikTok Pixel: WhatsApp buttons count as Contact (the ebook's "I've paid" button is tracked in ebook.js instead)
+  // TikTok Pixel + Umami: WhatsApp buttons count as Contact (the ebook's "I've paid" button is tracked in ebook.js instead)
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a[href]');
-    if (!a || !window.ttq || a.id === 'paidBtn' || a.matches('[data-buy], .book.paid')) return;
-    if (/(^|\.)(wa\.me|whatsapp\.com)$/.test(a.hostname)) window.ttq.track('Contact');
+    if (!a || a.id === 'paidBtn' || a.matches('[data-buy], .book.paid')) return;
+    if (!/(^|\.)(wa\.me|whatsapp\.com)$/.test(a.hostname)) return;
+    if (window.ttq) window.ttq.track('Contact');
+    if (window.umami) window.umami.track('MW: WhatsApp', { page: location.pathname });
   }, true);
 })();

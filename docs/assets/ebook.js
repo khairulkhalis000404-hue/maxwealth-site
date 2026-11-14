@@ -79,11 +79,15 @@
     window.ttq.track(evt, { contents: [{ content_id: key, content_name: PRODUCTS[key].name, content_type: 'product' }], value: priceNow(key), currency: 'MYR' });
   };
   if (document.querySelector('.lp-hero')) track('ViewContent', 'urus');
+  // Umami click counts (cookieless; product key only)
+  var count = function (name, key) {
+    if (window.umami) window.umami.track(name, { product: key || '', page: location.pathname });
+  };
   document.addEventListener('click', function (e) {   // capture phase, so it still runs when the in-app reminder stops the click
     var a = e.target.closest && e.target.closest('a');
     if (!a) return;
-    if (a.matches('[data-buy], .book.paid')) track('InitiateCheckout', a.dataset.product);
-    else if (a.id === 'tngLink') track('AddPaymentInfo', buyKey);
-    else if (a.id === 'paidBtn') track('PlaceAnOrder', buyKey);
+    if (a.matches('[data-buy], .book.paid')) { track('InitiateCheckout', a.dataset.product); count('MW: Ebook beli', a.dataset.product); }
+    else if (a.id === 'tngLink') { track('AddPaymentInfo', buyKey); count('MW: Ebook bayar TNG', buyKey); }
+    else if (a.id === 'paidBtn') { track('PlaceAnOrder', buyKey); count('MW: Ebook saya dah bayar', buyKey); }
   }, true);
 })();

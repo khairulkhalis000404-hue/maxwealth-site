@@ -26,6 +26,17 @@ AZNAH_WA = '601116442835'  # Aznah's form on /hubungi/; no other links on the pr
 AZNAH_FIMM = ''  # awaiting Aznah; the FIMM line on /hubungi/ only renders once this is filled
 EMAIL = 'khairulkhalis@manulifeinvestment.com.my'
 TIKTOK_PIXEL = 'DBPIPL3C77UASCMHD8IG'   # TikTok Pixel ID from Events Manager; empty = no pixel, and /privasi/ keeps saying "no tracking"
+# Umami Cloud (free plan allows 1 website): shares khairulkhalis.com's website ID; filter by Hostname in the dashboard.
+# data-domains keeps localhost/previews out. Button events are sent from site.js / ebook.js with an "MW: " prefix.
+UMAMI_ID = '622cefc2-a32b-4043-88ef-792992d7bb72'
+UMAMI_DOMAINS = 'maxwealthconsultancy.com.my'
+
+
+def umami_tag():
+    """Umami analytics: cookieless visit counts; empty UMAMI_ID = no tag."""
+    if not UMAMI_ID:
+        return ''
+    return f'<script defer src="https://cloud.umami.is/script.js" data-website-id="{UMAMI_ID}" data-domains="{UMAMI_DOMAINS}"></script>\n'
 
 
 def pixel_tag():
@@ -261,7 +272,7 @@ def head(path, title_ms, title_en, desc_ms, desc_en):
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css?v={CSS_V}">
 <script defer src="/assets/site.js?v={JS_V}"></script>
-{pixel_tag()}</head>'''
+{umami_tag()}{pixel_tag()}</head>'''
 
 
 def header(path):
@@ -1314,10 +1325,16 @@ def build_legal():
                      'TikTok mungkin menerima maklumat seperti alamat IP, jenis peranti dan halaman yang dilawati, dan boleh menetapkan kuki. '
                      'Kami tidak menghantar nama, nombor telefon atau emel anda kepada TikTok. Anda boleh menyekat kuki pihak ketiga dalam tetapan pelayar anda. '
                      if TIKTOK_PIXEL else 'Laman ini tidak menggunakan kuki penjejakan atau analitik. ')
+    if UMAMI_ID:
+        PIXEL_NOTE_MS += ('Kami juga menggunakan Umami, alat analitik tanpa kuki, untuk mengira lawatan dan klik butang secara keseluruhan. '
+                          'Umami tidak menyimpan kuki dan tidak mengenal pasti anda secara peribadi. ')
     PIXEL_NOTE_EN = ('This site uses the TikTok Pixel to measure how our TikTok ads perform, for example page visits and clicks on the ebook buy button. '
                      'TikTok may receive information such as your IP address, device type and the pages you visit, and may set cookies. '
                      'We do not send your name, phone number or email to TikTok. You can block third-party cookies in your browser settings. '
                      if TIKTOK_PIXEL else 'This site uses no tracking or analytics cookies. ')
+    if UMAMI_ID:
+        PIXEL_NOTE_EN += ('We also use Umami, a cookieless analytics tool, to count visits and button clicks in total. '
+                          'Umami sets no cookies and does not identify you personally. ')
     privacy_ms = f'''
 <p>Notis ini menerangkan bagaimana MaxWealth Consultancy (SSM {SSM}) (“kami”) mengumpul, menggunakan dan melindungi data peribadi anda, selaras dengan Akta Perlindungan Data Peribadi 2010 (PDPA) dan pindaannya. Notis ini disediakan dalam Bahasa Melayu dan English.</p>
 <h2>1. Data yang kami kumpul</h2>
